@@ -8,7 +8,7 @@ const App: FC = () => {
 
   return (
     <div className="w-screen h-screen bg-gray-100 flex justify-center items-center">
-      <CircleMenu outerRadius={200} extend={20} fontSize={20}>
+      <CircleMenu outerRadius={200} extend={20} fontSize={20} innerRadius={120}>
         <CircleMenuItem text="ATLAS" onClick={toAtlas} color="red" angle={90} startAngle={0} />
         <CircleMenuItem text="CMS" onClick={toCms} color="green" angle={90} startAngle={90} />
         <CircleMenuItem text="D0" color="blue" angle={45} startAngle={180} />

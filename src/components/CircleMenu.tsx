@@ -5,6 +5,7 @@ interface CircleMenuProps {
   extend: number
   fontSize?: number
   innerRadius?: number
+  initialAngle?: number
 }
 
 const CircleMenu: FC<CircleMenuProps> = ({
@@ -12,6 +13,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
   outerRadius,
   extend,
   fontSize,
+  initialAngle = 0,
   innerRadius = outerRadius / 2,
 }) => {
   const centerX = outerRadius + extend
@@ -25,7 +27,8 @@ const CircleMenu: FC<CircleMenuProps> = ({
       }}
     >
       {React.Children.map(children, child => {
-        if (React.isValidElement(child)) return React.cloneElement(child, { outerRadius, extend, fontSize })
+        if (React.isValidElement(child))
+          return React.cloneElement(child, { outerRadius, extend, fontSize, innerRadius, initialAngle })
         else return child
       })}
       <circle fill="black" cx={centerX} cy={centerY} r={innerRadius} />

@@ -13,6 +13,7 @@ interface CircleItemProps {
   innerRadius?: number
   extend?: number
   fontSize?: number
+  initialAngle?: number
 }
 
 const CircleMenuItem: FC<CircleItemProps> = ({
@@ -24,11 +25,17 @@ const CircleMenuItem: FC<CircleItemProps> = ({
   onClick,
   outerRadius = 0,
   extend = 0,
+  innerRadius = 0,
+  initialAngle = 0,
 }) => {
   const [select, setSelect] = useState(false)
-
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
+  const width = outerRadius - innerRadius
+  const textPadding = (width - fontSize) / 2
+  const textOuterRadius = outerRadius - textPadding
+  const textInnerRadius = textOuterRadius - fontSize
+  startAngle += initialAngle
 
   const getArc = (radius: number) => ({
     arcStartX: centerX - radius * UnitArcX(startAngle),
@@ -41,8 +48,9 @@ const CircleMenuItem: FC<CircleItemProps> = ({
     outerRadius
   )
 
-  const textPadding = 20
-  const textOuterRadius = outerRadius - textPadding
+  const { arcStartX: innerArcStartX, arcStartY: innerArcStartY, arcEndX: innerArcEndX, arcEndY: innerArcEndY } = getArc(
+    innerRadius
+  )
 
   const {
     arcStartX: textOuterArcStartX,
@@ -50,8 +58,6 @@ const CircleMenuItem: FC<CircleItemProps> = ({
     arcEndX: textOuterArcEndX,
     arcEndY: textOuterArcEndY,
   } = getArc(textOuterRadius)
-
-  const textInnerRadius = textOuterRadius - fontSize
 
   const {
     arcStartX: textInnerArcStartX,
@@ -72,10 +78,12 @@ const CircleMenuItem: FC<CircleItemProps> = ({
       <path
         style={select ? cssSelected : css}
         fill={color}
-        d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} z`}
+        d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
+        L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
+        z`}
       />
       <defs>
-        {startAngle + 0.5 * angle > 180 ? (
+        {Math.round(startAngle + 0.5 * angle) % 360 > 180 ? (
           <path
             id={`path-${text}`}
             stroke="black"
@@ -97,6 +105,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({
           />
         )}
       </defs>
+
       <text textAnchor="middle" fill="black" className="text-xl transform" style={select ? textCssSelected : css}>
         <textPath xlinkHref={`#path-${text}`} startOffset="50%">
           {text}
