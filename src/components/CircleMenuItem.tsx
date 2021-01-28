@@ -1,33 +1,21 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
+import { CircleMenuContext } from './CircleMenu'
 
-const UnitArcX = (angle: number) => Math.cos((angle * Math.PI) / 180)
-const UnitArcY = (angle: number) => Math.sin((angle * Math.PI) / 180)
+const cosine = (angle: number) => Math.cos((angle * Math.PI) / 180)
+const sine = (angle: number) => Math.sin((angle * Math.PI) / 180)
 
 interface CircleItemProps {
+  id: string
   text: string
   angle: number
   startAngle: number
   color: string
   onClick?: () => void
-  outerRadius?: number
-  innerRadius?: number
-  extend?: number
-  fontSize?: number
-  initialAngle?: number
+  onHover?: (id: string) => void
 }
 
-const CircleMenuItem: FC<CircleItemProps> = ({
-  fontSize = 10,
-  text,
-  angle,
-  startAngle,
-  color,
-  onClick,
-  outerRadius = 0,
-  extend = 0,
-  innerRadius = 0,
-  initialAngle = 0,
-}) => {
+const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, onClick, id, onHover }) => {
+  const { outerRadius, extend, fontSize, innerRadius, initialAngle } = useContext(CircleMenuContext)
   const [select, setSelect] = useState(false)
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
@@ -38,11 +26,20 @@ const CircleMenuItem: FC<CircleItemProps> = ({
   startAngle += initialAngle
 
   const getArc = (radius: number) => ({
-    arcStartX: centerX - radius * UnitArcX(startAngle),
-    arcStartY: centerY - radius * UnitArcY(startAngle),
-    arcEndX: centerX - radius * UnitArcX(startAngle + angle),
-    arcEndY: centerY - radius * UnitArcY(startAngle + angle),
+    arcStartX: centerX - radius * cosine(startAngle),
+    arcStartY: centerY - radius * sine(startAngle),
+    arcEndX: centerX - radius * cosine(startAngle + angle),
+    arcEndY: centerY - radius * sine(startAngle + angle),
   })
+
+  const handleMouseEnter = () => {
+    setSelect(true)
+    onHover && onHover(id)
+  }
+
+  const handleMouseLeave = () => {
+    setSelect(false)
+  }
 
   const { arcStartX: outerArcStartX, arcStartY: outerArcStartY, arcEndX: outerArcEndX, arcEndY: outerArcEndY } = getArc(
     outerRadius
@@ -66,8 +63,8 @@ const CircleMenuItem: FC<CircleItemProps> = ({
     arcEndY: textInnerArcEndY,
   } = getArc(textInnerRadius)
 
-  const translateX = Math.round(-extend * UnitArcX(startAngle + 0.5 * angle))
-  const translateY = Math.round(-extend * UnitArcY(startAngle + 0.5 * angle))
+  const translateX = Math.round(-extend * cosine(startAngle + 0.5 * angle))
+  const translateY = Math.round(-extend * sine(startAngle + 0.5 * angle))
 
   const css = { transitionDuration: '0.1s', fontSize: fontSize }
   const cssSelected = { ...css, transform: `translate(${translateX}px, ${translateY}px)` }
@@ -85,7 +82,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({
       <defs>
         {Math.round(startAngle + 0.5 * angle) % 360 > 180 ? (
           <path
-            id={`path-${text}`}
+            id={`path-${id}`}
             stroke="black"
             strokeWidth="3"
             fill="none"
@@ -95,7 +92,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({
           />
         ) : (
           <path
-            id={`path-${text}`}
+            id={`path-${id}`}
             stroke="black"
             strokeWidth="3"
             fill="none"
@@ -106,16 +103,16 @@ const CircleMenuItem: FC<CircleItemProps> = ({
         )}
       </defs>
 
-      <text textAnchor="middle" fill="black" className="text-xl transform" style={select ? textCssSelected : css}>
-        <textPath xlinkHref={`#path-${text}`} startOffset="50%">
+      <text textAnchor="middle" fill="white" className="text-xl transform" style={select ? textCssSelected : css}>
+        <textPath xlinkHref={`#path-${id}`} startOffset="50%">
           {text}
         </textPath>
       </text>
       <path
         className="cursor-pointer"
         onClick={onClick}
-        onMouseEnter={() => setSelect(true)}
-        onMouseLeave={() => setSelect(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         fillOpacity={0}
         d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} z`}
       />
