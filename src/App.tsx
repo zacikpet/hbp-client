@@ -63,6 +63,7 @@ const App: FC = () => {
           color={dark}
           angle={60}
           startAngle={60}
+          all
         />
         <CircleMenuItem
           id="cms"

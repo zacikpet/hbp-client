@@ -12,10 +12,13 @@ interface CircleItemProps {
   color: string
   onClick?: () => void
   onHover?: (id: string) => void
+  all?: boolean
 }
 
-const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, onClick, id, onHover }) => {
-  const { outerRadius, extend, fontSize, innerRadius, initialAngle } = useContext(CircleMenuContext)
+const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, color, onClick, id, onHover }) => {
+  const { outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll } = useContext(
+    CircleMenuContext
+  )
   const [select, setSelect] = useState(false)
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
@@ -35,10 +38,12 @@ const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, o
   const handleMouseEnter = () => {
     setSelect(true)
     onHover && onHover(id)
+    all && setExpandAll && setExpandAll(true)
   }
 
   const handleMouseLeave = () => {
     setSelect(false)
+    all && setExpandAll && setExpandAll(false)
   }
 
   const { arcStartX: outerArcStartX, arcStartY: outerArcStartY, arcEndX: outerArcEndX, arcEndY: outerArcEndY } = getArc(
@@ -73,7 +78,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, o
   return (
     <>
       <path
-        style={select ? cssSelected : css}
+        style={select || expandAll ? cssSelected : css}
         fill={color}
         d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
         L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
@@ -87,7 +92,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, o
             strokeWidth="3"
             fill="none"
             className="transform"
-            style={select ? cssSelected : css}
+            style={select || expandAll ? cssSelected : css}
             d={`M${textOuterArcEndX},${textOuterArcEndY} A${textOuterRadius}, ${textOuterRadius} 1 0,0 ${textOuterArcStartX},${textOuterArcStartY}`}
           />
         ) : (
@@ -97,13 +102,18 @@ const CircleMenuItem: FC<CircleItemProps> = ({ text, angle, startAngle, color, o
             strokeWidth="3"
             fill="none"
             className="transform"
-            style={select ? cssSelected : css}
+            style={select || expandAll ? cssSelected : css}
             d={`M${textInnerArcStartX},${textInnerArcStartY} A${textInnerRadius}, ${textInnerRadius} 1 0,1 ${textInnerArcEndX},${textInnerArcEndY}`}
           />
         )}
       </defs>
 
-      <text textAnchor="middle" fill="white" className="text-xl transform" style={select ? textCssSelected : css}>
+      <text
+        textAnchor="middle"
+        fill="white"
+        className="text-xl transform"
+        style={select || expandAll ? textCssSelected : css}
+      >
         <textPath xlinkHref={`#path-${id}`} startOffset="50%">
           {text}
         </textPath>

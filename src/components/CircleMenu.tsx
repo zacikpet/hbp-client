@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import HiggsImg from 'resources/higgs.png'
 
 interface CircleMenuProps {
@@ -9,12 +9,24 @@ interface CircleMenuProps {
   initialAngle?: number
 }
 
-export const CircleMenuContext = React.createContext({
+type CircleMenuContextType = {
+  outerRadius: number
+  extend: number
+  fontSize: number
+  innerRadius: number
+  initialAngle: number
+  expandAll: boolean
+  setExpandAll: React.Dispatch<React.SetStateAction<boolean>> | null
+}
+
+export const CircleMenuContext = React.createContext<CircleMenuContextType>({
   outerRadius: 0,
   extend: 0,
   fontSize: 0,
   innerRadius: 0,
   initialAngle: 0,
+  expandAll: false,
+  setExpandAll: null,
 })
 
 const CircleMenu: FC<CircleMenuProps> = ({
@@ -28,6 +40,8 @@ const CircleMenu: FC<CircleMenuProps> = ({
   const centerX = outerRadius + extend
   const centerY = outerRadius + extend
 
+  const [expandAll, setExpandAll] = useState(false)
+
   return (
     <svg
       style={{
@@ -36,7 +50,9 @@ const CircleMenu: FC<CircleMenuProps> = ({
         filter: 'drop-shadow( 0 0 15px rgba(0, 0, 0, .7)',
       }}
     >
-      <CircleMenuContext.Provider value={{ outerRadius, extend, fontSize, innerRadius, initialAngle }}>
+      <CircleMenuContext.Provider
+        value={{ outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll }}
+      >
         {children}
       </CircleMenuContext.Provider>
 
