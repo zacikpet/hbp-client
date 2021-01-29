@@ -8,10 +8,11 @@ module.exports = {
         cms: "url('resources/cms.jpg')",
         delphi: "url('resources/delphi.jpg')",
       }),
+      fontFamily: {
+        sans: ['Ubuntu', 'Sans-serif'],
+      },
     },
   },
-  variants: {
-    extend: {},
-  },
+  variants: {},
   plugins: [],
 }

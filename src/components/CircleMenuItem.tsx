@@ -125,7 +125,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
 
       <text
         textAnchor="middle"
-        fill="white"
+        fill="#CCCCCC"
         className="text-xl transform"
         style={select || expandAll ? textCssSelected : css}
       >

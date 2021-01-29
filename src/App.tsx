@@ -25,8 +25,8 @@ const App: FC = () => {
   const [background, setBackground] = useState('atlas')
   const { toAtlas, toCms } = useRedirect()
 
-  const dark = 'rgb(48,37,82)'
-  const light = 'rgb(70,53,132)'
+  const dark = 'rgb(48,37,81)'
+  const light = 'rgb(70,53,133)'
 
   /**
    * Preload backgrounds
@@ -40,7 +40,7 @@ const App: FC = () => {
 
   return (
     <div
-      className={`w-screen h-screen bg-gray-100 flex justify-center items-center transition-all bg-cover`}
+      className={`w-screen h-screen bg-gray-100 flex flex-col justify-center items-center transition-all bg-cover font-bold`}
       style={{
         backgroundImage: `url(${getBG('')})`,
       }}
