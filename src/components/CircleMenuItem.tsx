@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useContext, useMemo, useState } from 'react'
 import { CircleMenuContext } from './CircleMenu'
 
 const cosine = (angle: number) => Math.cos((angle * Math.PI) / 180)
@@ -19,57 +19,72 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
   const { outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll } = useContext(
     CircleMenuContext
   )
+  startAngle += initialAngle
   const [select, setSelect] = useState(false)
+  const sineStartAngle = useMemo(() => sine(startAngle), [])
+  const cosineStartAngle = useMemo(() => cosine(startAngle), [])
+  const sineMidAngle = useMemo(() => sine(startAngle + angle / 2), [])
+  const cosineMidAngle = useMemo(() => cosine(startAngle + angle / 2), [])
+  const sineEndAngle = useMemo(() => sine(startAngle + angle), [])
+  const cosineEndAngle = useMemo(() => cosine(startAngle + angle), [])
+
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
   const width = outerRadius - innerRadius
   const textPadding = (width - fontSize) / 2
   const textOuterRadius = outerRadius - textPadding
   const textInnerRadius = textOuterRadius - fontSize
-  startAngle += initialAngle
 
-  const getArc = (radius: number) => ({
-    arcStartX: centerX - radius * cosine(startAngle),
-    arcStartY: centerY - radius * sine(startAngle),
-    arcEndX: centerX - radius * cosine(startAngle + angle),
-    arcEndY: centerY - radius * sine(startAngle + angle),
-  })
+  function getArc(radius: number) {
+    return {
+      arcStartX: centerX - radius * cosineStartAngle,
+      arcStartY: centerY - radius * sineStartAngle,
+      arcEndX: centerX - radius * cosineEndAngle,
+      arcEndY: centerY - radius * sineEndAngle,
+    }
+  }
 
-  const handleMouseEnter = () => {
+  function handleMouseEnter() {
     setSelect(true)
     onHover && onHover(id)
     all && setExpandAll && setExpandAll(true)
   }
 
-  const handleMouseLeave = () => {
+  function handleMouseLeave() {
     setSelect(false)
     all && setExpandAll && setExpandAll(false)
   }
 
-  const { arcStartX: outerArcStartX, arcStartY: outerArcStartY, arcEndX: outerArcEndX, arcEndY: outerArcEndY } = getArc(
-    outerRadius
-  )
+  const {
+    arcStartX: outerArcStartX,
+    arcStartY: outerArcStartY,
+    arcEndX: outerArcEndX,
+    arcEndY: outerArcEndY,
+  } = useMemo(() => getArc(outerRadius), [])
 
-  const { arcStartX: innerArcStartX, arcStartY: innerArcStartY, arcEndX: innerArcEndX, arcEndY: innerArcEndY } = getArc(
-    innerRadius
-  )
+  const {
+    arcStartX: innerArcStartX,
+    arcStartY: innerArcStartY,
+    arcEndX: innerArcEndX,
+    arcEndY: innerArcEndY,
+  } = useMemo(() => getArc(innerRadius), [])
 
   const {
     arcStartX: textOuterArcStartX,
     arcStartY: textOuterArcStartY,
     arcEndX: textOuterArcEndX,
     arcEndY: textOuterArcEndY,
-  } = getArc(textOuterRadius)
+  } = useMemo(() => getArc(textOuterRadius), [])
 
   const {
     arcStartX: textInnerArcStartX,
     arcStartY: textInnerArcStartY,
     arcEndX: textInnerArcEndX,
     arcEndY: textInnerArcEndY,
-  } = getArc(textInnerRadius)
+  } = useMemo(() => getArc(textInnerRadius), [])
 
-  const translateX = Math.round(-extend * cosine(startAngle + 0.5 * angle))
-  const translateY = Math.round(-extend * sine(startAngle + 0.5 * angle))
+  const translateX = -extend * cosineMidAngle
+  const translateY = -extend * sineMidAngle
 
   const css = { transitionDuration: '0.1s', fontSize: fontSize }
   const cssSelected = { ...css, transform: `translate(${translateX}px, ${translateY}px)` }
@@ -85,7 +100,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
         z`}
       />
       <defs>
-        {Math.round(startAngle + 0.5 * angle) % 360 > 180 ? (
+        {(startAngle + 0.5 * angle) % 360 > 180 ? (
           <path
             id={`path-${id}`}
             stroke="black"
