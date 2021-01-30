@@ -19,14 +19,14 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
   const { outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll } = useContext(
     CircleMenuContext
   )
-  startAngle += initialAngle
+  const _startAngle = startAngle + initialAngle
   const [select, setSelect] = useState(false)
-  const sineStartAngle = useMemo(() => sine(startAngle), [])
-  const cosineStartAngle = useMemo(() => cosine(startAngle), [])
-  const sineMidAngle = useMemo(() => sine(startAngle + angle / 2), [])
-  const cosineMidAngle = useMemo(() => cosine(startAngle + angle / 2), [])
-  const sineEndAngle = useMemo(() => sine(startAngle + angle), [])
-  const cosineEndAngle = useMemo(() => cosine(startAngle + angle), [])
+  const sineStartAngle = useMemo(() => sine(_startAngle), [])
+  const cosineStartAngle = useMemo(() => cosine(_startAngle), [])
+  const sineMidAngle = useMemo(() => sine(_startAngle + angle / 2), [])
+  const cosineMidAngle = useMemo(() => cosine(_startAngle + angle / 2), [])
+  const sineEndAngle = useMemo(() => sine(_startAngle + angle), [])
+  const cosineEndAngle = useMemo(() => cosine(_startAngle + angle), [])
 
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
@@ -100,7 +100,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
         z`}
       />
       <defs>
-        {(startAngle + 0.5 * angle) % 360 > 180 ? (
+        {(_startAngle + 0.5 * angle) % 360 > 180 ? (
           <path
             id={`path-${id}`}
             stroke="black"

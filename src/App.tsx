@@ -52,33 +52,25 @@ const App: FC = () => {
           onClick={toAtlas}
           onHover={setBackground}
           color={light}
-          angle={60}
-          startAngle={0}
+          angle={90}
+          startAngle={30}
         />
-        <CircleMenuItem
-          id="all"
-          text="ALL"
-          onClick={toAtlas}
-          onHover={setBackground}
-          color={dark}
-          angle={60}
-          startAngle={60}
-          all
-        />
+
         <CircleMenuItem
           id="cms"
           text="CMS"
           onClick={toCms}
           onHover={setBackground}
-          color={light}
-          angle={60}
-          startAngle={120}
+          color={dark}
+          angle={90}
+          startAngle={90}
         />
-        <CircleMenuItem id="d0" text="D0" color={dark} angle={36} startAngle={180} />
-        <CircleMenuItem id="aleph" text="ALEPH" color={light} angle={36} startAngle={216} />
-        <CircleMenuItem id="delphi" text="DELPHI" color={dark} angle={36} startAngle={252} onHover={setBackground} />
-        <CircleMenuItem id="opal" text="OPAL" color={light} angle={36} startAngle={288} />
-        <CircleMenuItem id="l3" text="L3" color={dark} angle={36} startAngle={324} />
+        <CircleMenuItem id="d0" text="D0" color={light} angle={30} startAngle={180} />
+        <CircleMenuItem id="cdf" text="CDF" color={dark} angle={30} startAngle={210} />
+        <CircleMenuItem id="aleph" text="ALEPH" color={light} angle={30} startAngle={240} />
+        <CircleMenuItem id="delphi" text="DELPHI" color={dark} angle={30} startAngle={270} onHover={setBackground} />
+        <CircleMenuItem id="opal" text="OPAL" color={light} angle={30} startAngle={300} />
+        <CircleMenuItem id="l3" text="L3" color={dark} angle={30} startAngle={330} />
       </CircleMenu>
     </div>
   )
