@@ -1,4 +1,4 @@
-import React, { FC, useContext, useMemo, useState } from 'react'
+import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 import { CircleMenuContext } from './CircleMenu'
 
 const cosine = (angle: number) => Math.cos((angle * Math.PI) / 180)
@@ -21,12 +21,12 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
   )
   const _startAngle = startAngle + initialAngle
   const [select, setSelect] = useState(false)
-  const sineStartAngle = useMemo(() => sine(_startAngle), [])
-  const cosineStartAngle = useMemo(() => cosine(_startAngle), [])
-  const sineMidAngle = useMemo(() => sine(_startAngle + angle / 2), [])
-  const cosineMidAngle = useMemo(() => cosine(_startAngle + angle / 2), [])
-  const sineEndAngle = useMemo(() => sine(_startAngle + angle), [])
-  const cosineEndAngle = useMemo(() => cosine(_startAngle + angle), [])
+  const sineStartAngle = useMemo(() => sine(_startAngle), [_startAngle])
+  const cosineStartAngle = useMemo(() => cosine(_startAngle), [_startAngle])
+  const sineMidAngle = useMemo(() => sine(_startAngle + angle / 2), [_startAngle, angle])
+  const cosineMidAngle = useMemo(() => cosine(_startAngle + angle / 2), [_startAngle, angle])
+  const sineEndAngle = useMemo(() => sine(_startAngle + angle), [_startAngle, angle])
+  const cosineEndAngle = useMemo(() => cosine(_startAngle + angle), [_startAngle, angle])
 
   const centerX = extend + outerRadius
   const centerY = extend + outerRadius
@@ -35,14 +35,15 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
   const textOuterRadius = outerRadius - textPadding
   const textInnerRadius = textOuterRadius - fontSize
 
-  function getArc(radius: number) {
-    return {
+  const getArc = useCallback(
+    (radius: number) => ({
       arcStartX: centerX - radius * cosineStartAngle,
       arcStartY: centerY - radius * sineStartAngle,
       arcEndX: centerX - radius * cosineEndAngle,
       arcEndY: centerY - radius * sineEndAngle,
-    }
-  }
+    }),
+    [cosineStartAngle, sineStartAngle, cosineEndAngle, sineEndAngle, centerX, centerY]
+  )
 
   function handleMouseEnter() {
     setSelect(true)
@@ -60,35 +61,34 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
     arcStartY: outerArcStartY,
     arcEndX: outerArcEndX,
     arcEndY: outerArcEndY,
-  } = useMemo(() => getArc(outerRadius), [])
+  } = useMemo(() => getArc(outerRadius), [outerRadius, getArc])
 
   const {
     arcStartX: innerArcStartX,
     arcStartY: innerArcStartY,
     arcEndX: innerArcEndX,
     arcEndY: innerArcEndY,
-  } = useMemo(() => getArc(innerRadius), [])
+  } = useMemo(() => getArc(innerRadius), [innerRadius, getArc])
 
   const {
     arcStartX: textOuterArcStartX,
     arcStartY: textOuterArcStartY,
     arcEndX: textOuterArcEndX,
     arcEndY: textOuterArcEndY,
-  } = useMemo(() => getArc(textOuterRadius), [])
+  } = useMemo(() => getArc(textOuterRadius), [textOuterRadius, getArc])
 
   const {
     arcStartX: textInnerArcStartX,
     arcStartY: textInnerArcStartY,
     arcEndX: textInnerArcEndX,
     arcEndY: textInnerArcEndY,
-  } = useMemo(() => getArc(textInnerRadius), [])
+  } = useMemo(() => getArc(textInnerRadius), [textInnerRadius, getArc])
 
   const translateX = -extend * cosineMidAngle
   const translateY = -extend * sineMidAngle
 
   const css = { transitionDuration: '0.1s', fontSize: fontSize }
   const cssSelected = { ...css, transform: `translate(${translateX}px, ${translateY}px)` }
-  const textCssSelected = { ...css, transform: `translate(0.1px, 0.1px)` }
 
   return (
     <>
@@ -123,13 +123,13 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
         )}
       </defs>
 
-      <text
-        textAnchor="middle"
-        fill="#CCCCCC"
-        className="text-xl transform"
-        style={select || expandAll ? textCssSelected : css}
-      >
-        <textPath xlinkHref={`#path-${id}`} startOffset="50%">
+      <text textAnchor="middle" fill="white" className="text-xl">
+        <textPath
+          href={`#path-${id}`}
+          startOffset="50%"
+          className="transform"
+          style={select || expandAll ? cssSelected : css}
+        >
           {text}
         </textPath>
       </text>

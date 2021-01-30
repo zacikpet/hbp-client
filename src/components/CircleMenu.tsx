@@ -50,7 +50,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
   }
 
   return (
-    <svg style={css} className="transform cursor-pointer">
+    <svg style={css} className="transform">
       <CircleMenuContext.Provider
         value={{ outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll }}
       >

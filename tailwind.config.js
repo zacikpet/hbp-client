@@ -11,6 +11,11 @@ module.exports = {
       fontFamily: {
         sans: ['Ubuntu', 'Sans-serif'],
       },
+      colors: {
+        light: '#3D52D5',
+        dark: '#090C9B',
+        navbar: '#503067',
+      },
     },
   },
   variants: {},
