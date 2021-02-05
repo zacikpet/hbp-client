@@ -24,7 +24,7 @@ const getBG = (id: string) => {
 
 const App: FC = () => {
   const [background, setBackground] = useState('atlas')
-  const { toAtlas, toCms } = useRedirect()
+  const { toAtlas, toCms, toAleph, toCdf, toD0, toDelphi, toL3, toOpal } = useRedirect()
 
   const light = '#503067'
   const dark = '#332056'
@@ -32,12 +32,7 @@ const App: FC = () => {
   /**
    * Preload backgrounds
    */
-  useEffect(() => {
-    images.forEach(image => {
-      const img = new Image()
-      img.src = image
-    })
-  }, [])
+  useEffect(() => images.forEach(image => (new Image().src = image)), [])
 
   return (
     <div className={`w-screen h-screen bg-white flex flex-col justify-center items-center font-bold`}>
@@ -61,12 +56,20 @@ const App: FC = () => {
           angle={90}
           startAngle={90}
         />
-        <CircleMenuItem id="d0" text="D0" color={dark} angle={30} startAngle={180} />
-        <CircleMenuItem id="cdf" text="CDF" color={light} angle={30} startAngle={210} />
-        <CircleMenuItem id="aleph" text="ALEPH" color={dark} angle={30} startAngle={240} />
-        <CircleMenuItem id="delphi" text="DELPHI" color={light} angle={30} startAngle={270} onHover={setBackground} />
-        <CircleMenuItem id="opal" text="OPAL" color={dark} angle={30} startAngle={300} />
-        <CircleMenuItem id="l3" text="L3" color={light} angle={30} startAngle={330} />
+        <CircleMenuItem id="d0" text="D0" color={dark} angle={30} startAngle={180} onClick={toD0} />
+        <CircleMenuItem id="cdf" text="CDF" color={light} angle={30} startAngle={210} onClick={toCdf} />
+        <CircleMenuItem id="aleph" text="ALEPH" color={dark} angle={30} startAngle={240} onClick={toAleph} />
+        <CircleMenuItem
+          id="delphi"
+          text="DELPHI"
+          color={light}
+          angle={30}
+          startAngle={270}
+          onHover={setBackground}
+          onClick={toDelphi}
+        />
+        <CircleMenuItem id="opal" text="OPAL" color={dark} angle={30} startAngle={300} onClick={toOpal} />
+        <CircleMenuItem id="l3" text="L3" color={light} angle={30} startAngle={330} onClick={toL3} />
       </CircleMenu>
     </div>
   )

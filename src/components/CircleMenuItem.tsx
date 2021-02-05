@@ -92,47 +92,33 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
 
   return (
     <>
-      <path
-        style={select || expandAll ? cssSelected : css}
-        fill={color}
-        d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
-        L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
-        z`}
-      />
       <defs>
         {(_startAngle + 0.5 * angle) % 360 > 180 ? (
           <path
             id={`path-${id}`}
-            stroke="black"
-            strokeWidth="3"
-            fill="none"
-            className="transform"
-            style={select || expandAll ? cssSelected : css}
             d={`M${textOuterArcEndX},${textOuterArcEndY} A${textOuterRadius}, ${textOuterRadius} 1 0,0 ${textOuterArcStartX},${textOuterArcStartY}`}
           />
         ) : (
           <path
             id={`path-${id}`}
-            stroke="black"
-            strokeWidth="3"
-            fill="none"
-            className="transform"
-            style={select || expandAll ? cssSelected : css}
             d={`M${textInnerArcStartX},${textInnerArcStartY} A${textInnerRadius}, ${textInnerRadius} 1 0,1 ${textInnerArcEndX},${textInnerArcEndY}`}
           />
         )}
       </defs>
+      <g style={select || expandAll ? cssSelected : css}>
+        <path
+          fill={color}
+          d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
+        L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
+        z`}
+        />
+        <text textAnchor="middle" fill="white" className="text-xl">
+          <textPath href={`#path-${id}`} startOffset="50%" className="transform">
+            {text}
+          </textPath>
+        </text>
+      </g>
 
-      <text textAnchor="middle" fill="white" className="text-xl">
-        <textPath
-          href={`#path-${id}`}
-          startOffset="50%"
-          className="transform"
-          style={select || expandAll ? cssSelected : css}
-        >
-          {text}
-        </textPath>
-      </text>
       <path
         className="cursor-pointer"
         onClick={onClick}
