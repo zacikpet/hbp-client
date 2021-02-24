@@ -8,7 +8,7 @@ type SidebarProps = {
 }
 
 const Sidebar: FC<SidebarProps> = ({ onOpen, onClose }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const handleClick = () => {
     if (sidebarOpen && onClose) onClose()
@@ -19,7 +19,7 @@ const Sidebar: FC<SidebarProps> = ({ onOpen, onClose }) => {
   return (
     <>
       <div
-        className={`transform w-full md:w-1/2 lg:w-1/3 h-full p-10 transition-all flex-shrink-0 shadow-2xl z-20
+        className={`transform w-full md:w-1/3 lg:w-1/3 h-full p-10 transition-all flex-shrink-0 shadow-2xl z-20
         ${sidebarOpen ? 'ml-0' : '-ml-full md:-ml-1/2 lg:-ml-1/3'}`}
         style={{ backgroundColor: 'whitesmoke' }}
       >
@@ -34,21 +34,27 @@ const Sidebar: FC<SidebarProps> = ({ onOpen, onClose }) => {
             <br />
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
           </div>
-          <div className="flex flex-col h-1/3 justify-around text-xl">
+          <div className="flex flex-col h-1/3 justify-around text-xl w-full pl-10">
             <h2 className="hover:text-gray-600 cursor-pointer">Experiments</h2>
             <h2 className="hover:text-gray-600 cursor-pointer">Publications</h2>
+            <h2 className="hover:text-gray-600 cursor-pointer">History</h2>
             <h2 className="hover:text-gray-600 cursor-pointer">About</h2>
           </div>
-          <div className="h-1/3 flex flex-col justify-end">
-            <button className="p-2 border-2 rounded border-black hover:bg-black text-black hover:text-white">
+          <div className="h-1/3 flex flex-col justify-around">
+            <br />
+            <p>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat.
+            </p>
+            <button className="btn">
               <h2 className="font-semibold">Feedback</h2>
             </button>
           </div>
         </div>
       </div>
       <div
-        className={`bg-white transform w-14 h-14 cursor-pointer absolute transition-all p-3 rounded-r-xl z-10 shadow-2xl top-8 ${
-          sidebarOpen ? 'left-0 md:left-1/2 lg:left-1/3' : 'left-0'
+        className={`bg-green-400 transform w-14 h-14 cursor-pointer absolute transition-all p-3 rounded-r-xl z-10 shadow-2xl top-8 ${
+          sidebarOpen ? 'left-0 md:left-1/3 lg:left-1/3' : 'left-0'
         }`}
         onClick={handleClick}
       >
