@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
-import HiggsImg from 'resources/higgs.png'
+// import HiggsImg from 'resources/higgs.png'
+// import Collision from 'resources/collision.jpg'
 
 interface CircleMenuProps {
   outerRadius: number
@@ -46,7 +47,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
     transitionDuration: '0.1s',
     width: 2 * outerRadius + 2 * extend,
     height: 2 * outerRadius + 2 * extend,
-    filter: 'drop-shadow( 0 0 15px rgba(0, 0, 0, .7)',
+    filter: 'drop-shadow( 0 0 10px rgba(0, 0, 0, 0.2)',
   }
 
   return (
@@ -58,7 +59,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
       </CircleMenuContext.Provider>
       <defs>
         <pattern id="image" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 100 100">
-          <image x="0%" y="0%" width="100" height="100" xlinkHref={HiggsImg} preserveAspectRatio="xMinYMin slice" />
+          <image x="0%" y="0%" width="100" height="100" xlinkHref={''} preserveAspectRatio="xMinYMin slice" />
         </pattern>
       </defs>
 

@@ -15,7 +15,7 @@ interface CircleItemProps {
   all?: boolean
 }
 
-const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, color, onClick, id, onHover }) => {
+const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, onClick, id, onHover }) => {
   const { outerRadius, extend, fontSize, innerRadius, initialAngle, expandAll, setExpandAll } = useContext(
     CircleMenuContext
   )
@@ -107,12 +107,13 @@ const CircleMenuItem: FC<CircleItemProps> = ({ all, text, angle, startAngle, col
       </defs>
       <g style={select || expandAll ? cssSelected : css}>
         <path
-          fill={color}
-          d={`M${centerX},${centerY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
+          fill="whitesmoke"
+          fillOpacity={1}
+          d={`M${innerArcStartX},${innerArcStartY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
         L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
         z`}
         />
-        <text textAnchor="middle" fill="white" className="text-xl">
+        <text textAnchor="middle" fill="#333323" className="text-xl">
           <textPath href={`#path-${id}`} startOffset="50%" className="transform">
             {text}
           </textPath>
