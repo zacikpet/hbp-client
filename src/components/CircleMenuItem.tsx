@@ -109,7 +109,7 @@ const CircleMenuItem: FC<CircleItemProps> = ({ color, all, text, angle, startAng
         <path
           fill={color}
           stroke="black"
-          strokeWidth={1.5}
+          strokeWidth={0.1}
           d={`M${innerArcStartX},${innerArcStartY} L${outerArcStartX},${outerArcStartY} A${outerRadius},${outerRadius} 1 0,1 ${outerArcEndX},${outerArcEndY} 
         L${innerArcEndX},${innerArcEndY} A${innerRadius}, ${innerRadius} 1 0,0 ${innerArcStartX},${innerArcStartY}
         z`}

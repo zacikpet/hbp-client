@@ -47,7 +47,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
     transitionDuration: '0.1s',
     width: 2 * outerRadius + 2 * extend,
     height: 2 * outerRadius + 2 * extend,
-    filter: 'drop-shadow( 0 0 10px rgba(0, 0, 0, 0.2)',
+    filter: 'drop-shadow( 0 0 10px rgba(0, 0, 0, 0.5)',
   }
 
   return (
@@ -62,8 +62,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
           <image x="0%" y="0%" width="100" height="100" xlinkHref={Collision} preserveAspectRatio="xMinYMin slice" />
         </pattern>
       </defs>
-
-      <circle cx={centerX} cy={centerY} r={innerRadius} fill="white" fillOpacity={0.5} />
+      <circle cx={centerX} cy={centerY} r={innerRadius} fill="black" fillOpacity={0} />
     </svg>
   )
 }
