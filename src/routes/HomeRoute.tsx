@@ -31,28 +31,28 @@ const HomeRoute: FC = () => {
         */}
       </div>
       <div id="experiments" className="h-screen-3/4 flex cursor-pointer flex-col md:flex-row">
-        <div className="h-full card-experiment bg-atlas bg-center">
+        <div className="h-full card-experiment bg-atlas">
           <div className="card-experiment-title">ATLAS</div>
         </div>
-        <div className="h-full card-experiment bg-cms bg-center">
+        <div className="h-full card-experiment bg-cms">
           <div className="card-experiment-title">CMS</div>
         </div>
-        <div className="h-full card-experiment bg-cdf bg-center">
+        <div className="h-full card-experiment bg-cdf">
           <div className="card-experiment-title">CDF</div>
         </div>
         <div className="h-full card-experiment bg-d0">
           <div className="card-experiment-title">D0</div>
         </div>
         <div className="w-full h-full">
-          <div className="h-1/2 card-experiment bg-delphi bg-center">
+          <div className="h-1/2 card-experiment bg-delphi">
             <div className="card-experiment-title">DELPHI</div>
           </div>
-          <div className="h-1/2 card-experiment bg-opal bg-center">
+          <div className="h-1/2 card-experiment bg-opal">
             <div className="card-experiment-title">OPAL</div>
           </div>
         </div>
         <div className="w-full h-full">
-          <div className="h-1/2 card-experiment bg-l3 bg-center">
+          <div className="h-1/2 card-experiment bg-l3">
             <div className="card-experiment-title">L3</div>
           </div>
           <div className="h-1/2 card-experiment bg-aleph">
