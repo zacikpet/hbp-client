@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 // import HiggsImg from 'resources/higgs.png'
-import Collision from 'resources/collision.png'
+import Collision from 'resources/collision.jpg'
 
 interface CircleMenuProps {
   outerRadius: number
@@ -62,7 +62,7 @@ const CircleMenu: FC<CircleMenuProps> = ({
           <image x="0%" y="0%" width="100" height="100" xlinkHref={Collision} preserveAspectRatio="xMinYMin slice" />
         </pattern>
       </defs>
-      <circle cx={centerX} cy={centerY} r={innerRadius} fill="black" fillOpacity={0} />
+      <circle cx={centerX} cy={centerY} r={innerRadius} fill="url(#imae)" fillOpacity={1} />
     </svg>
   )
 }

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,5 +8,30 @@
 @layer components {
     .btn {
         @apply p-2 border-2 rounded border-black hover:bg-black text-black hover:text-white
+    }
+
+    .card-experiment {
+        @apply border border-black hover:border-white duration-300 filter-bw hover:filter-none w-full bg-cover;
+        @apply text-gray-400 hover:text-white text-lg italic
+    }
+
+    .card-experiment-title {
+        @apply bg-gradient-to-b from-black to-transparent p-4 pb-8
+    }
+}
+
+@layer utilities {
+    @variants hover {
+        .bg-filter-dark {
+            backdrop-filter: brightness(50%);
+        }
+
+        .filter-bw {
+            filter: grayscale(85%);
+        }
+
+        .filter-none {
+            filter: none;
+        }
     }
 }
