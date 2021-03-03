@@ -5,6 +5,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    -webkit-tap-highlight-color: transparent;
+}
+
 @layer components {
     .btn {
         @apply p-2 border-2 rounded border-black hover:bg-black text-black hover:text-white
@@ -16,7 +20,7 @@
     }
 
     .card-experiment-title {
-        @apply bg-gradient-to-b from-black to-transparent p-4 pb-8
+        @apply bg-gradient-to-b from-black to-transparent p-4 pb-40
     }
 }
 
