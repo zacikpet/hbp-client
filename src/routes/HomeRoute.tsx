@@ -42,7 +42,7 @@ const HomeRoute: FC = () => {
             <div className="card-experiment-title">CMS</div>
           </div>
           <div className="h-full card-experiment bg-cdf" onClick={() => setIndex(2)}>
-            <div style={{ textShadow: '2px 2px 2px black' }}>CDF</div>
+            <div className="card-experiment-title">CDF</div>
           </div>
           <div className="h-full card-experiment bg-d0">
             <div className="card-experiment-title">D0</div>
