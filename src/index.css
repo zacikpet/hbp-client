@@ -15,15 +15,19 @@ body {
 @layer components {
 
     .btn {
-        @apply p-2 border-2 rounded border-blue-900 hover:bg-blue-900 text-blue-900 hover:text-white
+        @apply p-2 border rounded border-black hover:bg-black text-black hover:text-white
+    }
+
+    .source {
+        @apply font-light text-sm italic
     }
 
     .card-experiment {
         @apply transition-all duration-150;
         @apply w-full bg-cover bg-center;
-        @apply filter-bw hover:filter-none;
-        @apply border border-black hover:border-white;
-        @apply text-gray-400 hover:text-white text-lg italic
+        @apply hover:filter-none filter-bw;
+        @apply border border-white hover:border-white;
+        @apply text-gray-400 hover:text-white text-lg italic;
     }
 
     .card-experiment-title {
@@ -32,15 +36,15 @@ body {
 }
 
 @layer utilities {
+    .filter-bw {
+        filter: grayscale(75%);
+    }
+
+    .bg-filter-dark {
+        backdrop-filter: brightness(50%);
+    }
+
     @variants hover {
-        .bg-filter-dark {
-            backdrop-filter: brightness(50%);
-        }
-
-        .filter-bw {
-            filter: grayscale(50%);
-        }
-
         .filter-none {
             filter: none;
         }

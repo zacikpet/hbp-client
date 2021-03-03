@@ -27,7 +27,7 @@ const ArticlesRoute: FC<ArticlesRouteProps> = ({ experiment }) => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full h-screen my-80">
       <div>
         <Button text="atlas" onClick={() => onClickExperiment('atlas')} />
         <Button text="cms" onClick={() => onClickExperiment('cms')} />

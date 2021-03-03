@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useHistory } from 'react-router'
 
 type Redirect = {
+  toHome: () => void
   toAtlas: () => void
   toCms: () => void
   toAleph: () => void
@@ -15,6 +16,7 @@ type Redirect = {
 const useRedirect = (): Redirect => {
   const history = useHistory()
 
+  const toHome = useCallback(() => history.push('/'), [history])
   const toAtlas = useCallback(() => history.push('/atlas'), [history])
   const toCms = useCallback(() => history.push('/cms'), [history])
   const toAleph = useCallback(() => history.push('/aleph'), [history])
@@ -24,7 +26,7 @@ const useRedirect = (): Redirect => {
   const toL3 = useCallback(() => history.push('/l3'), [history])
   const toOpal = useCallback(() => history.push('/opal'), [history])
 
-  return { toAtlas, toCms, toAleph, toDelphi, toD0, toCdf, toL3, toOpal }
+  return { toAtlas, toCms, toAleph, toDelphi, toD0, toCdf, toL3, toOpal, toHome }
 }
 
 export default useRedirect

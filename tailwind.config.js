@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        sidebar: '33.3%',
         '1/2': '50%',
         full: '100%',
         '1/3': '33.3%',
@@ -13,6 +12,8 @@ module.exports = {
         'screen-2/3': 'calc(2 * 100vh / 3)',
         'screen-1/4': 'calc(100vh / 4)',
         'screen-3/4': 'calc(3 * 100vh / 4)',
+        screen: '100vh',
+        sidebar: 'calc(100vh - 4rem)',
       },
       backgroundImage: () => ({
         atlas: "url('resources/atlas.jpg')",

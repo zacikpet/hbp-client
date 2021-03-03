@@ -1,35 +1,47 @@
 import React, { FC } from 'react'
-import { ReactComponent as MenuSVG } from 'resources/svg/menu.svg'
+import { Link as ScrollLink } from 'react-scroll'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 
 type SidebarProps = {
-  onClose: () => void
+  open: boolean
+  onClose?: () => void
 }
 
-const Sidebar: FC<SidebarProps> = ({ onClose }) => {
+const Sidebar: FC<SidebarProps> = ({ open, onClose }) => {
+  const { pathname } = useLocation()
+
   return (
-    <div className="fixed flex flex-col top-0 left-0 bg-blue-900 h-screen w-full md:hidden">
-      <div className="w-full flex justify-between p-4 bg-blue-900 items-center">
-        <h1 className="text-xl italic">The Higgs Boson portal</h1>
-        <button className="md:hidden" onClick={onClose}>
-          <MenuSVG height="2rem" width="2rem" fill="white" />
-        </button>
-      </div>
-      <div className="flex flex-col justify-around h-1/2 text-xl items-center">
-        <div>
-          <a>Experiments</a>
+    <div className={`transition-all duration-300 fixed top-16 w-full h-sidebar ${open ? 'left-0' : 'left-screen'}`}>
+      <div className="flex flex-col bg-white h-full w-full md:hidden justify-between">
+        <div />
+        <div className="flex flex-col justify-around h-1/2 text-xl items-center">
+          {pathname === '/' ? (
+            <ScrollLink
+              className="cursor-pointer"
+              to="experiments"
+              offset={-64}
+              smooth
+              duration={500}
+              onClick={() => onClose && onClose()}
+            >
+              Experiments
+            </ScrollLink>
+          ) : (
+            <RouterLink to="/">Experiments</RouterLink>
+          )}
+          <RouterLink to="/articles" onClick={() => onClose && onClose()}>
+            Articles
+          </RouterLink>
+          <div>
+            <a>History</a>
+          </div>
+          <div>
+            <a>About</a>
+          </div>
         </div>
-        <div>
-          <a>Articles</a>
+        <div className="text-center p-4">
+          <p className="font-light">Peter Zacik FIT CTU 2021</p>
         </div>
-        <div>
-          <a>History</a>
-        </div>
-        <div>
-          <a>About</a>
-        </div>
-      </div>
-      <div className="mt-auto mb-0 text-center p-4">
-        <p className="font-light">Peter Žáčik FIT CTU 2021</p>
       </div>
     </div>
   )
