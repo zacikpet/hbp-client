@@ -27,12 +27,6 @@ module.exports = {
       fontFamily: {
         sans: ['Lato', 'Sans-serif'],
       },
-      colors: {
-        primary: 'red',
-        light: '#3D52D5',
-        dark: '#090C9B',
-        navbar: '#503067',
-      },
     },
   },
   variants: {},

@@ -5,7 +5,7 @@ import HomeRoute from 'routes/HomeRoute'
 // import ArticlesRoute from 'routes/ArticlesRoute'
 
 const App: FC = () => (
-  <div className="w-full h-screen bg-white font-bold">
+  <div className="w-full bg-white font-bold">
     <Navbar />
     <Switch>
       {/*

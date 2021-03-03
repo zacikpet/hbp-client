@@ -1,25 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.card-experiment {
-    @apply w-full bg-cover bg-center;
-    @apply transition-all duration-300;
-    @apply filter-bw hover:filter-none;
-    @apply border border-black hover:border-white;
-    @apply text-gray-400 hover:text-white text-lg italic
-}
 body {
     -webkit-tap-highlight-color: transparent;
 }
 
+
+
 @layer components {
 
     .btn {
-        @apply p-2 border-2 rounded border-black hover:bg-black text-black hover:text-white
+        @apply p-2 border-2 rounded border-blue-900 hover:bg-blue-900 text-blue-900 hover:text-white
+    }
+
+    .card-experiment {
+        @apply transition-all duration-150;
+        @apply w-full bg-cover bg-center;
+        @apply filter-bw hover:filter-none;
+        @apply border border-black hover:border-white;
+        @apply text-gray-400 hover:text-white text-lg italic
     }
 
     .card-experiment-title {
@@ -34,7 +38,7 @@ body {
         }
 
         .filter-bw {
-            filter: grayscale(85%);
+            filter: grayscale(50%);
         }
 
         .filter-none {

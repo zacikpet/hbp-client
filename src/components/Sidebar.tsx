@@ -1,66 +1,37 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { ReactComponent as MenuSVG } from 'resources/svg/menu.svg'
-import { ReactComponent as LeftArrowSVG } from 'resources/svg/left-arrow.svg'
 
 type SidebarProps = {
-  onOpen?: () => void
-  onClose?: () => void
+  onClose: () => void
 }
 
-const Sidebar: FC<SidebarProps> = ({ onOpen, onClose }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-
-  const handleClick = () => {
-    if (sidebarOpen && onClose) onClose()
-    if (!sidebarOpen && onOpen) onOpen()
-    setSidebarOpen(!sidebarOpen)
-  }
-
+const Sidebar: FC<SidebarProps> = ({ onClose }) => {
   return (
-    <>
-      <div
-        className={`transform w-full md:w-1/3 lg:w-1/3 h-full p-10 transition-all flex-shrink-0 shadow-2xl z-20
-        ${sidebarOpen ? 'ml-0' : '-ml-full md:-ml-1/2 lg:-ml-1/3'}`}
-        style={{ backgroundColor: 'whitesmoke' }}
-      >
-        <div className="h-full">
-          {sidebarOpen && (
-            <button className="absolute right-0 top-10 md:hidden" onClick={handleClick}>
-              <LeftArrowSVG width={40} />
-            </button>
-          )}
-          <div className="h-1/3">
-            <h1 className="text-4xl">The Higgs Boson portal</h1>
-            <br />
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-          </div>
-          <div className="flex flex-col h-1/3 justify-around text-xl w-full pl-10">
-            <h2 className="hover:text-gray-600 cursor-pointer">Experiments</h2>
-            <h2 className="hover:text-gray-600 cursor-pointer">Publications</h2>
-            <h2 className="hover:text-gray-600 cursor-pointer">History</h2>
-            <h2 className="hover:text-gray-600 cursor-pointer">About</h2>
-          </div>
-          <div className="h-1/3 flex flex-col justify-around">
-            <br />
-            <p>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat.
-            </p>
-            <button className="btn">
-              <h2 className="font-semibold">Feedback</h2>
-            </button>
-          </div>
+    <div className="fixed flex flex-col top-0 left-0 bg-blue-900 h-screen w-full md:hidden">
+      <div className="w-full flex justify-between p-4 bg-blue-900 items-center">
+        <h1 className="text-xl italic">The Higgs Boson portal</h1>
+        <button className="md:hidden" onClick={onClose}>
+          <MenuSVG height="2rem" width="2rem" fill="white" />
+        </button>
+      </div>
+      <div className="flex flex-col justify-around h-1/2 text-xl items-center">
+        <div>
+          <a>Experiments</a>
+        </div>
+        <div>
+          <a>Articles</a>
+        </div>
+        <div>
+          <a>History</a>
+        </div>
+        <div>
+          <a>About</a>
         </div>
       </div>
-      <div
-        className={`bg-green-400 transform w-14 h-14 cursor-pointer absolute transition-all p-3 rounded-r-xl z-10 shadow-2xl top-8 ${
-          sidebarOpen ? 'left-0 md:left-1/3 lg:left-1/3' : 'left-0'
-        }`}
-        onClick={handleClick}
-      >
-        <MenuSVG width="100%" height="100%" fill="black" />
+      <div className="mt-auto mb-0 text-center p-4">
+        <p className="font-light">Peter Žáčik FIT CTU 2021</p>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -16,6 +16,7 @@
     "react-scripts": "^4.0.1",
     "react-scroll": "^1.8.1",
     "react-sizes": "^2.0.0",
+    "react-swipeable-views": "^0.13.9",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2"
   },
   "scripts": {
@@ -46,6 +47,7 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-scroll": "^1.8.2",
+    "@types/react-swipeable-views": "^0.13.0",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
     "eslint": "^7.18.0",
