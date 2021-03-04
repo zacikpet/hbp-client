@@ -12,8 +12,8 @@ module.exports = {
         'screen-2/3': 'calc(2 * 100vh / 3)',
         'screen-1/4': 'calc(100vh / 4)',
         'screen-3/4': 'calc(3 * 100vh / 4)',
-        screen: '100vh',
-        sidebar: 'calc(100vh - 4rem)',
+        wscreen: '100vw',
+        page: 'calc(100vh - 4rem)',
       },
       backgroundImage: () => ({
         atlas: "url('resources/atlas.jpg')",
@@ -31,5 +31,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

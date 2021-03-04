@@ -1,42 +1,37 @@
 import React, { FC, useState } from 'react'
-import { Link as ScrollLink } from 'react-scroll'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ReactComponent as MenuSVG } from 'resources/svg/menu.svg'
 import Sidebar from './Sidebar'
-import useRedirect from '../hooks/useRedirect'
+import Logo from 'resources/hbp-logo.png'
 
 const Navbar: FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { toHome } = useRedirect()
   const { pathname } = useLocation()
 
-  const handleAction = (action: () => void) => {
-    setSidebarOpen(false)
-    action()
-  }
-
   return (
-    <div className="sticky shadow-2xl top-0 font-normal flex w-full h-16 bg-white text-black flex justify-between items-center px-4 md:px-8 antialiased z-40">
-      <div className="flex">
-        <h1 className="text-xl font-normal italic cursor-pointer" onClick={() => handleAction(toHome)}>
+    <div className="sticky shadow-2xl top-0 font-normal flex w-full h-16 bg-white text-black flex justify-between items-center pl-2 pr-4 md:pl-2 md:pr-8 antialiased z-40">
+      <div className="flex items-center">
+        <img src={Logo} width={48} alt="Logo" />
+        <Link to="/" className="text-xl font-normal italic cursor-pointer px-2">
           The Higgs Boson portal
-        </h1>
+        </Link>
       </div>
       <div className="hidden md:flex w-1/2 justify-between ">
-        <span className="cursor-pointer hover:underline">
-          {pathname === '/' ? (
-            <ScrollLink className="cursor-pointer" to="experiments" offset={-64} smooth duration={500}>
-              Experiments
-            </ScrollLink>
-          ) : (
-            <RouterLink to="/">Experiments</RouterLink>
-          )}
-        </span>
-        <span className="cursor-pointer hover:underline">
-          <RouterLink to="/articles">Articles</RouterLink>
-        </span>
-        <a className="cursor-pointer hover:underline">History</a>
-        <a className="cursor-pointer hover:underline">About</a>
+        <Link to="/" className={`cursor-pointer  ${pathname === '/' && 'border-b-2'}`}>
+          Home
+        </Link>
+        <Link to="/articles" className={`cursor-pointer ${pathname === '/articles' && 'border-b-2'}`}>
+          Articles
+        </Link>
+        <Link to="/history" className={`cursor-pointer ${pathname === '/history' && 'border-b-2'}`}>
+          History
+        </Link>
+        <Link to="/about" className={`cursor-pointer ${pathname === '/about' && 'border-b-2'}`}>
+          About
+        </Link>
+        <Link to="/feedback" className={`cursor-pointer ${pathname === '/feedback' && 'border-b-2'}`}>
+          Feedback
+        </Link>
       </div>
       <button className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
         <MenuSVG height={32} width={32} />

@@ -20,13 +20,13 @@ export type Paper = {
   type: Type
   title: string
   abstract: string
-  link: string
+  files: string[]
   date: string
   luminosity: number[]
   energy: number[]
 }
 
-axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
 
 export const getPapers = (): Promise<Paper[]> => {
   return axios.get('/papers').then(response => response.data)

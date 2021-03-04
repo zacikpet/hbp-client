@@ -7,7 +7,7 @@ const HomeRoute: FC = () => {
     <div className="bg-white">
       <div className="justify-around items-center flex flex-col md:flex-row w-full">
         <div className="w-3/4 md:w-1/4 m-10 md:m-20">
-          <h1 className="text-black text-4xl">The Higgs Boson</h1>
+          <h1 className="text-black text-4xl font-bold">The Higgs Boson</h1>
           <br />
           <p className="font-serif font-light">
             The Higgs boson is an elementary particle in the Standard Model of particle physics produced by the quantum
@@ -15,7 +15,9 @@ const HomeRoute: FC = () => {
           </p>
           <p className="source">Source: Wikipedia</p>
           <div className="mt-10">
-            <button className="btn">Learn more</button>
+            <a href="https://en.wikipedia.org/wiki/Higgs_boson" target="_blank">
+              <button className="btn">Learn more</button>
+            </a>
           </div>
         </div>
         <div className="text-black flex flex-col items-center font-light m-10 md:m-20">

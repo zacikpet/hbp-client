@@ -26,7 +26,7 @@ const ExperimentMenu: FC = () => {
             <div className="card-experiment-title">CDF</div>
           </div>
           <div className="h-full card-experiment bg-d0" onClick={() => setIndex(3)}>
-            <div className="card-experiment-title">D0</div>
+            <div className="card-experiment-title">DØ</div>
           </div>
           <div className="w-full h-full">
             <div className="h-1/2 card-experiment bg-delphi" onClick={() => setIndex(4)}>
@@ -50,8 +50,8 @@ const ExperimentMenu: FC = () => {
       {/* Content */}
       <SwipeableViews id="experiment" index={index}>
         {/* Atlas */}
-        <ExperimentView img={AtlasDetector} imgSource="ATLAS Experiment © 2021 CERN">
-          <h1 className="text-black text-4xl">ATLAS Experiment</h1>
+        <ExperimentView img={AtlasDetector} imgSource="ATLAS Experiment © 2021 CERN" more={'https://atlas.cern/'}>
+          <h1 className="text-black text-4xl font-bold">ATLAS Experiment</h1>
           <br />
           <p className="font-serif font-light">
             ATLAS is one of the four major experiments at the Large Hadron Collider (LHC) at CERN. It is a
@@ -62,8 +62,8 @@ const ExperimentMenu: FC = () => {
           <p className="source">Source: atlas.cern</p>
         </ExperimentView>
         {/* Cms */}
-        <ExperimentView img={CmsDetector} imgSource="© 2021 CERN">
-          <h1 className="text-black text-4xl">CMS Experiment</h1>
+        <ExperimentView img={CmsDetector} imgSource="© 2021 CERN" more={'https://cms.cern'}>
+          <h1 className="text-black text-4xl font-bold">CMS Experiment</h1>
           <br />
           <p className="font-serif font-light">
             The Compact Muon Solenoid (CMS) is a general-purpose detector at the Large Hadron Collider (LHC). It has a
@@ -75,37 +75,37 @@ const ExperimentMenu: FC = () => {
         </ExperimentView>
         {/* Cdf */}
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">CDF Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">CDF Experiment</h1>
           <br />
           <p className="font-serif font-light">CDF description ... </p>
           <p className="source">Source: </p>
         </ExperimentView>
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">D0 Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">DØ Experiment</h1>
           <br />
-          <p className="font-serif font-light">D0 description ... </p>
+          <p className="font-serif font-light">DØ description ... </p>
           <p className="source">Source: </p>
         </ExperimentView>
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">DELPHI Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">DELPHI Experiment</h1>
           <br />
           <p className="font-serif font-light">DELPHI description ... </p>
           <p className="source">Source: </p>
         </ExperimentView>
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">OPAL Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">OPAL Experiment</h1>
           <br />
           <p className="font-serif font-light">OPAL description ... </p>
           <p className="source">Source: </p>
         </ExperimentView>
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">L3 Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">L3 Experiment</h1>
           <br />
           <p className="font-serif font-light">L3 description ... </p>
           <p className="source">Source: </p>
         </ExperimentView>
         <ExperimentView img={Collision} imgSource="">
-          <h1 className="text-black text-4xl">ALEPH Experiment</h1>
+          <h1 className="text-black text-4xl font-bold">ALEPH Experiment</h1>
           <br />
           <p className="font-serif font-light">ALEPH description ... </p>
           <p className="source">Source: </p>
