@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Experiment, Type } from '../api/papers'
+import { Experiment, Type } from 'api/papers'
+import { getTrackBackground, Range } from 'react-range'
+import Checkbox from './Checkbox'
 
 export type FilterOptions = {
   experiments: Experiment[]
@@ -14,6 +16,9 @@ type ArticleFilterProps = {
 const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
+
+  const [luminosity, setLuminosity] = useState([0, 100])
+  const [energy, setEnergy] = useState([0, 100])
 
   const selectExperiment = (experiment: Experiment) => {
     if (experiments.includes(experiment)) setExperiments(experiments.filter(e => e !== experiment))
@@ -30,17 +35,17 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
   }, [experiments, types])
 
   return (
-    <div className="bg-white h-full flex flex-col px-5 py-5 border-r">
+    <div className="bg-white h-full flex flex-col px-5 py-5 border-r w-full">
       <h1 className="self-center">Filter</h1>
       <h2>Experiments</h2>
-      <div className="flex">
+      <div className="flex justify-around">
         <div>
           <div>
-            <input type="checkbox" checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
+            <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
             ATLAS
           </div>
           <div>
-            <input type="checkbox" checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
+            <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
             CMS
           </div>
           <div className="text-gray-500">
@@ -49,7 +54,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
               disabled
               checked={experiments.includes('cdf')}
               onChange={() => selectExperiment('cdf')}
-              className="bg-gray-300"
+              className="bg-gray-300 m-1"
             />
             CDF
           </div>
@@ -59,49 +64,100 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
               disabled
               checked={experiments.includes('d0')}
               onChange={() => selectExperiment('d0')}
-              className="bg-gray-300"
+              className="bg-gray-300 m-1"
             />
             DØ
           </div>
         </div>
         <div>
           <div>
-            <input type="checkbox" checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
+            <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
             ALEPH
           </div>
           <div>
-            <input
-              type="checkbox"
-              checked={experiments.includes('delphi')}
-              onChange={() => selectExperiment('delphi')}
-            />
+            <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')} />
             DELPHI
           </div>
           <div>
-            <input type="checkbox" checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
+            <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
             L3
           </div>
           <div>
-            <input type="checkbox" checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
+            <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
             OPAL
           </div>
         </div>
       </div>
+      <br />
       <h2>Type</h2>
       <div>
         <div>
-          <input type="checkbox" checked={types.includes('paper')} onChange={() => selectType('paper')} />
+          <Checkbox checked={types.includes('paper')} onChange={() => selectType('paper')} />
           Published papers
         </div>
         <div>
-          <input type="checkbox" checked={types.includes('note')} onChange={() => selectType('note')} />
+          <Checkbox checked={types.includes('note')} onChange={() => selectType('note')} />
           Preliminary results
         </div>
       </div>
-      <h2>Minimal luminosity</h2>
-      <input type="range" min={0} max={500000} />
+      <br />
+      <h2>Luminosity</h2>
+      <Range
+        step={1}
+        min={0}
+        max={100}
+        values={luminosity}
+        onChange={setLuminosity}
+        renderTrack={({ props, children }) => (
+          <div
+            {...props}
+            style={{
+              ...props.style,
+              background: getTrackBackground({
+                values: luminosity,
+                colors: ['lightgray', 'green', 'lightgray'],
+                min: 0,
+                max: 100,
+              }),
+            }}
+            className="w-full h-1"
+          >
+            {children}
+          </div>
+        )}
+        renderThumb={({ props }) => (
+          <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
+        )}
+      />
+      <br />
       <h2>Energy</h2>
-      <input type="range" min={0} max={500000} />
+      <Range
+        step={1}
+        min={0}
+        max={100}
+        values={energy}
+        onChange={setEnergy}
+        renderTrack={({ props, children }) => (
+          <div
+            {...props}
+            style={{
+              ...props.style,
+              background: getTrackBackground({
+                values: energy,
+                colors: ['lightgray', 'green', 'lightgray'],
+                min: 0,
+                max: 100,
+              }),
+            }}
+            className="w-full h-1"
+          >
+            {children}
+          </div>
+        )}
+        renderThumb={({ props }) => (
+          <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
+        )}
+      />
     </div>
   )
 }

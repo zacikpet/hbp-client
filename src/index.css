@@ -33,6 +33,23 @@ body {
     .card-experiment-title {
         @apply bg-gradient-to-b from-black to-transparent p-4 pb-40
     }
+
+    .navlink {
+        @apply cursor-pointer duration-300 border-b-2 border-transparent
+    }
+
+    .navlink:hover {
+        @apply border-gray-100
+    }
+
+    .navlink-active {
+        @apply border-green-600
+    }
+
+    .checkbox:checked {
+        @apply bg-green-600
+    }
+
 }
 
 @layer utilities {

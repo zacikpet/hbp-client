@@ -32,7 +32,7 @@ const ArticlesRoute: FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row w-full bg-white">
-      <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0">
+      <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0 w-full md:w-1/4">
         <ArticleFilter onChange={setFilterOptions} initial={filterOptions} />
       </div>
       <div className="flex flex-col items-center w-full">
