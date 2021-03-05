@@ -19,7 +19,7 @@ export type Paper = {
   experiment: Experiment
   type: Type
   title: string
-  abstract: string
+  abstract?: string
   files: string[]
   date: string
   luminosity: number[]

@@ -1,24 +1,43 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Experiment, Type } from 'api/papers'
+import { Experiment, Paper, Type } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
 
 export type FilterOptions = {
   experiments: Experiment[]
   types: Type[]
+  luminosity: number[]
+  energy: number[]
 }
 
 type ArticleFilterProps = {
   initial: FilterOptions
   onChange: (options: FilterOptions) => void
+  papers: Paper[]
 }
 
-const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
+const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
 
-  const [luminosity, setLuminosity] = useState([0, 100])
-  const [energy, setEnergy] = useState([0, 100])
+  const [luminosity, setLuminosity] = useState<number[]>(initial.luminosity)
+  const [energy, setEnergy] = useState<number[]>(initial.energy)
+
+  const [maxLuminosity, setMaxLuminosity] = useState(1)
+  const [maxEnergy, setMaxEnergy] = useState(20000000)
+
+  useEffect(() => {
+    if (papers.length === 0) return
+
+    const maxE = Math.max(...papers.map(p => Math.max(...p.energy)))
+    const maxL = Math.max(...papers.map(p => Math.max(...p.luminosity)))
+
+    //setMaxEnergy(maxE)
+    setMaxLuminosity(maxL)
+
+    //setEnergy([0, maxE])
+    setLuminosity([0, maxL])
+  }, [papers])
 
   const selectExperiment = (experiment: Experiment) => {
     if (experiments.includes(experiment)) setExperiments(experiments.filter(e => e !== experiment))
@@ -31,8 +50,8 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
   }
 
   useEffect(() => {
-    onChange({ experiments, types })
-  }, [experiments, types])
+    onChange({ experiments, types, luminosity, energy })
+  }, [experiments, types, luminosity, energy])
 
   return (
     <div className="bg-white h-full flex flex-col px-5 py-5 border-r w-full">
@@ -40,11 +59,11 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
       <h2>Experiments</h2>
       <div className="flex justify-around">
         <div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
             ATLAS
           </div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
             CMS
           </div>
@@ -70,19 +89,19 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
           </div>
         </div>
         <div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
             ALEPH
           </div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')} />
             DELPHI
           </div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
             L3
           </div>
-          <div>
+          <div className="flex">
             <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
             OPAL
           </div>
@@ -91,11 +110,11 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
       <br />
       <h2>Type</h2>
       <div>
-        <div>
+        <div className="flex">
           <Checkbox checked={types.includes('paper')} onChange={() => selectType('paper')} />
           Published papers
         </div>
-        <div>
+        <div className="flex">
           <Checkbox checked={types.includes('note')} onChange={() => selectType('note')} />
           Preliminary results
         </div>
@@ -103,9 +122,9 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
       <br />
       <h2>Luminosity</h2>
       <Range
-        step={1}
+        step={1000}
         min={0}
-        max={100}
+        max={maxLuminosity}
         values={luminosity}
         onChange={setLuminosity}
         renderTrack={({ props, children }) => (
@@ -117,7 +136,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
                 values: luminosity,
                 colors: ['lightgray', 'green', 'lightgray'],
                 min: 0,
-                max: 100,
+                max: maxLuminosity,
               }),
             }}
             className="w-full h-1"
@@ -129,12 +148,13 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
           <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
         )}
       />
+      {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
       <br />
       <h2>Energy</h2>
       <Range
-        step={1}
+        step={1000000}
         min={0}
-        max={100}
+        max={maxEnergy}
         values={energy}
         onChange={setEnergy}
         renderTrack={({ props, children }) => (
@@ -146,7 +166,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
                 values: energy,
                 colors: ['lightgray', 'green', 'lightgray'],
                 min: 0,
-                max: 100,
+                max: maxEnergy,
               }),
             }}
             className="w-full h-1"
@@ -158,6 +178,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial }) => {
           <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
         )}
       />
+      {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
     </div>
   )
 }
