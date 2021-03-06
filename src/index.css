@@ -10,13 +10,12 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-
-
 @layer components {
 
     .btn {
-        @apply p-2 border rounded border-black hover:bg-black text-black hover:text-white
+        @apply p-2 transition-colors font-bold rounded border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-onprimary shadow-md
     }
+
 
     .source {
         @apply font-light text-sm italic
@@ -26,8 +25,8 @@ body {
         @apply transition-all duration-150;
         @apply w-full bg-cover bg-center;
         @apply hover:filter-none filter-bw;
-        @apply border border-white hover:border-white;
-        @apply text-gray-400 hover:text-white text-lg italic;
+        @apply border border-white dark:border-gray-900;
+        @apply text-white text-opacity-70 hover:text-opacity-90 text-lg italic;
     }
 
     .card-experiment-title {
@@ -39,19 +38,19 @@ body {
     }
 
     .navlink-active {
-        @apply border-green-600
+        @apply border-primary
     }
 
     .navlink:hover {
-        @apply border-gray-100
+        @apply border-gray-100 dark:border-gray-700
     }
 
     .navlink-active:hover {
-        @apply border-green-600
+        @apply border-primary dark:border-primary
     }
 
     .checkbox:checked {
-        @apply bg-green-600
+        @apply bg-primary
     }
 
 }
@@ -65,9 +64,21 @@ body {
         backdrop-filter: brightness(50%);
     }
 
+
     @variants hover {
         .filter-none {
             filter: none;
+        }
+        .text-emphasis {
+            @apply text-onlight dark:text-ondark text-opacity-90 dark:text-opacity-90
+        }
+
+        .text-emphasis-none {
+            @apply text-onlight dark:text-ondark text-opacity-70 dark:text-opacity-70
+        }
+
+        .text-disabled {
+            @apply text-onlight dark:text-ondark text-opacity-40 dark:text-opacity-40
         }
     }
 }

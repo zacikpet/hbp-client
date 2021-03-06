@@ -8,7 +8,7 @@ type ExperimentViewProps = {
 
 const ExperimentView: FC<ExperimentViewProps> = ({ img, imgSource, more, children }) => (
   <div className="justify-around items-center flex flex-col-reverse md:flex-row w-full md:px-20">
-    <div className="text-black flex flex-col items-center font-light m-10 md:m-20">
+    <div className="flex flex-col items-center font-light m-10 md:m-20">
       <img width={500} src={img} alt="Experiment image" className="shadow-lg" />
       <p className="source">{imgSource}</p>
     </div>

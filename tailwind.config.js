@@ -1,8 +1,18 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      colors: {
+        primary: '#3B790F',
+        light: 'white',
+        dark: '#111827',
+        onprimary: 'white',
+        onlight: 'black',
+        ondark: 'white',
+        osndark: '#D1D5DB',
+        'gray-850': '#1F2937',
+      },
       spacing: {
         '1/2': '50%',
         full: '100%',
@@ -30,6 +40,11 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      textOpacity: ['dark'],
+      boxShadow: ['dark'],
+    },
+  },
   plugins: [require('@tailwindcss/forms')],
 }

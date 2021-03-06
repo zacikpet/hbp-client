@@ -1,11 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { getPapers, Paper } from 'api/papers'
 import Article from 'components/Article'
-import ArticleFilter, { FilterOptions } from 'components/ArticleFilter'
+import ArticleFilters, { FilterOptions } from 'components/ArticleFilters'
 import Loader from 'react-loader-spinner'
+import { DarkModeContext } from 'App'
 
 const ArticlesRoute: FC = () => {
   const [papers, setPapers] = useState<Paper[]>([])
+
+  const darkMode = useContext(DarkModeContext)
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     types: ['paper'],
@@ -40,15 +43,15 @@ const ArticlesRoute: FC = () => {
 
   if (loading)
     return (
-      <div className="w-screen h-page flex justify-center items-center">
-        <Loader type="TailSpin" color="black" height={75} width={75} />
+      <div className="w-screen h-page flex justify-center items-center opacity-70">
+        <Loader type="TailSpin" color={darkMode ? 'white' : 'black'} height={75} width={75} />
       </div>
     )
 
   return (
-    <div className="flex flex-col md:flex-row w-full bg-white">
+    <div className="flex flex-col md:flex-row w-full">
       <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0 w-full md:w-1/4">
-        <ArticleFilter onChange={setFilterOptions} initial={filterOptions} papers={papers} />
+        <ArticleFilters onChange={setFilterOptions} initial={filterOptions} papers={papers} />
       </div>
       <div className="flex flex-col items-center w-full">
         Displaying {selectedPapers.length} articles

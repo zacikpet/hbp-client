@@ -18,7 +18,7 @@ const Sidebar: FC<SidebarProps> = ({ open, onClose }) => {
         open ? 'left-0' : 'left-wscreen'
       }`}
     >
-      <div className="flex flex-col bg-white h-full w-full md:hidden justify-between">
+      <div className="flex flex-col bg-white dark:bg-gray-900 h-full w-full md:hidden justify-between">
         <div />
         <div className="flex flex-col justify-around h-1/2 text-xl items-center">
           <Navigation onAction={handleAction} />

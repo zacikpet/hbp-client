@@ -1,7 +1,8 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { Experiment, Paper, Type } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
+import { DarkModeContext } from '../App'
 
 export type FilterOptions = {
   experiments: Experiment[]
@@ -10,13 +11,13 @@ export type FilterOptions = {
   energy: number[]
 }
 
-type ArticleFilterProps = {
+type ArticleFiltersProps = {
   initial: FilterOptions
   onChange: (options: FilterOptions) => void
   papers: Paper[]
 }
 
-const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) => {
+const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
 
@@ -24,18 +25,20 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
   const [energy, setEnergy] = useState<number[]>(initial.energy)
 
   const [maxLuminosity, setMaxLuminosity] = useState(1)
-  const [maxEnergy, setMaxEnergy] = useState(20000000)
+  const [maxEnergy] = useState(20000000)
+
+  const darkMode = useContext(DarkModeContext)
 
   useEffect(() => {
     if (papers.length === 0) return
 
-    const maxE = Math.max(...papers.map(p => Math.max(...p.energy)))
+    // const maxE = Math.max(...papers.map(p => Math.max(...p.energy)))
     const maxL = Math.max(...papers.map(p => Math.max(...p.luminosity)))
 
     //setMaxEnergy(maxE)
     setMaxLuminosity(maxL)
 
-    //setEnergy([0, maxE])
+    setEnergy([0, maxEnergy])
     setLuminosity([0, maxL])
   }, [papers])
 
@@ -54,60 +57,48 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
   }, [experiments, types, luminosity, energy])
 
   return (
-    <div className="bg-white h-full flex flex-col px-5 py-5 border-r w-full">
-      <h1 className="self-center">Filter</h1>
-      <h2>Experiments</h2>
-      <div className="flex justify-around">
-        <div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
-            ATLAS
+    <div className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700">
+      <div className="p-2 border-b dark:border-gray-700">
+        <h2>Experiments</h2>
+        <div className="flex justify-around p-2">
+          <div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
+              ATLAS
+            </div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
+              CMS
+            </div>
+            <div className="flex text-disabled">
+              <Checkbox disabled checked={false} />
+              CDF
+            </div>
+            <div className="flex text-disabled">
+              <Checkbox disabled checked={false} />
+              DØ
+            </div>
           </div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
-            CMS
-          </div>
-          <div className="text-gray-500">
-            <input
-              type="checkbox"
-              disabled
-              checked={experiments.includes('cdf')}
-              onChange={() => selectExperiment('cdf')}
-              className="bg-gray-300 m-1"
-            />
-            CDF
-          </div>
-          <div className="text-gray-500">
-            <input
-              type="checkbox"
-              disabled
-              checked={experiments.includes('d0')}
-              onChange={() => selectExperiment('d0')}
-              className="bg-gray-300 m-1"
-            />
-            DØ
-          </div>
-        </div>
-        <div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
-            ALEPH
-          </div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')} />
-            DELPHI
-          </div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
-            L3
-          </div>
-          <div className="flex">
-            <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
-            OPAL
+          <div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
+              ALEPH
+            </div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')} />
+              DELPHI
+            </div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
+              L3
+            </div>
+            <div className="flex">
+              <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
+              OPAL
+            </div>
           </div>
         </div>
       </div>
-      <br />
       <h2>Type</h2>
       <div>
         <div className="flex">
@@ -134,7 +125,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
               ...props.style,
               background: getTrackBackground({
                 values: luminosity,
-                colors: ['lightgray', 'green', 'lightgray'],
+                colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                 min: 0,
                 max: maxLuminosity,
               }),
@@ -145,7 +136,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
           </div>
         )}
         renderThumb={({ props }) => (
-          <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
+          <div {...props} style={{ ...props.style, cursor: 'pointer' }} className="bg-primary w-4 h-4 rounded-full" />
         )}
       />
       {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
@@ -164,7 +155,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
               ...props.style,
               background: getTrackBackground({
                 values: energy,
-                colors: ['lightgray', 'green', 'lightgray'],
+                colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                 min: 0,
                 max: maxEnergy,
               }),
@@ -175,7 +166,7 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
           </div>
         )}
         renderThumb={({ props }) => (
-          <div {...props} style={props.style} className="bg-green-600 w-4 h-4 rounded-full" />
+          <div {...props} style={{ ...props.style, cursor: 'pointer' }} className="bg-primary w-4 h-4 rounded-full" />
         )}
       />
       {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
@@ -183,4 +174,4 @@ const ArticleFilter: FC<ArticleFilterProps> = ({ onChange, initial, papers }) =>
   )
 }
 
-export default ArticleFilter
+export default ArticleFilters
