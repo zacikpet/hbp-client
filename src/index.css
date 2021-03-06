@@ -38,11 +38,15 @@ body {
         @apply cursor-pointer duration-300 border-b-2 border-transparent
     }
 
+    .navlink-active {
+        @apply border-green-600
+    }
+
     .navlink:hover {
         @apply border-gray-100
     }
 
-    .navlink-active {
+    .navlink-active:hover {
         @apply border-green-600
     }
 
