@@ -7,6 +7,8 @@ import { DarkModeContext } from '../App'
 export type FilterOptions = {
   experiments: Experiment[]
   types: Type[]
+  anyLuminosity: boolean
+  anyEnergy: boolean
   luminosity: number[]
   energy: number[]
 }
@@ -20,6 +22,9 @@ type ArticleFiltersProps = {
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
+
+  const [anyLuminosity, setAnyLuminosity] = useState(true)
+  const [anyEnergy, setAnyEnergy] = useState(true)
 
   const [luminosity, setLuminosity] = useState<number[]>(initial.luminosity)
   const [energy, setEnergy] = useState<number[]>(initial.energy)
@@ -53,123 +58,139 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
   }
 
   useEffect(() => {
-    onChange({ experiments, types, luminosity, energy })
-  }, [experiments, types, luminosity, energy])
+    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity })
+  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity])
 
   return (
     <div className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700">
-      <div className="p-2 border-b dark:border-gray-700">
+      <div className="article-filter">
         <h2>Experiments</h2>
         <div className="flex justify-around p-2">
           <div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')} />
+            <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')}>
               ATLAS
-            </div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')} />
+            </Checkbox>
+            <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
               CMS
-            </div>
-            <div className="flex text-disabled">
-              <Checkbox disabled checked={false} />
+            </Checkbox>
+            <Checkbox disabled checked={false}>
               CDF
-            </div>
-            <div className="flex text-disabled">
-              <Checkbox disabled checked={false} />
+            </Checkbox>
+            <Checkbox disabled checked={false}>
               DØ
-            </div>
+            </Checkbox>
           </div>
           <div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')} />
+            <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')}>
               ALEPH
-            </div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')} />
+            </Checkbox>
+            <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')}>
               DELPHI
-            </div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')} />
+            </Checkbox>
+            <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')}>
               L3
-            </div>
-            <div className="flex">
-              <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')} />
+            </Checkbox>
+            <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')}>
               OPAL
-            </div>
+            </Checkbox>
           </div>
         </div>
       </div>
-      <h2>Type</h2>
-      <div>
-        <div className="flex">
-          <Checkbox checked={types.includes('paper')} onChange={() => selectType('paper')} />
-          Published papers
-        </div>
-        <div className="flex">
-          <Checkbox checked={types.includes('note')} onChange={() => selectType('note')} />
-          Preliminary results
+      <div className="article-filter">
+        <h2>Type</h2>
+        <div className="p-2">
+          <Checkbox checked={types.includes('paper')} onChange={() => selectType('paper')}>
+            Published papers
+          </Checkbox>
+          <Checkbox checked={types.includes('note')} onChange={() => selectType('note')}>
+            Preliminary results
+          </Checkbox>
         </div>
       </div>
-      <br />
-      <h2>Luminosity</h2>
-      <Range
-        step={1000}
-        min={0}
-        max={maxLuminosity}
-        values={luminosity}
-        onChange={setLuminosity}
-        renderTrack={({ props, children }) => (
-          <div
-            {...props}
-            style={{
-              ...props.style,
-              background: getTrackBackground({
-                values: luminosity,
-                colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
-                min: 0,
-                max: maxLuminosity,
-              }),
-            }}
-            className="w-full h-1"
-          >
-            {children}
+      <div className="article-filter">
+        <h2>Luminosity</h2>
+        <Checkbox checked={anyLuminosity} onChange={setAnyLuminosity}>
+          Any
+        </Checkbox>
+        {!anyLuminosity && (
+          <div className="p-2">
+            <Range
+              step={1000}
+              min={0}
+              max={maxLuminosity}
+              values={luminosity}
+              onChange={setLuminosity}
+              renderTrack={({ props, children }) => (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    background: getTrackBackground({
+                      values: luminosity,
+                      colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
+                      min: 0,
+                      max: maxLuminosity,
+                    }),
+                  }}
+                  className="w-full h-1"
+                >
+                  {children}
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div
+                  {...props}
+                  style={{ ...props.style, cursor: 'pointer' }}
+                  className="bg-primary w-4 h-4 rounded-full"
+                />
+              )}
+            />
+            {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
           </div>
         )}
-        renderThumb={({ props }) => (
-          <div {...props} style={{ ...props.style, cursor: 'pointer' }} className="bg-primary w-4 h-4 rounded-full" />
-        )}
-      />
-      {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
-      <br />
-      <h2>Energy</h2>
-      <Range
-        step={1000000}
-        min={0}
-        max={maxEnergy}
-        values={energy}
-        onChange={setEnergy}
-        renderTrack={({ props, children }) => (
-          <div
-            {...props}
-            style={{
-              ...props.style,
-              background: getTrackBackground({
-                values: energy,
-                colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
-                min: 0,
-                max: maxEnergy,
-              }),
-            }}
-            className="w-full h-1"
-          >
-            {children}
+      </div>
+      <div className="article-filter">
+        <h2>Energy</h2>
+        <Checkbox checked={anyEnergy} onChange={setAnyEnergy}>
+          Any
+        </Checkbox>
+        {!anyEnergy && (
+          <div className="p-2">
+            <Range
+              step={1000000}
+              min={0}
+              max={maxEnergy}
+              values={energy}
+              onChange={setEnergy}
+              renderTrack={({ props, children }) => (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    background: getTrackBackground({
+                      values: energy,
+                      colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
+                      min: 0,
+                      max: maxEnergy,
+                    }),
+                  }}
+                  className="w-full h-1"
+                >
+                  {children}
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div
+                  {...props}
+                  style={{ ...props.style, cursor: 'pointer' }}
+                  className="bg-primary w-4 h-4 rounded-full"
+                />
+              )}
+            />
+            {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
           </div>
         )}
-        renderThumb={({ props }) => (
-          <div {...props} style={{ ...props.style, cursor: 'pointer' }} className="bg-primary w-4 h-4 rounded-full" />
-        )}
-      />
-      {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
+      </div>
     </div>
   )
 }

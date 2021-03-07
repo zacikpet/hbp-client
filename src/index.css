@@ -53,6 +53,9 @@ body {
         @apply bg-primary
     }
 
+    .article-filter {
+        @apply p-2 border-b dark:border-gray-700
+    }
 }
 
 @layer utilities {

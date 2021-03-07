@@ -15,6 +15,8 @@ const ArticlesRoute: FC = () => {
     experiments: ['atlas', 'cms'],
     luminosity: [0, 0],
     energy: [0, 0],
+    anyLuminosity: true,
+    anyEnergy: true,
   })
 
   const [loading, setLoading] = useState(true)
@@ -30,8 +32,8 @@ const ArticlesRoute: FC = () => {
     paper =>
       filterOptions.experiments.includes(paper.experiment) &&
       filterOptions.types.includes(paper.type) &&
-      match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity) &&
-      match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)
+      (filterOptions.anyEnergy || match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
+      (filterOptions.anyLuminosity || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy))
   )
 
   useEffect(() => {
