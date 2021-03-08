@@ -11,7 +11,7 @@ module.exports = {
         onlight: 'black',
         ondark: 'white',
         osndark: '#D1D5DB',
-        'gray-850': '#1F2937',
+        'gray-850': '#18212F',
       },
       spacing: {
         '1/2': '50%',

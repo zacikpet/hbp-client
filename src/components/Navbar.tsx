@@ -15,7 +15,7 @@ const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
   const darkMode = useContext(DarkModeContext)
 
   return (
-    <div className="sticky top-0 w-full h-16 flex justify-between items-center bg-light dark:bg-dark pl-2 pr-4 md:pl-2 md:pr-8 shadow-2xl z-40">
+    <div className="sticky top-0 w-full h-16 flex justify-between items-center bg-light dark:bg-gray-850 pl-2 pr-4 md:pl-2 md:pr-8 shadow-2xl z-40">
       <div className="text-xl font-normal italic cursor-pointer flex items-center">
         <img src={Wave} width={48} alt="Logo" onClick={() => onChangeDarkMode(!darkMode)} />
         <Link to="/">The Higgs Boson portal</Link>

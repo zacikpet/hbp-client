@@ -5,8 +5,8 @@ import ExperimentMenu from '../components/ExperimentMenu'
 const HomeRoute: FC = () => {
   return (
     <>
-      <div className="justify-around items-center flex flex-col md:flex-row w-full">
-        <div className="w-3/4 md:w-1/4 m-10 md:m-20">
+      <div className="w-full flex flex-row flex-wrap items-center">
+        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
           <h1 className="text-4xl font-bold text-emphasis">The Higgs Boson</h1>
           <br />
           <p className="font-serif font-light">
@@ -20,8 +20,8 @@ const HomeRoute: FC = () => {
             </a>
           </div>
         </div>
-        <div className="flex flex-col items-center font-light m-10 md:m-20">
-          <img width={400} height={500} src={Collision} alt="Collision" className="shadow-lg" />
+        <div className="w-full md:w-1/2 flex flex-col items-center font-light p-16">
+          <img src={Collision} alt="Collision" className="w-full lg:w-3/4 shadow-lg" />
           <p>Illustration of a particle collision producing the Higgs boson.</p>
           <p className="source">Source: Lucas Taylor, CMS</p>
         </div>

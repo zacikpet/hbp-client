@@ -24,6 +24,12 @@ export type Paper = {
   date: string
   luminosity: number[]
   energy: number[]
+  particles: {
+    original: string[]
+    intermediate: string[]
+    product: string[]
+  }
+  cds_id: string
 }
 
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'

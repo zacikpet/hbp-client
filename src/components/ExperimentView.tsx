@@ -7,12 +7,12 @@ type ExperimentViewProps = {
 }
 
 const ExperimentView: FC<ExperimentViewProps> = ({ img, imgSource, more, children }) => (
-  <div className="justify-around items-center flex flex-col-reverse md:flex-row w-full md:px-20">
-    <div className="flex flex-col items-center font-light m-10 md:m-20">
-      <img width={500} src={img} alt="Experiment image" className="shadow-lg" />
+  <div className="w-full flex flex-row flex-wrap-reverse items-center">
+    <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16">
+      <img src={img} alt="Experiment image" className="shadow-lg w-full" />
       <p className="source">{imgSource}</p>
     </div>
-    <div className="w-3/4 md:w-1/3 m-10 md:m-20">
+    <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
       {children}
       <div className="mt-10">
         <a href={more} target="_blank">

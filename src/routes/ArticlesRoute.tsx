@@ -17,6 +17,10 @@ const ArticlesRoute: FC = () => {
     energy: [0, 0],
     anyLuminosity: true,
     anyEnergy: true,
+    anyDecay: true,
+    decay: {
+      products: [],
+    },
   })
 
   const [loading, setLoading] = useState(true)
@@ -28,12 +32,21 @@ const ArticlesRoute: FC = () => {
     return false
   }
 
+  function decay_match(options: string[], present: string[]) {
+    const optionsSet = new Set(options)
+    const presentSet = new Set(present)
+
+    const intersection = new Set([...optionsSet].filter(x => presentSet.has(x)))
+    return intersection.size > 0
+  }
+
   const selectedPapers = papers.filter(
     paper =>
       filterOptions.experiments.includes(paper.experiment) &&
       filterOptions.types.includes(paper.type) &&
       (filterOptions.anyEnergy || match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
-      (filterOptions.anyLuminosity || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy))
+      (filterOptions.anyLuminosity || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
+      (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products))
   )
 
   useEffect(() => {
@@ -45,7 +58,7 @@ const ArticlesRoute: FC = () => {
 
   if (loading)
     return (
-      <div className="w-screen h-page flex justify-center items-center opacity-70">
+      <div className="h-page flex justify-center items-center opacity-70">
         <Loader type="TailSpin" color={darkMode ? 'white' : 'black'} height={75} width={75} />
       </div>
     )
@@ -57,7 +70,7 @@ const ArticlesRoute: FC = () => {
       </div>
       <div className="flex flex-col items-center w-full">
         Displaying {selectedPapers.length} articles
-        {selectedPapers.slice(0, 25).map((paper, i) => (
+        {selectedPapers.slice(0, 20).map((paper, i) => (
           <Article key={paper.title + i} paper={paper} />
         ))}
       </div>

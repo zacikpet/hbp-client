@@ -11,6 +11,10 @@ export type FilterOptions = {
   anyEnergy: boolean
   luminosity: number[]
   energy: number[]
+  anyDecay: boolean
+  decay: {
+    products: string[]
+  }
 }
 
 type ArticleFiltersProps = {
@@ -19,12 +23,41 @@ type ArticleFiltersProps = {
   papers: Paper[]
 }
 
+const options = [
+  'boson',
+  'higgs',
+  'photon',
+  'gluon',
+  'w_boson',
+  'z_boson',
+  'quark',
+  'top',
+  'bottom',
+  'up',
+  'down',
+  'charm',
+  'strange',
+  'lepton',
+  'electron',
+  'muon',
+  'tau',
+  'neutrino',
+  'e_neutrino',
+  'm_neutrino',
+  't_neutrino',
+  'invisible',
+  'jets',
+  'new',
+  'gravitino',
+  'dark',
+]
+
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
 
-  const [anyLuminosity, setAnyLuminosity] = useState(true)
-  const [anyEnergy, setAnyEnergy] = useState(true)
+  const [anyLuminosity, setAnyLuminosity] = useState(initial.anyLuminosity)
+  const [anyEnergy, setAnyEnergy] = useState(initial.anyEnergy)
 
   const [luminosity, setLuminosity] = useState<number[]>(initial.luminosity)
   const [energy, setEnergy] = useState<number[]>(initial.energy)
@@ -32,7 +65,22 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
   const [maxLuminosity, setMaxLuminosity] = useState(1)
   const [maxEnergy] = useState(20000000)
 
+  const [anyDecay, setAnyDecay] = useState(initial.anyDecay)
+  const [decay, setDecay] = useState(initial.decay)
+
   const darkMode = useContext(DarkModeContext)
+
+  const addDecayProduct = (product: string) => {
+    if (decay.products.includes(product)) return
+    setDecay({
+      ...decay,
+      products: [...decay.products, product],
+    })
+  }
+
+  const removeDecayProduct = (product: string) => {
+    setDecay({ ...decay, products: decay.products.filter(p => p !== product) })
+  }
 
   useEffect(() => {
     if (papers.length === 0) return
@@ -58,11 +106,14 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
   }
 
   useEffect(() => {
-    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity })
-  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity])
+    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay })
+  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay])
 
   return (
-    <div className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700">
+    <div
+      className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700 overflow-y-auto sticky top-16 left-0"
+      style={{ direction: 'rtl' }}
+    >
       <div className="article-filter">
         <h2>Experiments</h2>
         <div className="flex justify-around p-2">
@@ -109,7 +160,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
       </div>
       <div className="article-filter">
         <h2>Luminosity</h2>
-        <Checkbox checked={anyLuminosity} onChange={setAnyLuminosity}>
+        <Checkbox checked={anyLuminosity} onChange={setAnyLuminosity} className="m-2">
           Any
         </Checkbox>
         {!anyLuminosity && (
@@ -151,7 +202,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
       </div>
       <div className="article-filter">
         <h2>Energy</h2>
-        <Checkbox checked={anyEnergy} onChange={setAnyEnergy}>
+        <Checkbox checked={anyEnergy} onChange={setAnyEnergy} className="m-2">
           Any
         </Checkbox>
         {!anyEnergy && (
@@ -190,6 +241,58 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
             {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
           </div>
         )}
+      </div>
+      <div className="article-filter">
+        <h2>Decay products</h2>
+        <Checkbox checked={anyDecay} onChange={setAnyDecay} className="m-2">
+          Any
+        </Checkbox>
+        {!anyDecay && (
+          <div className="">
+            <select className="text-sm mb-2" onChange={event => addDecayProduct(event.target.value)}>
+              {options.map(option => (
+                <option value={option} onClick={() => addDecayProduct(option)}>
+                  {option}
+                </option>
+              ))}
+            </select>
+
+            <div className="flex flex-wrap">
+              {decay.products.map(product => (
+                <div
+                  className="px-1 m-1 bg-primary rounded text-onprimary cursor-pointer"
+                  onClick={() => removeDecayProduct(product)}
+                >
+                  {product}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="article-filter">
+        <h2>Higgs model</h2>
+        <Checkbox checked={true} className="m-2">
+          SM
+        </Checkbox>
+        <Checkbox checked={true} className="m-2">
+          BSM
+        </Checkbox>
+      </div>
+      <div className="article-filter">
+        <h2>Production mode</h2>
+        <Checkbox checked={true} className="m-2">
+          Gluon-gluon fusion
+        </Checkbox>
+        <Checkbox checked={true} className="m-2">
+          Vector-boson fusion
+        </Checkbox>
+        <Checkbox checked={true} className="m-2">
+          ttH
+        </Checkbox>
+        <Checkbox checked={true} className="m-2">
+          WH/ZH
+        </Checkbox>
       </div>
     </div>
   )

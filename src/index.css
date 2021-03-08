@@ -54,6 +54,7 @@ body {
     }
 
     .article-filter {
+        direction: ltr;
         @apply p-2 border-b dark:border-gray-700
     }
 }
