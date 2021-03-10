@@ -1,27 +1,8 @@
 import React, { FC, useContext, useEffect, useState } from 'react'
-import { Experiment, Paper, Type } from 'api/papers'
+import { Experiment, Model, Paper, Type } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
 import { DarkModeContext } from '../App'
-
-export type FilterOptions = {
-  experiments: Experiment[]
-  types: Type[]
-  anyLuminosity: boolean
-  anyEnergy: boolean
-  luminosity: number[]
-  energy: number[]
-  anyDecay: boolean
-  decay: {
-    products: string[]
-  }
-}
-
-type ArticleFiltersProps = {
-  initial: FilterOptions
-  onChange: (options: FilterOptions) => void
-  papers: Paper[]
-}
 
 const options = [
   'boson',
@@ -52,7 +33,40 @@ const options = [
   'dark',
 ]
 
-const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) => {
+export type FilterOptions = {
+  experiments: Experiment[]
+  types: Type[]
+  anyLuminosity: boolean
+  anyEnergy: boolean
+  luminosity: number[]
+  energy: number[]
+  anyDecay: boolean
+  decay: {
+    products: string[]
+  }
+  models: Model[]
+}
+
+const initial: FilterOptions = {
+  types: ['paper'],
+  experiments: ['atlas', 'cms'],
+  luminosity: [0, 0],
+  energy: [0, 0],
+  anyLuminosity: true,
+  anyEnergy: true,
+  anyDecay: true,
+  decay: {
+    products: [],
+  },
+  models: ['sm', 'bsm'],
+}
+
+type ArticleFiltersProps = {
+  onChange: (options: FilterOptions) => void
+  papers: Paper[]
+}
+
+const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
   const [experiments, setExperiments] = useState(initial.experiments)
   const [types, setTypes] = useState(initial.types)
 
@@ -62,11 +76,13 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
   const [luminosity, setLuminosity] = useState<number[]>(initial.luminosity)
   const [energy, setEnergy] = useState<number[]>(initial.energy)
 
-  const [maxLuminosity, setMaxLuminosity] = useState(1)
+  const [maxLuminosity] = useState(500000)
   const [maxEnergy] = useState(20000000)
 
   const [anyDecay, setAnyDecay] = useState(initial.anyDecay)
   const [decay, setDecay] = useState(initial.decay)
+
+  const [models, setModels] = useState(initial.models)
 
   const darkMode = useContext(DarkModeContext)
 
@@ -86,13 +102,13 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
     if (papers.length === 0) return
 
     // const maxE = Math.max(...papers.map(p => Math.max(...p.energy)))
-    const maxL = Math.max(...papers.map(p => Math.max(...p.luminosity)))
+    // const maxL = Math.max(...papers.map(p => Math.max(...p.luminosity)))
 
     //setMaxEnergy(maxE)
-    setMaxLuminosity(maxL)
+    // setMaxLuminosity(maxL)
 
     setEnergy([0, maxEnergy])
-    setLuminosity([0, maxL])
+    setLuminosity([0, maxLuminosity])
   }, [papers])
 
   const selectExperiment = (experiment: Experiment) => {
@@ -105,9 +121,14 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
     else setTypes([...types, type])
   }
 
+  const selectModel = (model: Model) => {
+    if (models.includes(model)) setModels(models.filter(m => m !== model))
+    else setModels([...models, model])
+  }
+
   useEffect(() => {
-    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay })
-  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay])
+    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay, models })
+  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay, models])
 
   return (
     <div
@@ -272,25 +293,25 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, initial, papers }) 
       </div>
       <div className="article-filter">
         <h2>Higgs model</h2>
-        <Checkbox checked={true} className="m-2">
-          SM
+        <Checkbox checked={models.includes('sm')} onChange={() => selectModel('sm')} className="m-2">
+          Standard model
         </Checkbox>
-        <Checkbox checked={true} className="m-2">
-          BSM
+        <Checkbox checked={models.includes('bsm')} onChange={() => selectModel('bsm')} className="m-2">
+          Beyond the Standard model
         </Checkbox>
       </div>
       <div className="article-filter">
         <h2>Production mode</h2>
-        <Checkbox checked={true} className="m-2">
+        <Checkbox checked={true} disabled className="m-2">
           Gluon-gluon fusion
         </Checkbox>
-        <Checkbox checked={true} className="m-2">
+        <Checkbox checked={true} disabled className="m-2">
           Vector-boson fusion
         </Checkbox>
-        <Checkbox checked={true} className="m-2">
+        <Checkbox checked={true} disabled className="m-2">
           ttH
         </Checkbox>
-        <Checkbox checked={true} className="m-2">
+        <Checkbox checked={true} disabled className="m-2">
           WH/ZH
         </Checkbox>
       </div>

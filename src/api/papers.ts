@@ -14,6 +14,8 @@ export type Category =
 
 export type Type = 'paper' | 'note'
 
+export type Model = 'sm' | 'bsm'
+
 export type Paper = {
   category: Category
   experiment: Experiment
@@ -30,6 +32,7 @@ export type Paper = {
     product: string[]
   }
   cds_id: string
+  model: Model
 }
 
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'

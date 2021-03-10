@@ -7,29 +7,20 @@ import { DarkModeContext } from 'App'
 
 const ArticlesRoute: FC = () => {
   const [papers, setPapers] = useState<Paper[]>([])
+  const [selectedPapers, setSelectedPapers] = useState<Paper[]>(papers)
 
   const darkMode = useContext(DarkModeContext)
-
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    types: ['paper'],
-    experiments: ['atlas', 'cms'],
-    luminosity: [0, 0],
-    energy: [0, 0],
-    anyLuminosity: true,
-    anyEnergy: true,
-    anyDecay: true,
-    decay: {
-      products: [],
-    },
-  })
 
   const [loading, setLoading] = useState(true)
 
   function match(min: number, max: number, options: number[]) {
+    let result = false
+
     for (const option of options) {
-      if (min <= option && option <= max) return true
+      if (min <= option && option <= max) result = true
     }
-    return false
+
+    return result
   }
 
   function decay_match(options: string[], present: string[]) {
@@ -40,14 +31,20 @@ const ArticlesRoute: FC = () => {
     return intersection.size > 0
   }
 
-  const selectedPapers = papers.filter(
-    paper =>
-      filterOptions.experiments.includes(paper.experiment) &&
-      filterOptions.types.includes(paper.type) &&
-      (filterOptions.anyEnergy || match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
-      (filterOptions.anyLuminosity || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
-      (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products))
-  )
+  const handleFilterOptionsChange = (filterOptions: FilterOptions) => {
+    setSelectedPapers(
+      papers.filter(
+        paper =>
+          filterOptions.experiments.includes(paper.experiment) &&
+          filterOptions.types.includes(paper.type) &&
+          (filterOptions.anyLuminosity ||
+            match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
+          (filterOptions.anyEnergy || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
+          (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products)) &&
+          filterOptions.models.includes(paper.model)
+      )
+    )
+  }
 
   useEffect(() => {
     getPapers().then(papers => {
@@ -66,7 +63,7 @@ const ArticlesRoute: FC = () => {
   return (
     <div className="flex flex-col md:flex-row w-full">
       <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0 w-full md:w-1/4">
-        <ArticleFilters onChange={setFilterOptions} initial={filterOptions} papers={papers} />
+        <ArticleFilters onChange={handleFilterOptionsChange} papers={papers} />
       </div>
       <div className="flex flex-col items-center w-full">
         Displaying {selectedPapers.length} articles

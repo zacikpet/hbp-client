@@ -6,7 +6,6 @@ import ArticlesRoute from 'routes/ArticlesRoute'
 import FeedbackRoute from 'routes/FeedbackRoute'
 import AboutRoute from 'routes/AboutRoute'
 import HistoryRoute from 'routes/HistoryRoute'
-import Footer from './components/Footer'
 
 export const DarkModeContext = React.createContext(false)
 
