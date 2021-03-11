@@ -109,7 +109,7 @@ const ArticlesRoute: FC = () => {
               nextClassName="btn mx-2"
               previousClassName="btn mx-2"
               activeClassName="text-primary"
-              pageClassName="mx-2 hover:underline"
+              pageClassName="cursor-pointer mx-2 hover:underline"
               onPageChange={handlePageChange}
               forcePage={page}
             />
