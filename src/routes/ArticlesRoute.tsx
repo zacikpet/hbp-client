@@ -3,11 +3,31 @@ import { getPapers, Paper } from 'api/papers'
 import Article from 'components/Article'
 import ArticleFilters, { FilterOptions } from 'components/ArticleFilters'
 import Loader from 'react-loader-spinner'
+import Paginate from 'react-paginate'
 import { DarkModeContext } from 'App'
+
+const initial: FilterOptions = {
+  types: ['paper', 'note'],
+  experiments: ['atlas', 'cms'],
+  luminosity: [0, 0],
+  energy: [0, 0],
+  anyLuminosity: true,
+  anyEnergy: true,
+  anyDecay: true,
+  decay: {
+    products: [],
+  },
+  models: ['sm', 'bsm'],
+  date: [new Date(Date.now() - 1000 * 60 * 60 * 24 * 365), new Date()],
+  anyDate: true,
+}
 
 const ArticlesRoute: FC = () => {
   const [papers, setPapers] = useState<Paper[]>([])
-  const [selectedPapers, setSelectedPapers] = useState<Paper[]>(papers)
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
+  const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
+  const [displayedPapers, setDisplayedPapers] = useState<Paper[]>(filteredPapers.slice(0, 10))
+  const [page, setPage] = useState(0)
 
   const darkMode = useContext(DarkModeContext)
 
@@ -31,8 +51,16 @@ const ArticlesRoute: FC = () => {
     return intersection.size > 0
   }
 
-  const handleFilterOptionsChange = (filterOptions: FilterOptions) => {
-    setSelectedPapers(
+  useEffect(() => {
+    getPapers().then(papers => {
+      setPapers(papers)
+      setLoading(false)
+    })
+  }, [])
+
+  useEffect(() => {
+    setPage(0)
+    setFilteredPapers(
       papers.filter(
         paper =>
           filterOptions.experiments.includes(paper.experiment) &&
@@ -41,17 +69,18 @@ const ArticlesRoute: FC = () => {
             match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
           (filterOptions.anyEnergy || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
           (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products)) &&
-          filterOptions.models.includes(paper.model)
+          filterOptions.models.includes(paper.model) &&
+          ((filterOptions.date[0] < new Date(paper.date) && filterOptions.date[1] > new Date(paper.date)) ||
+            filterOptions.anyDate)
       )
     )
-  }
+  }, [filterOptions, papers])
 
   useEffect(() => {
-    getPapers().then(papers => {
-      setPapers(papers)
-      setLoading(false)
-    })
-  }, [])
+    setDisplayedPapers(filteredPapers.slice(page * 10, (page + 1) * 10))
+  }, [filteredPapers, page])
+
+  const handlePageChange = ({ selected }: { selected: number }) => setPage(selected)
 
   if (loading)
     return (
@@ -63,13 +92,29 @@ const ArticlesRoute: FC = () => {
   return (
     <div className="flex flex-col md:flex-row w-full">
       <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0 w-full md:w-1/4">
-        <ArticleFilters onChange={handleFilterOptionsChange} papers={papers} />
+        <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       </div>
-      <div className="flex flex-col items-center w-full">
-        Displaying {selectedPapers.length} articles
-        {selectedPapers.slice(0, 20).map((paper, i) => (
-          <Article key={paper.title + i} paper={paper} />
+      <div className="flex flex-col items-center w-full px-5">
+        Found {filteredPapers.length} articles
+        {displayedPapers.map(paper => (
+          <Article key={paper.cds_id} paper={paper} />
         ))}
+        <div className="p-8">
+          {filteredPapers.length > 10 && (
+            <Paginate
+              pageCount={Math.ceil(filteredPapers.length / 10)}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={3}
+              containerClassName="flex items-center"
+              nextClassName="btn mx-2"
+              previousClassName="btn mx-2"
+              activeClassName="text-primary"
+              pageClassName="mx-2 hover:underline"
+              onPageChange={handlePageChange}
+              forcePage={page}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

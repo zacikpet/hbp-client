@@ -1,20 +1,49 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Paper } from 'api/papers'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Latex from 'react-latex'
 
 type ArticleProps = {
   paper: Paper
 }
 
-const Article: FC<ArticleProps> = ({ paper }) => (
-  <a href={paper.files[0]} target="_blank">
-    <div className="w-full px-10 py-5 border-t cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-850 dark:border-gray-700">
+const Article: FC<ArticleProps> = ({ paper }) => {
+  const [collapsed, setCollapsed] = useState(true)
+
+  const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
+
+  return (
+    <div className="w-full px-10 pb-5 border-t hover:bg-gray-50 dark:hover:bg-gray-850 dark:border-gray-700">
+      <div className="flex pt-3 pb-1">
+        <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
+        {paper.type === 'paper' ? (
+          <div className="article-info-card w-20 bg-primary">Published</div>
+        ) : (
+          <div className="article-info-card w-20 bg-red-500">Preliminary</div>
+        )}
+      </div>
       <h1 className="font-bold text-emphasis">
-        {paper.experiment.toUpperCase()}: {paper.title}
+        <Latex>{paper.title}</Latex>
       </h1>
-      <p className="font-serif">{paper.abstract}</p>
-      <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
+      <p className="font-serif">
+        <Latex>{abstract}</Latex>
+        {collapsed && <span>&#8230;</span>}
+        &nbsp;&nbsp;
+        <a onClick={() => setCollapsed(!collapsed)} className="font-sans cursor-pointer text-primary hover:underline">
+          {collapsed ? 'See more' : 'Hide'}
+        </a>
+      </p>
+      <div className="flex justify-between items-end">
+        <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
+        {paper.files.length > 0 && (
+          <a href={paper.files[0]} target="_blank">
+            <button className="btn ml-auto">PDF</button>
+          </a>
+        )}
+      </div>
     </div>
-  </a>
-)
+  )
+}
 
 export default Article

@@ -1,10 +1,12 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { Experiment, Model, Paper, Type } from 'api/papers'
+import React, { FC, useContext } from 'react'
+import { Experiment, Model, Type } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
 import { DarkModeContext } from '../App'
+import ReactDatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
-const options = [
+const particles = [
   'boson',
   'higgs',
   'photon',
@@ -45,90 +47,80 @@ export type FilterOptions = {
     products: string[]
   }
   models: Model[]
-}
-
-const initial: FilterOptions = {
-  types: ['paper'],
-  experiments: ['atlas', 'cms'],
-  luminosity: [0, 0],
-  energy: [0, 0],
-  anyLuminosity: true,
-  anyEnergy: true,
-  anyDecay: true,
-  decay: {
-    products: [],
-  },
-  models: ['sm', 'bsm'],
+  date: [Date, Date]
+  anyDate: boolean
 }
 
 type ArticleFiltersProps = {
+  options: FilterOptions
   onChange: (options: FilterOptions) => void
-  papers: Paper[]
 }
 
-const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
-  const [experiments, setExperiments] = useState(initial.experiments)
-  const [types, setTypes] = useState(initial.types)
-
-  const [anyLuminosity, setAnyLuminosity] = useState(initial.anyLuminosity)
-  const [anyEnergy, setAnyEnergy] = useState(initial.anyEnergy)
-
-  const [luminosity, setLuminosity] = useState<number[]>(initial.luminosity)
-  const [energy, setEnergy] = useState<number[]>(initial.energy)
-
-  const [maxLuminosity] = useState(500000)
-  const [maxEnergy] = useState(20000000)
-
-  const [anyDecay, setAnyDecay] = useState(initial.anyDecay)
-  const [decay, setDecay] = useState(initial.decay)
-
-  const [models, setModels] = useState(initial.models)
-
+const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   const darkMode = useContext(DarkModeContext)
 
   const addDecayProduct = (product: string) => {
-    if (decay.products.includes(product)) return
-    setDecay({
-      ...decay,
-      products: [...decay.products, product],
+    if (options.decay.products.includes(product)) return
+    onChange({
+      ...options,
+      decay: {
+        ...options.decay,
+        products: [...options.decay.products, product],
+      },
     })
   }
 
   const removeDecayProduct = (product: string) => {
-    setDecay({ ...decay, products: decay.products.filter(p => p !== product) })
+    onChange({
+      ...options,
+      decay: {
+        ...options.decay,
+        products: options.decay.products.filter(p => p !== product),
+      },
+    })
   }
 
-  useEffect(() => {
-    if (papers.length === 0) return
-
-    // const maxE = Math.max(...papers.map(p => Math.max(...p.energy)))
-    // const maxL = Math.max(...papers.map(p => Math.max(...p.luminosity)))
-
-    //setMaxEnergy(maxE)
-    // setMaxLuminosity(maxL)
-
-    setEnergy([0, maxEnergy])
-    setLuminosity([0, maxLuminosity])
-  }, [papers])
-
   const selectExperiment = (experiment: Experiment) => {
-    if (experiments.includes(experiment)) setExperiments(experiments.filter(e => e !== experiment))
-    else setExperiments([...experiments, experiment])
+    if (options.experiments.includes(experiment))
+      onChange({ ...options, experiments: options.experiments.filter(e => e !== experiment) })
+    else onChange({ ...options, experiments: [...options.experiments, experiment] })
   }
 
   const selectType = (type: Type) => {
-    if (types.includes(type)) setTypes(types.filter(t => t !== type))
-    else setTypes([...types, type])
+    if (options.types.includes(type)) onChange({ ...options, types: options.types.filter(t => t !== type) })
+    else onChange({ ...options, types: [...options.types, type] })
   }
 
   const selectModel = (model: Model) => {
-    if (models.includes(model)) setModels(models.filter(m => m !== model))
-    else setModels([...models, model])
+    if (options.models.includes(model)) onChange({ ...options, models: options.models.filter(m => m !== model) })
+    else onChange({ ...options, models: [...options.models, model] })
   }
 
-  useEffect(() => {
-    onChange({ experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay, models })
-  }, [experiments, types, luminosity, energy, anyEnergy, anyLuminosity, anyDecay, decay, models])
+  const setAnyDecay = () => onChange({ ...options, anyDecay: !options.anyDecay })
+
+  const setAnyLuminosity = () => onChange({ ...options, anyLuminosity: !options.anyLuminosity })
+
+  const setAnyEnergy = () => onChange({ ...options, anyEnergy: !options.anyEnergy })
+
+  const setLuminosity = (range: number[]) => onChange({ ...options, luminosity: range })
+
+  const setEnergy = (range: number[]) => onChange({ ...options, energy: range })
+
+  const setAnyDate = () => onChange({ ...options, anyDate: !options.anyDate })
+
+  const handleStartDate = (date: Date) => {
+    onChange({
+      ...options,
+      date: [date, options.date[1]],
+    })
+  }
+
+  const handleEndDate = (date: Date) => {
+    onChange({
+      ...options,
+      date: [options.date[0], date],
+    })
+  }
 
   return (
     <div
@@ -136,13 +128,42 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
       style={{ direction: 'rtl' }}
     >
       <div className="article-filter">
+        <h2>Date</h2>
+        <div className="p-2">
+          <Checkbox checked={options.anyDate} onChange={setAnyDate}>
+            All of time
+          </Checkbox>
+          {!options.anyDate && (
+            <>
+              <div className="flex items-center justify-between my-1">
+                From
+                <ReactDatePicker
+                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                  popperClassName="-left-16"
+                  selected={options.date[0]}
+                  onChange={handleStartDate}
+                />
+              </div>
+              <div className="flex items-center justify-between my-1">
+                To{' '}
+                <ReactDatePicker
+                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                  selected={options.date[1]}
+                  onChange={handleEndDate}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="article-filter">
         <h2>Experiments</h2>
-        <div className="flex justify-around p-2">
-          <div>
-            <Checkbox checked={experiments.includes('atlas')} onChange={() => selectExperiment('atlas')}>
+        <div className="flex p-2">
+          <div className="mr-4">
+            <Checkbox checked={options.experiments.includes('atlas')} onChange={() => selectExperiment('atlas')}>
               ATLAS
             </Checkbox>
-            <Checkbox checked={experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
+            <Checkbox checked={options.experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
               CMS
             </Checkbox>
             <Checkbox disabled checked={false}>
@@ -153,44 +174,33 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
             </Checkbox>
           </div>
           <div>
-            <Checkbox checked={experiments.includes('aleph')} onChange={() => selectExperiment('aleph')}>
+            <Checkbox checked={options.experiments.includes('aleph')} onChange={() => selectExperiment('aleph')}>
               ALEPH
             </Checkbox>
-            <Checkbox checked={experiments.includes('delphi')} onChange={() => selectExperiment('delphi')}>
+            <Checkbox checked={options.experiments.includes('delphi')} onChange={() => selectExperiment('delphi')}>
               DELPHI
             </Checkbox>
-            <Checkbox checked={experiments.includes('l3')} onChange={() => selectExperiment('l3')}>
+            <Checkbox checked={options.experiments.includes('l3')} onChange={() => selectExperiment('l3')}>
               L3
             </Checkbox>
-            <Checkbox checked={experiments.includes('opal')} onChange={() => selectExperiment('opal')}>
+            <Checkbox checked={options.experiments.includes('opal')} onChange={() => selectExperiment('opal')}>
               OPAL
             </Checkbox>
           </div>
         </div>
       </div>
       <div className="article-filter">
-        <h2>Type</h2>
-        <div className="p-2">
-          <Checkbox checked={types.includes('paper')} onChange={() => selectType('paper')}>
-            Published papers
-          </Checkbox>
-          <Checkbox checked={types.includes('note')} onChange={() => selectType('note')}>
-            Preliminary results
-          </Checkbox>
-        </div>
-      </div>
-      <div className="article-filter">
         <h2>Luminosity</h2>
-        <Checkbox checked={anyLuminosity} onChange={setAnyLuminosity} className="m-2">
+        <Checkbox checked={options.anyLuminosity} onChange={setAnyLuminosity} className="m-2">
           Any
         </Checkbox>
-        {!anyLuminosity && (
+        {!options.anyLuminosity && (
           <div className="p-2">
             <Range
               step={1000}
               min={0}
-              max={maxLuminosity}
-              values={luminosity}
+              max={1000000}
+              values={options.luminosity}
               onChange={setLuminosity}
               renderTrack={({ props, children }) => (
                 <div
@@ -198,10 +208,10 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
                   style={{
                     ...props.style,
                     background: getTrackBackground({
-                      values: luminosity,
+                      values: options.luminosity,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
-                      max: maxLuminosity,
+                      max: 1000000,
                     }),
                   }}
                   className="w-full h-1"
@@ -217,22 +227,22 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
                 />
               )}
             />
-            {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
+            {Math.round(options.luminosity[0] / 1000)} fb - {Math.round(options.luminosity[1] / 1000)} fb
           </div>
         )}
       </div>
       <div className="article-filter">
         <h2>Energy</h2>
-        <Checkbox checked={anyEnergy} onChange={setAnyEnergy} className="m-2">
+        <Checkbox checked={options.anyEnergy} onChange={setAnyEnergy} className="m-2">
           Any
         </Checkbox>
-        {!anyEnergy && (
+        {!options.anyEnergy && (
           <div className="p-2">
             <Range
               step={1000000}
               min={0}
-              max={maxEnergy}
-              values={energy}
+              max={20000000}
+              values={options.energy}
               onChange={setEnergy}
               renderTrack={({ props, children }) => (
                 <div
@@ -240,10 +250,10 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
                   style={{
                     ...props.style,
                     background: getTrackBackground({
-                      values: energy,
+                      values: options.energy,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
-                      max: maxEnergy,
+                      max: 20000000,
                     }),
                   }}
                   className="w-full h-1"
@@ -259,27 +269,30 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
                 />
               )}
             />
-            {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
+            {Math.round(options.energy[0] / 1000000)} TeV - {Math.round(options.energy[1] / 1000000)} TeV
           </div>
         )}
       </div>
       <div className="article-filter">
         <h2>Decay products</h2>
-        <Checkbox checked={anyDecay} onChange={setAnyDecay} className="m-2">
+        <Checkbox checked={options.anyDecay} onChange={setAnyDecay} className="m-2">
           Any
         </Checkbox>
-        {!anyDecay && (
+        {!options.anyDecay && (
           <div className="">
-            <select className="text-sm mb-2" onChange={event => addDecayProduct(event.target.value)}>
-              {options.map(option => (
-                <option value={option} onClick={() => addDecayProduct(option)}>
-                  {option}
+            <select
+              className="text-sm mb-2 rounded dark:bg-gray-850"
+              onChange={event => addDecayProduct(event.target.value)}
+            >
+              {particles.map(particle => (
+                <option key={particle} value={particle} onClick={() => addDecayProduct(particle)}>
+                  {particle}
                 </option>
               ))}
             </select>
 
             <div className="flex flex-wrap">
-              {decay.products.map(product => (
+              {options.decay.products.map(product => (
                 <div
                   className="px-1 m-1 bg-primary rounded text-onprimary cursor-pointer"
                   onClick={() => removeDecayProduct(product)}
@@ -293,10 +306,10 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
       </div>
       <div className="article-filter">
         <h2>Higgs model</h2>
-        <Checkbox checked={models.includes('sm')} onChange={() => selectModel('sm')} className="m-2">
+        <Checkbox checked={options.models.includes('sm')} onChange={() => selectModel('sm')} className="m-2">
           Standard model
         </Checkbox>
-        <Checkbox checked={models.includes('bsm')} onChange={() => selectModel('bsm')} className="m-2">
+        <Checkbox checked={options.models.includes('bsm')} onChange={() => selectModel('bsm')} className="m-2">
           Beyond the Standard model
         </Checkbox>
       </div>
@@ -314,6 +327,17 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, papers }) => {
         <Checkbox checked={true} disabled className="m-2">
           WH/ZH
         </Checkbox>
+      </div>
+      <div className="article-filter">
+        <h2>Type</h2>
+        <div className="p-2">
+          <Checkbox checked={options.types.includes('paper')} onChange={() => selectType('paper')}>
+            Published papers
+          </Checkbox>
+          <Checkbox checked={options.types.includes('note')} onChange={() => selectType('note')}>
+            Preliminary results
+          </Checkbox>
+        </div>
       </div>
     </div>
   )

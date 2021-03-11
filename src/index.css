@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,10 +8,14 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+.react-datepicker-popper {
+    left: -50px !important;
+}
+
 @layer components {
 
     .btn {
-        @apply p-2 transition-colors font-bold rounded border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-onprimary shadow-md
+        @apply p-2 cursor-pointer transition-colors font-bold rounded border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-onprimary shadow-md
     }
 
 
@@ -56,6 +58,10 @@ body {
     .article-filter {
         direction: ltr;
         @apply p-2 border-b dark:border-gray-700
+    }
+
+    .article-info-card {
+        @apply rounded w-16 text-center bg-black text-sm mx-1 text-white
     }
 }
 

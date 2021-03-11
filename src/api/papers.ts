@@ -23,7 +23,7 @@ export type Paper = {
   title: string
   abstract?: string
   files: string[]
-  date: string
+  date: Date
   luminosity: number[]
   energy: number[]
   particles: {
@@ -35,8 +35,12 @@ export type Paper = {
   model: Model
 }
 
+type DBPaper = Paper & { date: string }
+
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
 
 export const getPapers = (): Promise<Paper[]> => {
-  return axios.get('/papers').then(response => response.data)
+  return axios
+    .get<DBPaper[]>('/papers')
+    .then(response => response.data.map(paper => ({ ...paper, date: new Date(paper.date) })))
 }
