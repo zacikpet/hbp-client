@@ -139,6 +139,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 <p>From</p>
                 <div className="mr-0 ml-auto">
                   <ReactDatePicker
+                    showYearDropdown
+                    dateFormat="dd. MM. yyyy"
                     closeOnScroll
                     className="h-8 rounded dark:bg-gray-850 cursor-pointer"
                     selected={options.date[0]}
@@ -153,6 +155,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 <p>To</p>
                 <div className="mr-0 ml-auto">
                   <ReactDatePicker
+                    showYearDropdown
+                    dateFormat="dd. MM. yyyy"
                     closeOnScroll
                     className="h-8 rounded dark:bg-gray-850 cursor-pointer"
                     selected={options.date[1]}

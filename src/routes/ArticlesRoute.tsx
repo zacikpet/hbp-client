@@ -75,7 +75,7 @@ const ArticlesRoute: FC = () => {
           (filterOptions.anyEnergy || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
           (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products)) &&
           filterOptions.models.includes(paper.model) &&
-          ((filterOptions.date[0] < new Date(paper.date) && filterOptions.date[1] > new Date(paper.date)) ||
+          ((filterOptions.date[0] <= new Date(paper.date) && filterOptions.date[1] >= new Date(paper.date)) ||
             filterOptions.anyDate)
       )
     )
@@ -120,9 +120,9 @@ const ArticlesRoute: FC = () => {
         ))}
 
         <div className="p-8">
-          {filteredPapers.length > 10 && (
+          {searchedPapers.length > 10 && (
             <Paginate
-              pageCount={Math.ceil(filteredPapers.length / 10)}
+              pageCount={Math.ceil(searchedPapers.length / 10)}
               pageRangeDisplayed={2}
               marginPagesDisplayed={3}
               containerClassName="flex items-center"
