@@ -135,22 +135,33 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           </Checkbox>
           {!options.anyDate && (
             <>
-              <div className="flex items-center justify-between my-1">
-                From
-                <ReactDatePicker
-                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
-                  popperClassName="-left-16"
-                  selected={options.date[0]}
-                  onChange={handleStartDate}
-                />
+              <div className="flex items-center my-1">
+                <p>From</p>
+                <div className="mr-0 ml-auto">
+                  <ReactDatePicker
+                    closeOnScroll
+                    className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                    selected={options.date[0]}
+                    onChange={handleStartDate}
+                    popperModifiers={{
+                      offset: { enabled: true, offset: -50 },
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex items-center justify-between my-1">
-                To{' '}
-                <ReactDatePicker
-                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
-                  selected={options.date[1]}
-                  onChange={handleEndDate}
-                />
+                <p>To</p>
+                <div className="mr-0 ml-auto">
+                  <ReactDatePicker
+                    closeOnScroll
+                    className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                    selected={options.date[1]}
+                    onChange={handleEndDate}
+                    popperModifiers={{
+                      offset: { enabled: true, offset: -50 },
+                    }}
+                  />
+                </div>
               </div>
             </>
           )}

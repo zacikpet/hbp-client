@@ -8,10 +8,6 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-.react-datepicker-popper {
-    left: -50px !important;
-}
-
 @layer components {
 
     .btn {
