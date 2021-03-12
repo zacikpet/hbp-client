@@ -44,6 +44,7 @@ module.exports = {
     extend: {
       textOpacity: ['dark'],
       boxShadow: ['dark'],
+      width: ['hover'],
     },
   },
   plugins: [require('@tailwindcss/forms')],

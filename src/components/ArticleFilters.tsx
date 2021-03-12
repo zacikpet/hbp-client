@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react'
-import { Experiment, Model, Type } from 'api/papers'
+import { Experiment, Model, Stage } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
 import { DarkModeContext } from '../App'
@@ -37,7 +37,7 @@ const particles = [
 
 export type FilterOptions = {
   experiments: Experiment[]
-  types: Type[]
+  stages: Stage[]
   anyLuminosity: boolean
   anyEnergy: boolean
   luminosity: number[]
@@ -86,9 +86,9 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
     else onChange({ ...options, experiments: [...options.experiments, experiment] })
   }
 
-  const selectType = (type: Type) => {
-    if (options.types.includes(type)) onChange({ ...options, types: options.types.filter(t => t !== type) })
-    else onChange({ ...options, types: [...options.types, type] })
+  const selectStage = (stage: Stage) => {
+    if (options.stages.includes(stage)) onChange({ ...options, stages: options.stages.filter(s => s !== stage) })
+    else onChange({ ...options, stages: [...options.stages, stage] })
   }
 
   const selectModel = (model: Model) => {
@@ -333,20 +333,23 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           Vector-boson fusion
         </Checkbox>
         <Checkbox checked={true} disabled className="m-2">
-          ttH
+          WH/ZH
         </Checkbox>
         <Checkbox checked={true} disabled className="m-2">
-          WH/ZH
+          ttH
         </Checkbox>
       </div>
       <div className="article-filter">
         <h2>Type</h2>
         <div className="p-2">
-          <Checkbox checked={options.types.includes('paper')} onChange={() => selectType('paper')}>
-            Published papers
-          </Checkbox>
-          <Checkbox checked={options.types.includes('note')} onChange={() => selectType('note')}>
+          <Checkbox checked={options.stages.includes('preliminary')} onChange={() => selectStage('preliminary')}>
             Preliminary results
+          </Checkbox>
+          <Checkbox checked={options.stages.includes('submitted')} onChange={() => selectStage('submitted')}>
+            Submitted papers
+          </Checkbox>
+          <Checkbox checked={options.stages.includes('published')} onChange={() => selectStage('published')}>
+            Published papers
           </Checkbox>
         </div>
       </div>

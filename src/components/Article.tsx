@@ -1,8 +1,19 @@
 import React, { FC, useState } from 'react'
-import { Paper } from 'api/papers'
+import { Paper, Stage } from 'api/papers'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Latex from 'react-latex'
+
+const StageInfoCard: FC<{ stage: Stage }> = ({ stage }) => {
+  switch (stage) {
+    case 'preliminary':
+      return <div className="article-info-card w-20 bg-red-500">Preliminary</div>
+    case 'submitted':
+      return <div className="article-info-card w-20 bg-primary">Submitted</div>
+    case 'published':
+      return <div className="article-info-card w-20 bg-blue-400">Published</div>
+  }
+}
 
 type ArticleProps = {
   paper: Paper
@@ -17,11 +28,7 @@ const Article: FC<ArticleProps> = ({ paper }) => {
     <div className="w-full px-10 pb-5 border-t hover:bg-gray-50 dark:hover:bg-gray-850 dark:border-gray-700">
       <div className="flex pt-3 pb-1">
         <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
-        {paper.type === 'paper' ? (
-          <div className="article-info-card w-20 bg-primary">Published</div>
-        ) : (
-          <div className="article-info-card w-20 bg-red-500">Preliminary</div>
-        )}
+        <StageInfoCard stage={paper.stage} />
       </div>
       <h1 className="font-bold text-emphasis">
         <Latex>{paper.title}</Latex>

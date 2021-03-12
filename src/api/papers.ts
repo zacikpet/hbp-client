@@ -13,10 +13,11 @@ export type Category =
   | 'l3_papers'
 
 export type Type = 'paper' | 'note'
-
 export type Model = 'sm' | 'bsm'
+export type Stage = 'preliminary' | 'submitted' | 'published'
 
 export type Paper = {
+  _id: string
   category: Category
   experiment: Experiment
   type: Type
@@ -33,6 +34,7 @@ export type Paper = {
   }
   cds_id: string
   model: Model
+  stage: Stage
 }
 
 type DBPaper = Paper & { date: string }

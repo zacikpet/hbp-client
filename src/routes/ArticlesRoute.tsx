@@ -5,9 +5,10 @@ import ArticleFilters, { FilterOptions } from 'components/ArticleFilters'
 import Loader from 'react-loader-spinner'
 import Paginate from 'react-paginate'
 import { DarkModeContext } from 'App'
+import ArticleSearch from '../components/ArticleSearch'
 
 const initial: FilterOptions = {
-  types: ['paper', 'note'],
+  stages: ['submitted', 'preliminary', 'published'],
   experiments: ['atlas', 'cms'],
   luminosity: [0, 0],
   energy: [0, 0],
@@ -23,15 +24,19 @@ const initial: FilterOptions = {
 }
 
 const ArticlesRoute: FC = () => {
-  const [papers, setPapers] = useState<Paper[]>([])
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
-  const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
-  const [displayedPapers, setDisplayedPapers] = useState<Paper[]>(filteredPapers.slice(0, 10))
-  const [page, setPage] = useState(0)
-
   const darkMode = useContext(DarkModeContext)
 
   const [loading, setLoading] = useState(true)
+  const [papers, setPapers] = useState<Paper[]>([])
+
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
+  const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
+
+  const [searchString, setSearchString] = useState('')
+  const [searchedPapers, setSearchedPapers] = useState<Paper[]>(filteredPapers)
+
+  const [page, setPage] = useState(0)
+  const [displayedPapers, setDisplayedPapers] = useState<Paper[]>(searchedPapers.slice(0, 10))
 
   function match(min: number, max: number, options: number[]) {
     let result = false
@@ -64,7 +69,7 @@ const ArticlesRoute: FC = () => {
       papers.filter(
         paper =>
           filterOptions.experiments.includes(paper.experiment) &&
-          filterOptions.types.includes(paper.type) &&
+          filterOptions.stages.includes(paper.stage) &&
           (filterOptions.anyLuminosity ||
             match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
           (filterOptions.anyEnergy || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
@@ -77,8 +82,17 @@ const ArticlesRoute: FC = () => {
   }, [filterOptions, papers])
 
   useEffect(() => {
-    setDisplayedPapers(filteredPapers.slice(page * 10, (page + 1) * 10))
-  }, [filteredPapers, page])
+    setPage(0)
+    setSearchedPapers(
+      filteredPapers.filter(
+        paper => searchString == '' || paper.title.toLowerCase().includes(searchString.toLowerCase())
+      )
+    )
+  }, [filteredPapers, searchString])
+
+  useEffect(() => {
+    setDisplayedPapers(searchedPapers.slice(page * 10, (page + 1) * 10))
+  }, [searchedPapers, page])
 
   const handlePageChange = ({ selected }: { selected: number }) => setPage(selected)
 
@@ -95,10 +109,16 @@ const ArticlesRoute: FC = () => {
         <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       </div>
       <div className="flex flex-col items-center w-full px-5">
-        Found {filteredPapers.length} articles
+        <ArticleSearch
+          value={searchString}
+          onChange={setSearchString}
+          placeHolder={'Search ' + filteredPapers.length + ' articles'}
+        />
+
         {displayedPapers.map(paper => (
-          <Article key={paper.cds_id} paper={paper} />
+          <Article key={paper._id} paper={paper} />
         ))}
+
         <div className="p-8">
           {filteredPapers.length > 10 && (
             <Paginate
