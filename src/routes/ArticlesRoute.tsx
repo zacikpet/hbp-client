@@ -126,8 +126,8 @@ const ArticlesRoute: FC = () => {
               pageRangeDisplayed={2}
               marginPagesDisplayed={3}
               containerClassName="flex items-center"
-              nextClassName="btn mx-2"
-              previousClassName="btn mx-2"
+              nextLabel={<button className="btn mx-2">Next</button>}
+              previousLabel={<button className="btn mx-2">Previous</button>}
               activeClassName="text-primary"
               pageClassName="cursor-pointer mx-2 hover:underline"
               onPageChange={handlePageChange}

@@ -181,10 +181,10 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             <Checkbox checked={options.experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
               CMS
             </Checkbox>
-            <Checkbox disabled checked={false}>
+            <Checkbox checked={options.experiments.includes('cdf')} onChange={() => selectExperiment('cdf')}>
               CDF
             </Checkbox>
-            <Checkbox disabled checked={false}>
+            <Checkbox checked={options.experiments.includes('d0')} onChange={() => selectExperiment('d0')}>
               DØ
             </Checkbox>
           </div>

@@ -32,7 +32,6 @@ export type Paper = {
     intermediate: string[]
     product: string[]
   }
-  cds_id: string
   model: Model
   stage: Stage
 }
