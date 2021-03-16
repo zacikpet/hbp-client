@@ -40,8 +40,14 @@ type DBPaper = Paper & { date: string }
 
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
 
+function withDate(paper: DBPaper): Paper {
+  return { ...paper, date: new Date(paper.date) }
+}
+
 export const getPapers = (): Promise<Paper[]> => {
-  return axios
-    .get<DBPaper[]>('/papers')
-    .then(response => response.data.map(paper => ({ ...paper, date: new Date(paper.date) })))
+  return axios.get<DBPaper[]>('/papers').then(response => response.data.map(withDate))
+}
+
+export const getPaper = (id: string): Promise<Paper> => {
+  return axios.get<DBPaper>(`/papers/${id}`).then(response => withDate(response.data))
 }

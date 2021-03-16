@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react'
 import { Paper, Stage } from 'api/papers'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import Latex from 'react-latex'
+import { Link } from 'react-router-dom'
 
 const StageInfoCard: FC<{ stage: Stage }> = ({ stage }) => {
   switch (stage) {
@@ -41,13 +40,16 @@ const Article: FC<ArticleProps> = ({ paper }) => {
           {collapsed ? 'See more' : 'Hide'}
         </a>
       </p>
-      <div className="flex justify-between items-end">
+      <div className="flex items-end">
         <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
         {paper.files.length > 0 && (
-          <a href={paper.files[0]} target="_blank">
+          <a href={paper.files[0]} target="_blank" className="ml-auto mr-2">
             <button className="btn ml-auto">PDF</button>
           </a>
         )}
+        <Link to={`/articles/${paper._id}`}>
+          <button className="btn ml-auto">Details</button>
+        </Link>
       </div>
     </div>
   )

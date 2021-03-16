@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    -webkit-tap-highlight-color: transparent;
-}
+
 
 @layer components {
 
@@ -87,4 +85,8 @@ body {
             @apply text-onlight dark:text-ondark text-opacity-40 dark:text-opacity-40
         }
     }
+}
+
+body {
+    -webkit-tap-highlight-color: transparent;
 }

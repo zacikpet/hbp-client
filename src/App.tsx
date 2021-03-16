@@ -6,6 +6,7 @@ import ArticlesRoute from 'routes/ArticlesRoute'
 import FeedbackRoute from 'routes/FeedbackRoute'
 import AboutRoute from 'routes/AboutRoute'
 import HistoryRoute from 'routes/HistoryRoute'
+import ArticleRoute from './routes/ArticleRoute'
 
 export const DarkModeContext = React.createContext(false)
 
@@ -30,6 +31,9 @@ const App: FC = () => {
           <Switch>
             <Route exact path="/articles">
               <ArticlesRoute />
+            </Route>
+            <Route exact path="/articles/:id">
+              <ArticleRoute />
             </Route>
             <Route exact path="/feedback">
               <FeedbackRoute />

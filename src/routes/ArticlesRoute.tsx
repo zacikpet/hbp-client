@@ -1,11 +1,10 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { getPapers, Paper } from 'api/papers'
 import Article from 'components/Article'
 import ArticleFilters, { FilterOptions } from 'components/ArticleFilters'
-import Loader from 'react-loader-spinner'
 import Paginate from 'react-paginate'
-import { DarkModeContext } from 'App'
 import ArticleSearch from '../components/ArticleSearch'
+import Loading from '../components/Loading'
 
 const initial: FilterOptions = {
   stages: ['submitted', 'preliminary', 'published'],
@@ -24,8 +23,6 @@ const initial: FilterOptions = {
 }
 
 const ArticlesRoute: FC = () => {
-  const darkMode = useContext(DarkModeContext)
-
   const [loading, setLoading] = useState(true)
   const [papers, setPapers] = useState<Paper[]>([])
 
@@ -96,12 +93,7 @@ const ArticlesRoute: FC = () => {
 
   const handlePageChange = ({ selected }: { selected: number }) => setPage(selected)
 
-  if (loading)
-    return (
-      <div className="h-page flex justify-center items-center opacity-70">
-        <Loader type="TailSpin" color={darkMode ? 'white' : 'black'} height={75} width={75} />
-      </div>
-    )
+  if (loading) return <Loading />
 
   return (
     <div className="flex flex-col md:flex-row w-full">
