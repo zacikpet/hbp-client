@@ -27,23 +27,25 @@ const App: FC = () => {
       <div className="bg-light dark:bg-dark text-emphasis-none">
         <DarkModeContext.Provider value={darkMode}>
           <Navbar onChangeDarkMode={handleChangeDarkMode} />
-          <Switch>
-            <Route path="/articles">
-              <ArticlesRoute />
-            </Route>
-            <Route exact path="/feedback">
-              <FeedbackRoute />
-            </Route>
-            <Route exact path="/about">
-              <AboutRoute />
-            </Route>
-            <Route exact path="/history">
-              <HistoryRoute />
-            </Route>
-            <Route path="/">
-              <HomeRoute />
-            </Route>
-          </Switch>
+          <main className="mt-16">
+            <Switch>
+              <Route path="/articles">
+                <ArticlesRoute />
+              </Route>
+              <Route exact path="/feedback">
+                <FeedbackRoute />
+              </Route>
+              <Route exact path="/about">
+                <AboutRoute />
+              </Route>
+              <Route exact path="/history">
+                <HistoryRoute />
+              </Route>
+              <Route path="/">
+                <HomeRoute />
+              </Route>
+            </Switch>
+          </main>
         </DarkModeContext.Provider>
       </div>
     </div>

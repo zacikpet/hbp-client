@@ -43,18 +43,18 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
           </a>
         </p>
       )}
-      <div className="flex items-end">
+      <div className="flex items-end justify-between">
         <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
-        {paper.files.length > 0 && (
-          <a href={paper.files[0]} target="_blank" className="ml-auto mr-2">
-            <button className="btn ml-auto">PDF</button>
-          </a>
-        )}
-        <Link to={`/articles/${paper._id}`}>
-          <button className="btn ml-auto" onClick={onSelect}>
-            Details
-          </button>
-        </Link>
+        <div className="flex">
+          {paper.files.length > 0 && (
+            <a href={paper.files[0]} target="_blank" className="mr-2">
+              <button className="btn">PDF</button>
+            </a>
+          )}
+          <Link to={`/articles/${paper._id}`} onClick={onSelect}>
+            <button className="btn">Details</button>
+          </Link>
+        </div>
       </div>
     </div>
   )

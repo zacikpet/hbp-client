@@ -23,10 +23,11 @@ const initial: FilterOptions = {
 
 type ArticlesBrowseProps = {
   papers: Paper[]
-  onSelectArticle: (selected: Paper) => void
+  onSelect: (selected: Paper) => void
+  scroll?: number
 }
 
-const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelectArticle }) => {
+const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, scroll }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
   const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
 
@@ -87,6 +88,13 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelectArticle }) =>
     setDisplayedPapers(searchedPapers.slice(page * 10, (page + 1) * 10))
   }, [searchedPapers, page])
 
+  /**
+   * Scroll automatically to previous position
+   */
+  useEffect(() => {
+    scroll && scrollTo(0, scroll)
+  }, [scroll])
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0 w-full md:w-1/4">
@@ -100,7 +108,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelectArticle }) =>
         />
 
         {displayedPapers.map(paper => (
-          <Article key={paper._id} paper={paper} onSelect={() => onSelectArticle(paper)} />
+          <Article key={paper._id} paper={paper} onSelect={() => onSelect(paper)} />
         ))}
 
         <div className="p-8">

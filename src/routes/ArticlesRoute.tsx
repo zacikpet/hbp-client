@@ -12,6 +12,16 @@ const ArticlesRoute: FC = () => {
   const [papers, setPapers] = useState<Paper[]>([])
   const [selectedArticle, setSelectedArticle] = useState<Paper>()
 
+  const [scroll, setScroll] = useState<number>(0)
+  const [previousScroll, setPreviousScroll] = useState<number>(0)
+
+  const handleSelect = (article: Paper) => {
+    setSelectedArticle(article)
+    setPreviousScroll(window.pageYOffset)
+  }
+
+  const handleBack = () => setScroll(previousScroll)
+
   useEffect(() => {
     getPapers().then(papers => {
       setPapers(papers)
@@ -25,15 +35,19 @@ const ArticlesRoute: FC = () => {
     <>
       <Route exact path="/articles">
         {({ match }) => (
-          <CSSTransition in={match !== null} timeout={300} classNames="page" unmountOnExit>
-            <ArticlesBrowse papers={papers} onSelectArticle={setSelectedArticle} />
+          <CSSTransition in={match !== null} timeout={300} classNames="page">
+            <div className={match ? 'visible' : 'hidden'}>
+              <ArticlesBrowse papers={papers} onSelect={handleSelect} scroll={scroll} />
+            </div>
           </CSSTransition>
         )}
       </Route>
       <Route exact path="/articles/:id">
         {({ match }) => (
-          <CSSTransition in={match !== null} timeout={300} classNames="page" unmountOnExit>
-            <ArticleDetail paper={selectedArticle} />
+          <CSSTransition in={match !== null} timeout={300} classNames="page">
+            <div className={match ? 'visible' : 'hidden'}>
+              <ArticleDetail selectedPaper={selectedArticle} onBack={handleBack} />
+            </div>
           </CSSTransition>
         )}
       </Route>
