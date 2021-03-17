@@ -1,0 +1,20 @@
+.page {
+}
+
+.page-enter {
+    transform: translate(100vw, 0);
+}
+
+.page-enter-active {
+    transform: translate(0, 0);
+    transition: transform 300ms;
+}
+
+.page-exit {
+    transform: translate(0, 0);
+}
+
+.page-exit-active {
+    transform: translate(-100vw, 0);
+    transition: transform 300ms;
+}

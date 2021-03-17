@@ -1,10 +1,10 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { Experiment, Model, Stage } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
-import { DarkModeContext } from '../App'
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import useDarkMode from '../hooks/useDarkMode'
 
 const particles = [
   'boson',
@@ -57,7 +57,7 @@ type ArticleFiltersProps = {
 }
 
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
-  const darkMode = useContext(DarkModeContext)
+  const darkMode = useDarkMode()
 
   const addDecayProduct = (product: string) => {
     if (options.decay.products.includes(product)) return

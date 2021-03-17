@@ -1,6 +1,6 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { ReactComponent as SearchSVG } from 'resources/svg/search.svg'
-import { DarkModeContext } from '../App'
+import useDarkMode from '../hooks/useDarkMode'
 
 type ArticleSearchProps = {
   value: string
@@ -9,7 +9,7 @@ type ArticleSearchProps = {
 }
 
 const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder }) => {
-  const darkMode = useContext(DarkModeContext)
+  const darkMode = useDarkMode()
   const [searchString, setSearchString] = useState(value)
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {

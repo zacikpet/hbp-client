@@ -16,9 +16,10 @@ const StageInfoCard: FC<{ stage: Stage }> = ({ stage }) => {
 
 type ArticleProps = {
   paper: Paper
+  onSelect: () => void
 }
 
-const Article: FC<ArticleProps> = ({ paper }) => {
+const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
   const [collapsed, setCollapsed] = useState(true)
 
   const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
@@ -32,14 +33,16 @@ const Article: FC<ArticleProps> = ({ paper }) => {
       <h1 className="font-bold text-emphasis">
         <Latex>{paper.title}</Latex>
       </h1>
-      <p className="font-serif">
-        <Latex>{abstract}</Latex>
-        {collapsed && <span>&#8230;</span>}
-        &nbsp;&nbsp;
-        <a onClick={() => setCollapsed(!collapsed)} className="font-sans cursor-pointer text-primary hover:underline">
-          {collapsed ? 'See more' : 'Hide'}
-        </a>
-      </p>
+      {abstract && (
+        <p className="font-serif">
+          <Latex>{abstract}</Latex>
+          {collapsed && <span>&#8230;</span>}
+          &nbsp;&nbsp;
+          <a onClick={() => setCollapsed(!collapsed)} className="font-sans cursor-pointer text-primary hover:underline">
+            {collapsed ? 'See more' : 'Hide'}
+          </a>
+        </p>
+      )}
       <div className="flex items-end">
         <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
         {paper.files.length > 0 && (
@@ -48,7 +51,9 @@ const Article: FC<ArticleProps> = ({ paper }) => {
           </a>
         )}
         <Link to={`/articles/${paper._id}`}>
-          <button className="btn ml-auto">Details</button>
+          <button className="btn ml-auto" onClick={onSelect}>
+            Details
+          </button>
         </Link>
       </div>
     </div>

@@ -1,10 +1,10 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ReactComponent as MenuSVG } from 'resources/svg/menu.svg'
 import Sidebar from './Sidebar'
 import Wave from 'resources/wave.svg'
 import Navigation from './Navigation'
-import { DarkModeContext } from '../App'
+import useDarkMode from '../hooks/useDarkMode'
 
 type NavbarProps = {
   onChangeDarkMode: (dark: boolean) => void
@@ -12,10 +12,10 @@ type NavbarProps = {
 
 const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const darkMode = useContext(DarkModeContext)
+  const darkMode = useDarkMode()
 
   return (
-    <div className="sticky top-0 w-full h-16 flex justify-between items-center bg-light dark:bg-gray-850 pl-2 pr-4 md:pl-2 md:pr-8 shadow-2xl z-40">
+    <div className="fixed top-0 w-full h-16 flex justify-between items-center bg-light dark:bg-gray-850 pl-2 pr-4 md:pl-2 md:pr-8 shadow-2xl z-40">
       <div className="text-xl font-normal italic cursor-pointer flex items-center">
         <img src={Wave} width={48} alt="Logo" onClick={() => onChangeDarkMode(!darkMode)} />
         <Link to="/">The Higgs Boson portal</Link>

@@ -34,20 +34,29 @@ export type Paper = {
   }
   model: Model
   stage: Stage
+  lower_limit?: number
 }
 
-type DBPaper = Paper & { date: string }
+type PaperPatchDTO = {
+  lower_limit: number
+}
+
+type DBPaper = Omit<Paper, 'date'> & { date: string }
 
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
 
-function withDate(paper: DBPaper): Paper {
+function strToDate(paper: DBPaper): Paper {
   return { ...paper, date: new Date(paper.date) }
 }
 
 export const getPapers = (): Promise<Paper[]> => {
-  return axios.get<DBPaper[]>('/papers').then(response => response.data.map(withDate))
+  return axios.get<DBPaper[]>('/papers').then(response => response.data.map(strToDate))
 }
 
 export const getPaper = (id: string): Promise<Paper> => {
-  return axios.get<DBPaper>(`/papers/${id}`).then(response => withDate(response.data))
+  return axios.get<DBPaper>(`/papers/${id}`).then(response => strToDate(response.data))
+}
+
+export const patchPaper = (id: string, data: PaperPatchDTO): Promise<void> => {
+  return axios.patch(`/papers/${id}`, data)
 }
