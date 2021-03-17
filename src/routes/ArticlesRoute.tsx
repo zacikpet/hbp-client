@@ -16,6 +16,7 @@ const ArticlesRoute: FC = () => {
   const [previousScroll, setPreviousScroll] = useState<number>(0)
 
   const handleSelect = (article: Paper) => {
+    scrollTo(0, 0)
     setSelectedArticle(article)
     setPreviousScroll(window.pageYOffset)
   }
