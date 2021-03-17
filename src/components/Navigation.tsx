@@ -15,7 +15,11 @@ const Navigation: FC<NavigationProps> = ({ onAction }) => {
       <Link to="/" onClick={handleAction} className={`navlink ${pathname === '/' && 'navlink-active'}`}>
         Home
       </Link>
-      <Link to="/articles" onClick={handleAction} className={`navlink ${pathname === '/articles' && 'navlink-active'}`}>
+      <Link
+        to="/articles"
+        onClick={handleAction}
+        className={`navlink ${pathname.startsWith('/articles') && 'navlink-active'}`}
+      >
         Articles
       </Link>
       <Link to="/history" onClick={handleAction} className={`navlink ${pathname === '/history' && 'navlink-active'}`}>

@@ -8,9 +8,10 @@ import useDarkMode from '../hooks/useDarkMode'
 type ArticleDetailProps = {
   selectedPaper?: Paper
   onBack?: () => void
+  onFetch?: (paper: Paper) => void
 }
 
-const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onBack }) => {
+const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onBack, onFetch }) => {
   const { id } = useParams<{ id: string }>()
   const darkMode = useDarkMode()
 
@@ -20,8 +21,12 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onBack }) => {
   const [lowerLimit, setLowerLimit] = useState(0)
 
   useEffect(() => {
-    if (!fetchedPaper) getPaper(id).then(setFetchedPaper)
-  }, [fetchedPaper, id])
+    if (!selectedPaper && id)
+      getPaper(id).then(paper => {
+        setFetchedPaper(paper)
+        onFetch && onFetch(paper)
+      })
+  }, [id, onFetch, selectedPaper])
 
   function patchLowerLimit() {
     setPatching(true)
@@ -29,29 +34,48 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onBack }) => {
       getPaper(id).then(paper => {
         setFetchedPaper(paper)
         setPatching(false)
+        onFetch && onFetch(paper)
       })
     )
   }
 
-  const paper = selectedPaper || fetchedPaper
+  function handleClickBack() {
+    setFetchedPaper(undefined)
+    onBack && onBack()
+  }
+
+  const paper = fetchedPaper || selectedPaper
 
   return (
-    <div className="h-page w-full p-16 bg-gray-50">
-      <Link to="/articles" onClick={onBack}>
+    <div className="min-h-page w-full p-8 md:px-32">
+      <Link to="/articles" onClick={handleClickBack}>
         <button className="btn">Back to all articles</button>
       </Link>
-      <h1 className="text-xl font-bold text-emphasis">
-        <Latex>{paper?.title}</Latex>
-      </h1>
-      <br />
-      {paper?.abstract && (
-        <p className="font-serif">
-          <Latex>{paper.abstract}</Latex>
-        </p>
-      )}
+      <div className="ml-auto mr-auto mt-8 max-w-3xl">
+        <h1 className="text-xl font-bold text-emphasis">
+          <Latex>{paper?.title}</Latex>
+        </h1>
+        <br />
+        {paper?.abstract && (
+          <p className="font-serif">
+            <Latex>{paper.abstract}</Latex>
+          </p>
+        )}
+        {paper && paper.files.length > 0 && (
+          <a href={paper.files[0]} target="_blank" className="mr-2">
+            <button className="btn">PDF</button>
+          </a>
+        )}
+      </div>
       <br />
       {paper?.lower_limit ? <h2>Current lower limit: {paper.lower_limit}</h2> : <h2>No lower limit set</h2>}
-      <input value={lowerLimit} onChange={e => setLowerLimit(parseInt(e.target.value))} type="number" />
+      <input
+        className="input"
+        value={lowerLimit}
+        onChange={e => setLowerLimit(parseFloat(e.target.value))}
+        type="number"
+        step="0.1"
+      />
       <button className="btn ml-2" onClick={patchLowerLimit}>
         Update
       </button>

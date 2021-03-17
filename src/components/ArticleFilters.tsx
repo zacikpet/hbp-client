@@ -295,10 +295,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
         </Checkbox>
         {!options.anyDecay && (
           <div className="">
-            <select
-              className="text-sm mb-2 rounded dark:bg-gray-850"
-              onChange={event => addDecayProduct(event.target.value)}
-            >
+            <select className="input mb-2" onChange={event => addDecayProduct(event.target.value)}>
               {particles.map(particle => (
                 <option key={particle} value={particle} onClick={() => addDecayProduct(particle)}>
                   {particle}

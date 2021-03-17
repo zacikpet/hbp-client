@@ -25,6 +25,9 @@ module.exports = {
         wscreen: '100vw',
         page: 'calc(100vh - 4rem)',
       },
+      minHeight: {
+        page: 'calc(100vh - 4rem)',
+      },
       backgroundImage: () => ({
         atlas: "url('resources/atlas.jpg')",
         cms: "url('resources/cms.jpg')",
