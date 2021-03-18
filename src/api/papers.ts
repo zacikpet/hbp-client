@@ -60,3 +60,24 @@ export const getPaper = (id: string): Promise<Paper> => {
 export const patchPaper = (id: string, data: PaperPatchDTO): Promise<void> => {
   return axios.patch(`/papers/${id}`, data)
 }
+
+export type LowerLimitPaper = {
+  experiment: Experiment
+  date: number
+  lower_limit: number
+  _id: string
+}
+
+export const getLowerLimits = (): Promise<LowerLimitPaper[]> => {
+  return axios.get<DBPaper[]>(`/mass-limit`).then(response =>
+    response.data
+      .map(strToDate)
+      .filter(paper => paper.lower_limit)
+      .map((paper, index) => ({
+        experiment: paper.experiment,
+        date: paper.date.getTime() + index,
+        lower_limit: paper.lower_limit || 0,
+        _id: paper._id,
+      }))
+  )
+}
