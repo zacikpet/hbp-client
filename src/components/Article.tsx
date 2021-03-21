@@ -11,6 +11,8 @@ const StageInfoCard: FC<{ stage: Stage }> = ({ stage }) => {
       return <div className="article-info-card w-20 bg-primary">Submitted</div>
     case 'published':
       return <div className="article-info-card w-20 bg-blue-400">Published</div>
+    default:
+      return <></>
   }
 }
 

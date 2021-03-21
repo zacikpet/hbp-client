@@ -69,7 +69,6 @@ const HistoryRoute: FC = () => {
                   value: 'LEP I',
                 }}
                 opacity={0.4}
-                onClick={console.log}
               />
               <ReferenceArea
                 x1={new Date(1996, 6).getTime()}
