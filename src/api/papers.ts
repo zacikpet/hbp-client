@@ -73,9 +73,9 @@ export const getLowerLimits = (): Promise<LowerLimitPaper[]> => {
     response.data
       .map(strToDate)
       .filter(paper => paper.lower_limit)
-      .map((paper, index) => ({
+      .map(paper => ({
         experiment: paper.experiment,
-        date: paper.date.getTime() + index,
+        date: paper.date.getTime(),
         lower_limit: paper.lower_limit || 0,
         _id: paper._id,
       }))
