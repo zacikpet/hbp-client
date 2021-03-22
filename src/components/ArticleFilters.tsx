@@ -58,7 +58,6 @@ type ArticleFiltersProps = {
 
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   const darkMode = useDarkMode()
-
   const addDecayProduct = (product: string) => {
     if (options.decay.products.includes(product)) return
     onChange({
@@ -124,7 +123,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
 
   return (
     <div
-      className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700 overflow-y-auto sticky top-16 left-0"
+      className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700 overflow-y-auto"
       style={{ direction: 'rtl' }}
     >
       <div className="article-filter">

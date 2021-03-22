@@ -43,8 +43,6 @@ type PaperPatchDTO = {
 
 type DBPaper = Omit<Paper, 'date'> & { date: string }
 
-axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
-
 function strToDate(paper: DBPaper): Paper {
   return { ...paper, date: new Date(paper.date) }
 }
