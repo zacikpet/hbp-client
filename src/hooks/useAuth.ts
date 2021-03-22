@@ -1,6 +1,6 @@
 import { useContext } from 'react'
-import { AuthContext } from '../App'
+import { AuthContext, AuthContextType } from '../App'
 
-const useAuth = (): boolean => useContext(AuthContext)
+const useAuth = (): AuthContextType | null => useContext(AuthContext)
 
 export default useAuth

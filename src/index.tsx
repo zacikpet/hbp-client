@@ -3,16 +3,28 @@ import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import { BrowserRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import axios from 'axios'
+import { createBrowserHistory } from 'history'
+
+export const history = createBrowserHistory()
 
 axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
+axios.defaults.withCredentials = true
+axios.interceptors.response.use(
+  res => res,
+  error => {
+    if (error?.response?.status === 401) history.push('/expired')
+
+    return error
+  }
+)
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -14,7 +14,7 @@ const Footer: FC = () => (
     </div>
     <div className="mr-2 ml-auto opacity-40">
       <Link to="/login" className="hover:underline">
-        Administration
+        <span onClick={() => scrollTo(0, 0)}>Administration</span>
       </Link>
     </div>
   </div>

@@ -106,7 +106,10 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
 
   return (
     <div className="flex flex-col md:flex-row min-h-page">
-      <div className="md:sticky left-0 md:h-page flex-shrink-0 w-full md:w-1/4" style={{ top: auth ? 96 : 64 }}>
+      <div
+        className="md:sticky left-0 md:h-page flex-shrink-0 w-full md:w-1/4"
+        style={{ top: auth?.loggedIn ? 96 : 64 }}
+      >
         <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       </div>
       <div className="flex flex-col items-center w-full px-5">
