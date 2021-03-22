@@ -9,6 +9,7 @@ import HistoryRoute from 'routes/HistoryRoute'
 import AdminRoute from 'routes/AdminRoute'
 import Footer from './components/Footer'
 import AdminNavbar from './components/AdminNavbar'
+import LoginRoute from './routes/LoginRoute'
 
 export const DarkModeContext = React.createContext(false)
 export const AuthContext = React.createContext(false)
@@ -48,6 +49,9 @@ const App: FC = () => {
                 </Route>
                 <Route exact path="/history">
                   <HistoryRoute />
+                </Route>
+                <Route exact path="/login">
+                  <LoginRoute />
                 </Route>
                 <Route exact path="/admin">
                   <AdminRoute />
