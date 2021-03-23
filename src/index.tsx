@@ -15,8 +15,7 @@ axios.interceptors.response.use(
   res => res,
   error => {
     if (error?.response?.status === 401) history.push('/expired')
-
-    return error
+    throw error
   }
 )
 

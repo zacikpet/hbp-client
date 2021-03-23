@@ -15,7 +15,7 @@ body {
     }
 
     .input {
-        @apply text-sm rounded dark:bg-gray-850 shadow outline-none border-gray-400
+        @apply text-sm rounded text-black shadow outline-none border-gray-400
     }
 
     .source {
