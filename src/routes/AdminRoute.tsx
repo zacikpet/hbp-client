@@ -1,46 +1,28 @@
-import React, { FC, useEffect, useState } from 'react'
-import { getStats, Stats } from '../api/stats'
+import React, { FC } from 'react'
 import useAuth from '../hooks/useAuth'
 import { Redirect } from 'react-router-dom'
-import { getCurrentUser, User } from '../api/auth'
-import useAuthActions from '../hooks/useAuthActions'
+import AdminDashboard from '../components/AdminDashboard'
 
-const AdminRoute: FC = () => {
-  const [stats, setStats] = useState<Stats>()
+type AdminRouteProps = {
+  onLogout: () => void
+}
+
+const AdminRoute: FC<AdminRouteProps> = ({ onLogout }) => {
   const auth = useAuth()
-  const actions = useAuthActions()
-  const [user, setUser] = useState<User>()
-
-  useEffect(() => {
-    getCurrentUser().then(setUser)
-  }, [])
 
   if (!auth?.loggedIn) return <Redirect to="/home" />
 
+  if (auth.loggedIn && auth.user?.verified) return <AdminDashboard onLogout={onLogout} />
+
   return (
-    <div className="min-h-page flex flex-col px-12">
-      <button className="btn" onClick={() => actions?.onLogout()}>
-        Sign out
-      </button>
-      {user?.email}
-      <div className="my-4 text-center">
-        <h1 className="text-emphasis text-xl">Administration</h1>
+    <div className="min-h-page flex justify-center items-center">
+      <div className="bg-gray-50 dark:bg-gray-850 shadow-xl p-8 flex flex-col rounded">
+        <h1 className="text-emphasis font-bolder text-xl">Your account is not verified</h1>
+        <p>You will receive an email when we verify your identify.</p>
+        <button className="btn m-2 mt-8" onClick={onLogout}>
+          Sign out
+        </button>
       </div>
-      <h2>Updates history</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {stats?.updates.map(update => (
-            <tr key={update.date}>
-              <td>{new Date(update.date).toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   )
 }

@@ -1,10 +1,11 @@
 import React, { FC, useEffect } from 'react'
-import useAuthActions from '../hooks/useAuthActions'
 
-const SessionExpiredRoute: FC = () => {
-  const actions = useAuthActions()
+type SessionExpiredRouteProps = {
+  onLogout: () => void
+}
 
-  // useEffect(() => actions?.onLogout(), [actions])
+const SessionExpiredRoute: FC<SessionExpiredRouteProps> = ({ onLogout }) => {
+  useEffect(onLogout, [onLogout])
 
   return <div className="min-h-page">Your session has expired.</div>
 }
