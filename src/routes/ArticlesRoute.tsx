@@ -1,6 +1,6 @@
 import './styles.css'
 import React, { FC, useEffect, useState } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, useLocation } from 'react-router-dom'
 import Loading from 'components/Loading'
 import ArticleDetail from 'components/ArticleDetail'
 import ArticlesBrowse, { State } from 'components/ArticlesBrowse'
@@ -11,9 +11,10 @@ const ArticlesRoute: FC = () => {
   const [loading, setLoading] = useState(true)
   const [papers, setPapers] = useState<Paper[]>([])
   const [selectedArticle, setSelectedArticle] = useState<Paper>()
-
   const [state, setState] = useState<State>()
   const [previousState, setPreviousState] = useState<State>()
+
+  const { pathname } = useLocation()
 
   const handleSelect = (article: Paper, page: number) => {
     setSelectedArticle(article)
@@ -21,7 +22,9 @@ const ArticlesRoute: FC = () => {
     scrollTo(0, 0)
   }
 
-  const handleBack = () => setState(previousState)
+  useEffect(() => {
+    if (pathname === '/articles') setState(previousState)
+  }, [pathname, previousState])
 
   const handleFetch = (paper: Paper) => {
     const index = papers.findIndex(p => p._id === paper._id)
@@ -53,7 +56,7 @@ const ArticlesRoute: FC = () => {
         {({ match }) => (
           <CSSTransition in={match !== null} timeout={300} classNames="page">
             <div className={match ? 'visible' : 'hidden'}>
-              <ArticleDetail selectedPaper={selectedArticle} onBack={handleBack} onFetch={handleFetch} />
+              <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} />
             </div>
           </CSSTransition>
         )}

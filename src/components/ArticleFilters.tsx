@@ -122,10 +122,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   }
 
   return (
-    <div
-      className="h-full flex flex-col px-5 border-r w-full dark:border-gray-700 overflow-y-auto"
-      style={{ direction: 'rtl' }}
-    >
+    <div className="h-full flex flex-col px-5 md:pr-0  w-full overflow-y-auto" style={{ direction: 'rtl' }}>
       <div className="article-filter">
         <h2>Date</h2>
         <div className="p-2">

@@ -25,7 +25,7 @@ const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder })
       </div>
       <form onSubmit={handleSubmit}>
         <input
-          className="rounded border border-gray-200 dark:border-gray-800 m-2 px-2 font-semibold focus:outline-none focus:ring focus:ring-primary dark:bg-gray-850"
+          className="rounded border border-gray-200 dark:border-gray-800 m-2 px-2 focus:outline-none focus:ring focus:ring-primary dark:bg-gray-850"
           value={searchString}
           placeholder={placeHolder}
           onChange={e => setSearchString(e.target.value)}

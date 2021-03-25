@@ -1,20 +1,8 @@
 import React, { FC, useState } from 'react'
-import { Paper, Stage } from 'api/papers'
+import { Paper } from 'api/papers'
 import Latex from 'react-latex'
 import { Link } from 'react-router-dom'
-
-const StageInfoCard: FC<{ stage: Stage }> = ({ stage }) => {
-  switch (stage) {
-    case 'preliminary':
-      return <div className="article-info-card w-20 bg-red-500">Preliminary</div>
-    case 'submitted':
-      return <div className="article-info-card w-20 bg-primary">Submitted</div>
-    case 'published':
-      return <div className="article-info-card w-20 bg-blue-400">Published</div>
-    default:
-      return <></>
-  }
-}
+import StageInfoCard from './StageInfoCard'
 
 type ArticleProps = {
   paper: Paper
@@ -27,14 +15,16 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
   const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
 
   return (
-    <div className="w-full px-10 pb-5 border-t hover:bg-gray-50 dark:hover:bg-gray-850 dark:border-gray-700">
+    <div className="w-full px-10 pb-5 my-1 bg-white dark:hover:bg-gray-850 dark:border-gray-700 shadow-md rounded">
       <div className="flex pt-3 pb-1">
         <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
         <StageInfoCard stage={paper.stage} />
       </div>
-      <h1 className="font-bold text-emphasis">
-        <Latex>{paper.title}</Latex>
-      </h1>
+      <Link to={`/articles/${paper._id}`} onClick={onSelect}>
+        <h1 className="font-bold text-emphasis">
+          <Latex>{paper.title}</Latex>
+        </h1>
+      </Link>
       {abstract && (
         <p className="font-serif">
           <Latex>{abstract}</Latex>
