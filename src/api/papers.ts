@@ -37,10 +37,6 @@ export type Paper = {
   lower_limit?: number
 }
 
-type PaperPatchDTO = {
-  lower_limit: number
-}
-
 type DBPaper = Omit<Paper, 'date'> & { date: string }
 
 function strToDate(paper: DBPaper): Paper {
@@ -55,8 +51,8 @@ export const getPaper = (id: string): Promise<Paper> => {
   return axios.get<DBPaper>(`/papers/${id}`).then(response => strToDate(response.data))
 }
 
-export const patchPaper = (id: string, data: PaperPatchDTO): Promise<void> => {
-  return axios.patch(`/papers/${id}`, data)
+export const patchPaper = (id: string, data: Paper): Promise<void> => {
+  return axios.put(`/papers/${id}`, data)
 }
 
 export type LowerLimitPaper = {

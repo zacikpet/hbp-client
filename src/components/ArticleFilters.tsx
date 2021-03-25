@@ -6,7 +6,7 @@ import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import useDarkMode from '../hooks/useDarkMode'
 
-const particles = [
+export const particles = [
   'boson',
   'higgs',
   'photon',

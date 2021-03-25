@@ -39,6 +39,10 @@ const ArticlesRoute: FC = () => {
     })
   }, [])
 
+  function handleEdit(edited: Paper) {
+    setPapers(papers.map(paper => (paper._id === edited._id ? paper : edited)))
+  }
+
   if (loading) return <Loading />
 
   return (
@@ -56,7 +60,7 @@ const ArticlesRoute: FC = () => {
         {({ match }) => (
           <CSSTransition in={match !== null} timeout={300} classNames="page">
             <div className={match ? 'visible' : 'hidden'}>
-              <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} />
+              <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} onEdit={handleEdit} />
             </div>
           </CSSTransition>
         )}

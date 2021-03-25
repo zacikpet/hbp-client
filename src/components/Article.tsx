@@ -15,7 +15,7 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
   const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
 
   return (
-    <div className="w-full px-10 pb-5 my-1 bg-white dark:hover:bg-gray-850 dark:border-gray-700 shadow-md rounded">
+    <div className="w-full px-10 pb-5 my-1 bg-white dark:bg-gray-850 dark:hover:bg-gray-800 shadow-md rounded">
       <div className="flex pt-3 pb-1">
         <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
         <StageInfoCard stage={paper.stage} />

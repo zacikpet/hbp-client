@@ -61,8 +61,8 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
   if (auth?.loggedIn) return <Redirect to="/admin" />
 
   return (
-    <div className="min-h-page flex justify-center items-center">
-      <div className="bg-gray-50 dark:bg-gray-850 shadow-xl p-8 flex flex-col rounded">
+    <div className="min-h-page flex justify-center items-center bg-gray-50">
+      <div className="bg-white dark:bg-gray-850 shadow-xl p-8 flex flex-col rounded">
         {error && <Alert level="error" text={error} />}
         <FadeIn when={page === 'loading'}>
           <div className="w-72 h-72 flex justify-center items-center">
@@ -106,7 +106,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
               name="firstname"
               type="text"
               placeholder="First name"
-              className="input mb-2"
+              className="input mb-2 placeholder-gray-300"
             />
             <label>Last name</label>
             <input
@@ -115,7 +115,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
               name="lastname"
               type="text"
               placeholder="Last name"
-              className="input mb-2"
+              className="input mb-2 placeholder-gray-300"
             />
 
             <label>E-mail</label>
@@ -125,7 +125,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
               name="email"
               type="text"
               placeholder="email"
-              className="input mb-2"
+              className="input mb-2 placeholder-gray-300"
             />
             <label>Password</label>
             <input
@@ -134,7 +134,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
               name="password"
               type="password"
               placeholder="•••••••••"
-              className="input mb-2"
+              className="input mb-2 placeholder-gray-300"
             />
             <label>Verify password</label>
             <input
@@ -143,7 +143,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
               name="verify"
               type="password"
               placeholder="•••••••••"
-              className="input mb-2"
+              className="input mb-2 placeholder-gray-300"
             />
 
             <div className="flex justify-between p-2 text-primary">
