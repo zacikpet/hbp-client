@@ -81,6 +81,76 @@ const ArticleEdit: FC<ArticleEditProps> = ({ paper, onEdit }) => {
     })
   }
 
+  function addPrecision() {
+    setEdited({
+      ...edited,
+      precision: {
+        higgs_mass: 125,
+        stat_error_up: 1,
+        stat_error_down: 1,
+        sys_error_up: 1,
+        sys_error_down: 1,
+      },
+    })
+  }
+
+  function removePrecision() {
+    setEdited({
+      ...edited,
+      precision: undefined,
+    })
+  }
+
+  function setHiggsMass(newValue: number) {
+    setEdited({
+      ...edited,
+      precision: edited.precision && {
+        ...edited.precision,
+        higgs_mass: newValue,
+      },
+    })
+  }
+
+  function setStatErrorUp(newValue: number) {
+    setEdited({
+      ...edited,
+      precision: edited.precision && {
+        ...edited.precision,
+        stat_error_up: newValue,
+      },
+    })
+  }
+
+  function setStatErrorDown(newValue: number) {
+    setEdited({
+      ...edited,
+      precision: edited.precision && {
+        ...edited.precision,
+        stat_error_down: newValue,
+      },
+    })
+  }
+
+  function setSysErrorUp(newValue: number) {
+    setEdited({
+      ...edited,
+      precision: edited.precision && {
+        ...edited.precision,
+        sys_error_up: newValue,
+      },
+    })
+  }
+
+  function setSysErrorDown(newValue: number) {
+    setEdited({
+      ...edited,
+      precision: edited.precision && {
+        ...edited.precision,
+        sys_error_down: newValue,
+      },
+    })
+  }
+
   function handleEdit() {
     setLoading(true)
     patchPaper(paper._id, edited).then(() => {
@@ -183,11 +253,11 @@ const ArticleEdit: FC<ArticleEditProps> = ({ paper, onEdit }) => {
 
       <div className="my-2">
         <label>Lower mass limit at 95 % CL</label>
-        {paper.lower_limit === undefined ? (
+        {edited.lower_limit !== undefined ? (
           <div className="flex items-center">
             <input
               className="input"
-              value={paper.lower_limit}
+              value={edited.lower_limit}
               onChange={e => changeLowerLimit(parseFloat(e.target.value))}
               type="number"
               step="0.1"
@@ -198,12 +268,85 @@ const ArticleEdit: FC<ArticleEditProps> = ({ paper, onEdit }) => {
             />
           </div>
         ) : (
-          <button
-            className="bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded shadow w-8 h-8 text-2xl my-1"
-            onClick={addLowerLimit}
-          >
-            +
-          </button>
+          <div>
+            <button
+              className="bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded shadow w-8 h-8 text-2xl my-1"
+              onClick={addLowerLimit}
+            >
+              +
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="my-2">
+        <label>Mass Precision Measurement</label>
+        {edited.precision !== undefined ? (
+          <div className="flex flex-col">
+            <CrossSVG
+              className="ml-2 w-4 h-4 text-red-600 hover:text-red-700 fill-current cursor-pointer"
+              onClick={removePrecision}
+            />
+            <div>
+              <label>Higgs mass</label>
+              <input
+                className="input ml-2"
+                value={edited.precision.higgs_mass}
+                onChange={e => setHiggsMass(parseFloat(e.target.value))}
+                type="number"
+                step="0.01"
+              />
+            </div>
+            <div>
+              <label>Upper statistical error</label>
+              <input
+                className="input ml-2"
+                value={edited.precision.stat_error_up}
+                onChange={e => setStatErrorUp(parseFloat(e.target.value))}
+                type="number"
+                step="0.01"
+              />
+            </div>
+            <div>
+              <label>Lower statistical error</label>
+              <input
+                className="input ml-2"
+                value={edited.precision.stat_error_down}
+                onChange={e => setStatErrorDown(parseFloat(e.target.value))}
+                type="number"
+                step="0.01"
+              />
+            </div>
+            <div>
+              <label>Upper systematic error</label>
+              <input
+                className="input ml-2"
+                value={edited.precision.sys_error_up}
+                onChange={e => setSysErrorUp(parseFloat(e.target.value))}
+                type="number"
+                step="0.01"
+              />
+            </div>
+            <div>
+              <label>Lower systematic error</label>
+              <input
+                className="input ml-2"
+                value={edited.precision.sys_error_down}
+                onChange={e => setSysErrorDown(parseFloat(e.target.value))}
+                type="number"
+                step="0.01"
+              />
+            </div>
+          </div>
+        ) : (
+          <div>
+            <button
+              className="bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded shadow w-8 h-8 text-2xl my-1"
+              onClick={addPrecision}
+            >
+              +
+            </button>
+          </div>
         )}
       </div>
 

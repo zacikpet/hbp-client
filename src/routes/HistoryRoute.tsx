@@ -17,6 +17,33 @@ import useDarkMode from '../hooks/useDarkMode'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
+const testData = [
+  {
+    higgs_mass: 121,
+    stat_error_up: 20,
+    stat_error_down: 20,
+    sys_error_up: 10,
+    sys_error_down: 10,
+    date: new Date(1994, 2),
+  },
+  {
+    higgs_mass: 123,
+    stat_error_up: 20,
+    stat_error_down: 20,
+    sys_error_up: 10,
+    sys_error_down: 10,
+    date: new Date(1996, 4),
+  },
+  {
+    higgs_mass: 125,
+    stat_error_up: 20,
+    stat_error_down: 20,
+    sys_error_up: 10,
+    sys_error_down: 10,
+    date: new Date(1998, 6),
+  },
+]
+
 const HistoryRoute: FC = () => {
   const history = useHistory()
   const darkMode = useDarkMode()
@@ -143,6 +170,113 @@ const HistoryRoute: FC = () => {
           <p className="source">Figure 1. Development of the lower limit of SM Higgs Boson mass at LEP</p>
         </div>
       </div>
+
+      <div className="w-full flex flex-row flex-wrap-reverse items-center">
+        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
+          <h1 className="text-4xl font-bold text-emphasis">The Higgs boson mass measurement</h1>
+          <br />
+          <p className="font-serif font-light">The development of the measurement precision</p>
+        </div>
+        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart>
+              <XAxis
+                type="number"
+                dataKey="date"
+                scale="time"
+                ticks={ticks}
+                domain={[new Date(1989, 7).getTime(), 'dataMax']}
+                tickFormatter={formatDate}
+              />
+              <YAxis
+                dataKey="higgs_mass"
+                type="number"
+                ticks={[0, 25, 50, 75, 100, 125, 150]}
+                domain={[0, 150]}
+                unit="GeV"
+              />
+
+              {testData.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    { x: precision.date.getTime(), y: precision.higgs_mass - precision.stat_error_down },
+                    { x: precision.date.getTime(), y: precision.higgs_mass + precision.stat_error_up },
+                  ]}
+                />
+              ))}
+
+              {testData.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    {
+                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 4,
+                      y: precision.higgs_mass - precision.stat_error_down,
+                    },
+                    {
+                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 4,
+                      y: precision.higgs_mass - precision.stat_error_down,
+                    },
+                  ]}
+                />
+              ))}
+
+              {testData.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    {
+                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 4,
+                      y: precision.higgs_mass + precision.stat_error_up,
+                    },
+                    {
+                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 4,
+                      y: precision.higgs_mass + precision.stat_error_up,
+                    },
+                  ]}
+                />
+              ))}
+
+              {testData.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    {
+                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass - precision.sys_error_down,
+                    },
+                    {
+                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass - precision.sys_error_down,
+                    },
+                  ]}
+                />
+              ))}
+
+              {testData.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    {
+                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass + precision.sys_error_up,
+                    },
+                    {
+                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass + precision.sys_error_up,
+                    },
+                  ]}
+                />
+              ))}
+
+              <Scatter data={testData} />
+            </ScatterChart>
+          </ResponsiveContainer>
+          <p className="source">Figure 1: Development of the lower limit of Higgs Boson mass</p>
+        </div>
+      </div>
+
       <div className="w-full flex flex-row flex-wrap-reverse items-center">
         <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
           <h1 className="text-4xl font-bold text-emphasis">The SM Higgs boson upper mass limit</h1>

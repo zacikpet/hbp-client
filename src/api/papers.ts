@@ -35,6 +35,13 @@ export type Paper = {
   model: Model
   stage: Stage
   lower_limit?: number
+  precision?: {
+    higgs_mass: number
+    stat_error_up: number
+    stat_error_down: number
+    sys_error_up: number
+    sys_error_down: number
+  }
 }
 
 type DBPaper = Omit<Paper, 'date'> & { date: string }
@@ -52,7 +59,7 @@ export const getPaper = (id: string): Promise<Paper> => {
 }
 
 export const patchPaper = (id: string, data: Paper): Promise<void> => {
-  return axios.put(`/papers/${id}`, data)
+  return axios.patch(`/papers/${id}`, data)
 }
 
 export type LowerLimitPaper = {

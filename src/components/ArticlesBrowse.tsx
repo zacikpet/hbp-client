@@ -116,8 +116,8 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
           placeHolder={'Search ' + filteredPapers.length + ' articles'}
         />
 
-        {displayedPapers.map(paper => (
-          <Article key={paper._id} paper={paper} onSelect={() => onSelect(paper, page)} />
+        {displayedPapers.map((paper, index) => (
+          <Article key={paper._id + index.toString()} paper={paper} onSelect={() => onSelect(paper, page)} />
         ))}
 
         <div className="p-8">
