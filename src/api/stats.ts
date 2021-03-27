@@ -6,5 +6,5 @@ export type Stats = {
 }
 
 export const getStats = (): Promise<Stats> => {
-  return axios.get<Stats>('/stats').then(response => response.data)
+  return axios.get<Stats>('/api/stats').then(response => response.data)
 }

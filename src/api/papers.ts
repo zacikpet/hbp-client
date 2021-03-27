@@ -51,15 +51,15 @@ function strToDate(paper: DBPaper): Paper {
 }
 
 export const getPapers = (): Promise<Paper[]> => {
-  return axios.get<DBPaper[]>('/papers').then(response => response.data.map(strToDate))
+  return axios.get<DBPaper[]>('/api/papers').then(response => response.data.map(strToDate))
 }
 
 export const getPaper = (id: string): Promise<Paper> => {
-  return axios.get<DBPaper>(`/papers/${id}`).then(response => strToDate(response.data))
+  return axios.get<DBPaper>(`/api/papers/${id}`).then(response => strToDate(response.data))
 }
 
 export const patchPaper = (id: string, data: Paper): Promise<void> => {
-  return axios.patch(`/papers/${id}`, data)
+  return axios.patch(`/api/papers/${id}`, data)
 }
 
 export type LowerLimitPaper = {
@@ -70,7 +70,7 @@ export type LowerLimitPaper = {
 }
 
 export const getLowerLimits = (): Promise<LowerLimitPaper[]> => {
-  return axios.get<DBPaper[]>(`/mass-limit`).then(response =>
+  return axios.get<DBPaper[]>(`/api/mass-limit`).then(response =>
     response.data
       .map(strToDate)
       .filter(paper => paper.lower_limit)

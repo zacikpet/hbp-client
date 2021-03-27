@@ -9,7 +9,6 @@ import { createBrowserHistory } from 'history'
 
 export const history = createBrowserHistory()
 
-axios.defaults.baseURL = 'https://hbp-server.herokuapp.com'
 axios.defaults.withCredentials = true
 axios.interceptors.response.use(
   res => res,

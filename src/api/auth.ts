@@ -13,7 +13,7 @@ type AuthResult = {
 
 export const register = (firstname: string, lastname: string, email: string, password: string): Promise<AuthResult> => {
   return axios
-    .post<AuthResult>('/register', { firstname, lastname, email, password })
+    .post<AuthResult>('/api/register', { firstname, lastname, email, password })
     .then(response => response.data)
 }
 
@@ -23,18 +23,18 @@ type LoginResult = AuthResult & {
 
 export const login = (email: string, password: string): Promise<LoginResult> => {
   return axios
-    .post<LoginResult>('/login', { email, password })
+    .post<LoginResult>('/api/login', { email, password })
     .then(response => response.data)
 }
 
 export const signup = (email: string, password: string, firstname: string, lastname: string): Promise<AuthResult> => {
   return axios
-    .post<AuthResult>('/register', { email, password, firstname, lastname })
+    .post<AuthResult>('/api/register', { email, password, firstname, lastname })
     .then(response => response.data)
 }
 
 export const logout = (): Promise<AuthResult> => {
-  return axios.post<AuthResult>('/logout').then(response => response.data)
+  return axios.post<AuthResult>('/api/logout').then(response => response.data)
 }
 
 type VerifyAuthResult = AuthResult & {
@@ -43,9 +43,9 @@ type VerifyAuthResult = AuthResult & {
 }
 
 export const verifyAuth = (): Promise<VerifyAuthResult> => {
-  return axios.get<VerifyAuthResult>('/verify-auth').then(response => response.data)
+  return axios.get<VerifyAuthResult>('/api/verify-auth').then(response => response.data)
 }
 
 export const getCurrentUser = (): Promise<User> => {
-  return axios.get<User>('/users/current').then(response => response.data)
+  return axios.get<User>('/api/users/current').then(response => response.data)
 }
