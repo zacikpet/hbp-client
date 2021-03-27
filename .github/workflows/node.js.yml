@@ -24,18 +24,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-
     - name: Push build to hbp repository
-      id: push_build
-      uses: cpina/github-action-push-to-another-repository@v1.2
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      uses: andstor/copycat-action@v3
       with:
-        source-directory: 'build'
-        destination-github-username: 'zacikpet'
-        destination-repository-name: 'hbp'
-        user-email: zacikpet@fit.cvut.cz
-        commit-message: Update client static files
-
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        src_path: /build/
+        dst_path: /client/
+        dst_owner: zacikpet
+        dst_repo_name: hbp
+        clean: true
+        commit_message: (automatic) Update client static files
 
 
