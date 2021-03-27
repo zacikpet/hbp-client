@@ -10,6 +10,16 @@ import { createBrowserHistory } from 'history'
 export const history = createBrowserHistory()
 
 axios.defaults.withCredentials = true
+
+axios.interceptors.request.use(req => {
+  req.headers['X-CSRF-TOKEN'] = document.cookie
+    .split(';')
+    .find(cookie => cookie.includes('csrf_access_token'))
+    ?.slice(18)
+
+  return req
+})
+
 axios.interceptors.response.use(
   res => res,
   error => {

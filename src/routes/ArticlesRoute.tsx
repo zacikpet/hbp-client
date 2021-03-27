@@ -1,5 +1,5 @@
 import './styles.css'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Route, useLocation } from 'react-router-dom'
 import Loading from 'components/Loading'
 import ArticleDetail from 'components/ArticleDetail'
@@ -26,11 +26,12 @@ const ArticlesRoute: FC = () => {
     if (pathname === '/articles') setState(previousState)
   }, [pathname, previousState])
 
-  const handleFetch = (paper: Paper) => {
-    const index = papers.findIndex(p => p._id === paper._id)
-
-    setPapers([...papers.slice(0, index), paper, ...papers.slice(index + 1)])
-  }
+  const handleFetch = useCallback((paper: Paper) => {
+    setPapers(old => {
+      const index = old.findIndex(p => p._id === paper._id)
+      return [...old.slice(0, index), paper, ...old.slice(index + 1)]
+    })
+  }, [])
 
   useEffect(() => {
     getPapers().then(papers => {

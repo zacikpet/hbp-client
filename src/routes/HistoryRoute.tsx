@@ -6,9 +6,11 @@ import {
   ResponsiveContainer,
   Scatter,
   ScatterChart,
+  LineChart,
   Tooltip,
   XAxis,
   YAxis,
+  Line,
 } from 'recharts'
 import { getLowerLimits, LowerLimitPaper } from '../api/papers'
 import { useHistory } from 'react-router-dom'
@@ -16,6 +18,14 @@ import Loading from '../components/Loading'
 import useDarkMode from '../hooks/useDarkMode'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
+
+const tevatronLimits = [
+  { date: new Date(2009, 3).getTime(), upper: 170, lower: 160 },
+  { date: new Date(2010, 6).getTime(), upper: 175, lower: 158 },
+  { date: new Date(2011, 3).getTime(), upper: 173, lower: 158 },
+  { date: new Date(2012, 3).getTime(), upper: 179, lower: 147 },
+  { date: new Date(2012, 6).getTime(), upper: 180, lower: 147 },
+]
 
 const testData = [
   {
@@ -172,6 +182,47 @@ const HistoryRoute: FC = () => {
       </div>
 
       <div className="w-full flex flex-row flex-wrap-reverse items-center">
+        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={tevatronLimits}>
+              <Line type="monotone" dataKey="upper" stroke="#8884d8" />
+              <Line type="monotone" dataKey="lower" stroke="#82ca9d" />
+              <YAxis domain={[130, 180]} />
+              <XAxis dataKey="date" type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatDate} />
+              <ReferenceLine
+                y={125.35}
+                label={{
+                  position: 'top',
+                  value: 'Higgs boson mass',
+                  fontWeight: 400,
+                  fill: darkMode ? 'white' : 'black',
+                  fillOpacity: 0.6,
+                }}
+                stroke="gray"
+                strokeDasharray="5 3"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+          <p className="source">Figure 2. Development of the upper limit of SM Higgs Boson mass at Tevatron</p>
+        </div>
+        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
+          <h1 className="text-4xl font-bold text-emphasis">The upper mass limit of the Standard Model Higgs boson</h1>
+          <br />
+          <p className="font-serif font-light">
+            The development of the mass limits has been compiled in reference to&nbsp;
+            <a
+              href="http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf"
+              target="_blank"
+              className="text-blue-700 hover:underline"
+            >
+              this paper
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+
+      <div className="w-full flex flex-row flex-wrap-reverse items-center">
         <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
           <h1 className="text-4xl font-bold text-emphasis">The Higgs boson mass measurement</h1>
           <br />
@@ -273,26 +324,7 @@ const HistoryRoute: FC = () => {
               <Scatter data={testData} />
             </ScatterChart>
           </ResponsiveContainer>
-          <p className="source">Figure 1: Development of the lower limit of Higgs Boson mass</p>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row flex-wrap-reverse items-center">
-        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
-          <h1 className="text-4xl font-bold text-emphasis">The SM Higgs boson upper mass limit</h1>
-          <br />
-          <p className="font-serif font-light">
-            The development of the mass have been compiled in reference to{' '}
-            <a href="http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf" target="_blank">
-              http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf
-            </a>
-          </p>
-        </div>
-        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart />
-          </ResponsiveContainer>
-          <p className="source">Figure 1: Development of the lower limit of Higgs Boson mass</p>
+          <p className="source">Figure 3. Development of the mass precision at CERN</p>
         </div>
       </div>
     </div>
