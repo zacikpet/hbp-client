@@ -34,5 +34,7 @@ jobs:
         dst_repo_name: hbp
         clean: true
         commit_message: (automatic) Update client static files
+        username: zacikpet
+        email: zacikpet@fit.cvut.cz
 
 
