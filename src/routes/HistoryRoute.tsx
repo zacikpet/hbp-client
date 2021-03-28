@@ -7,10 +7,12 @@ import {
   Scatter,
   ScatterChart,
   LineChart,
+  ComposedChart,
   Tooltip,
   XAxis,
   YAxis,
   Line,
+  Area,
 } from 'recharts'
 import { getLowerLimits, LowerLimitPaper } from '../api/papers'
 import { useHistory } from 'react-router-dom'
@@ -20,11 +22,11 @@ import useDarkMode from '../hooks/useDarkMode'
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
 const tevatronLimits = [
-  { date: new Date(2009, 3).getTime(), upper: 170, lower: 160 },
-  { date: new Date(2010, 6).getTime(), upper: 175, lower: 158 },
-  { date: new Date(2011, 3).getTime(), upper: 173, lower: 158 },
-  { date: new Date(2012, 3).getTime(), upper: 179, lower: 147 },
-  { date: new Date(2012, 6).getTime(), upper: 180, lower: 147 },
+  { date: new Date(2009, 3).getTime(), upper: 170, lower: 160, excluded: [160, 170] },
+  { date: new Date(2010, 6).getTime(), upper: 175, lower: 158, excluded: [158, 175] },
+  { date: new Date(2011, 3).getTime(), upper: 173, lower: 158, excluded: [158, 173] },
+  { date: new Date(2012, 3).getTime(), upper: 179, lower: 147, excluded: [147, 179] },
+  { date: new Date(2012, 6).getTime(), upper: 180, lower: 147, excluded: [147, 180] },
 ]
 
 const testData = [
@@ -184,10 +186,11 @@ const HistoryRoute: FC = () => {
       <div className="w-full flex flex-row flex-wrap-reverse items-center">
         <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={tevatronLimits}>
-              <Line type="monotone" dataKey="upper" stroke="#8884d8" />
-              <Line type="monotone" dataKey="lower" stroke="#82ca9d" />
-              <YAxis domain={[130, 180]} />
+            <ComposedChart data={tevatronLimits}>
+              <Line dataKey="upper" stroke="#222222" strokeWidth={2} />
+              <Line dataKey="lower" stroke="#222222" strokeWidth={2} />
+              <Area dataKey="excluded" fill="#EF4444" label="Excluded zone" />
+              <YAxis domain={[120, 180]} />
               <XAxis dataKey="date" type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatDate} />
               <ReferenceLine
                 y={125.35}
@@ -201,9 +204,9 @@ const HistoryRoute: FC = () => {
                 stroke="gray"
                 strokeDasharray="5 3"
               />
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
-          <p className="source">Figure 2. Development of the upper limit of SM Higgs Boson mass at Tevatron</p>
+          <p className="source">Figure 2. Excluded zone for the Higgs boson mass at 95 % CL</p>
         </div>
         <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
           <h1 className="text-4xl font-bold text-emphasis">The upper mass limit of the Standard Model Higgs boson</h1>
@@ -217,7 +220,7 @@ const HistoryRoute: FC = () => {
             >
               this paper
             </a>
-            .
+            . This limit was set by the CDF and DØ experiments.
           </p>
         </div>
       </div>
