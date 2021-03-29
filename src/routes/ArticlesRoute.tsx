@@ -41,7 +41,7 @@ const ArticlesRoute: FC = () => {
   }, [])
 
   function handleEdit(edited: Paper) {
-    setPapers(papers.map(paper => (paper._id === edited._id ? paper : edited)))
+    setPapers(papers.map(paper => (paper._id === edited._id ? edited : paper)))
   }
 
   if (loading) return <Loading />

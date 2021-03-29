@@ -6,7 +6,6 @@ import {
   ResponsiveContainer,
   Scatter,
   ScatterChart,
-  LineChart,
   ComposedChart,
   Tooltip,
   XAxis,
@@ -14,12 +13,14 @@ import {
   Line,
   Area,
 } from 'recharts'
-import { getLowerLimits, LowerLimitPaper } from '../api/papers'
+import { getLowerLimits, getPrecision, LowerLimitPaper, PrecisionPaper } from '../api/papers'
 import { useHistory } from 'react-router-dom'
 import Loading from '../components/Loading'
 import useDarkMode from '../hooks/useDarkMode'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
+
+const precisionTicks = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020].map(year => new Date(year, 0).getTime())
 
 const tevatronLimits = [
   { date: new Date(2009, 3).getTime(), upper: 170, lower: 160, excluded: [160, 170] },
@@ -29,40 +30,18 @@ const tevatronLimits = [
   { date: new Date(2012, 6).getTime(), upper: 180, lower: 147, excluded: [147, 180] },
 ]
 
-const testData = [
-  {
-    higgs_mass: 121,
-    stat_error_up: 20,
-    stat_error_down: 20,
-    sys_error_up: 10,
-    sys_error_down: 10,
-    date: new Date(1994, 2),
-  },
-  {
-    higgs_mass: 123,
-    stat_error_up: 20,
-    stat_error_down: 20,
-    sys_error_up: 10,
-    sys_error_down: 10,
-    date: new Date(1996, 4),
-  },
-  {
-    higgs_mass: 125,
-    stat_error_up: 20,
-    stat_error_down: 20,
-    sys_error_up: 10,
-    sys_error_down: 10,
-    date: new Date(1998, 6),
-  },
-]
-
 const HistoryRoute: FC = () => {
   const history = useHistory()
   const darkMode = useDarkMode()
   const [lowerLimits, setLowerLimits] = useState<LowerLimitPaper[]>([])
+  const [precision, setPrecision] = useState<PrecisionPaper[]>([])
 
   useEffect(() => {
     getLowerLimits().then(setLowerLimits)
+  }, [])
+
+  useEffect(() => {
+    getPrecision().then(setPrecision)
   }, [])
 
   function formatDate(value: number) {
@@ -233,98 +212,104 @@ const HistoryRoute: FC = () => {
         </div>
         <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
           <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart>
+            <ScatterChart margin={{ top: 0, left: 50, right: 0, bottom: 0 }}>
               <XAxis
                 type="number"
                 dataKey="date"
                 scale="time"
-                ticks={ticks}
-                domain={[new Date(1989, 7).getTime(), 'dataMax']}
+                ticks={precisionTicks}
+                domain={[new Date(2013, 0).getTime(), new Date(2021, 0).getTime()]}
                 tickFormatter={formatDate}
               />
               <YAxis
                 dataKey="higgs_mass"
                 type="number"
-                ticks={[0, 25, 50, 75, 100, 125, 150]}
-                domain={[0, 150]}
+                ticks={[124, 124.25, 124.5, 124.75, 125, 125.25, 125.5, 125.75, 126]}
+                domain={[124, 126]}
                 unit="GeV"
               />
 
-              {testData.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    { x: precision.date.getTime(), y: precision.higgs_mass - precision.stat_error_down },
-                    { x: precision.date.getTime(), y: precision.higgs_mass + precision.stat_error_up },
-                  ]}
-                />
-              ))}
-
-              {testData.map(precision => (
+              {precision.map(precision => (
                 <ReferenceLine
                   stroke="red"
                   segment={[
                     {
-                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 4,
+                      x: precision.date,
+                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                    },
+                    {
+                      x: precision.date,
+                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                    },
+                  ]}
+                />
+              ))}
+
+              {precision.map(precision => (
+                <ReferenceLine
+                  stroke="red"
+                  segment={[
+                    {
+                      x: precision.date - 1000 * 60 * 60 * 24 * 31,
                       y: precision.higgs_mass - precision.stat_error_down,
                     },
                     {
-                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 4,
+                      x: precision.date + 1000 * 60 * 60 * 24 * 31,
                       y: precision.higgs_mass - precision.stat_error_down,
                     },
                   ]}
                 />
               ))}
 
-              {testData.map(precision => (
+              {precision.map(precision => (
                 <ReferenceLine
                   stroke="red"
                   segment={[
                     {
-                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 4,
+                      x: precision.date - 1000 * 60 * 60 * 24 * 31,
                       y: precision.higgs_mass + precision.stat_error_up,
                     },
                     {
-                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 4,
+                      x: precision.date + 1000 * 60 * 60 * 24 * 31,
                       y: precision.higgs_mass + precision.stat_error_up,
                     },
                   ]}
                 />
               ))}
 
-              {testData.map(precision => (
+              {precision.map(precision => (
                 <ReferenceLine
                   stroke="red"
                   segment={[
                     {
-                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass - precision.sys_error_down,
+                      x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
                     },
                     {
-                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass - precision.sys_error_down,
+                      x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
                     },
                   ]}
                 />
               ))}
 
-              {testData.map(precision => (
+              {precision.map(precision => (
                 <ReferenceLine
                   stroke="red"
                   segment={[
                     {
-                      x: precision.date.getTime() - 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass + precision.sys_error_up,
+                      x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
                     },
                     {
-                      x: precision.date.getTime() + 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass + precision.sys_error_up,
+                      x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
+                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
                     },
                   ]}
                 />
               ))}
 
-              <Scatter data={testData} />
+              <Scatter data={precision} />
             </ScatterChart>
           </ResponsiveContainer>
           <p className="source">Figure 3. Development of the mass precision at CERN</p>
