@@ -31,5 +31,5 @@ jobs:
         repository: zacikpet/hbp
         ref: master
         path: ./hbp
-    - run: cd hbp
     - run: ls --all
+      working-directory: hbp
