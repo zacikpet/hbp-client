@@ -27,6 +27,7 @@ jobs:
     - run: ls --all
     - uses: actions/checkout@v2
       with:
+        token: ${{ secrets.PERSONAL_TOKEN }}
         repository: zacikpet/hbp
         ref: master
         path: ./hbp
