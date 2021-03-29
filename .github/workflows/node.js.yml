@@ -24,17 +24,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-    - name: Push build to hbp repository
-      uses: andstor/copycat-action@v3
-      with:
-        personal_token: ${{ secrets.PERSONAL_TOKEN }}
-        src_path: build/
-        dst_path: client/
-        dst_owner: zacikpet
-        dst_repo_name: hbp
-        clean: true
-        commit_message: '[automatic] Update client static files'
-        username: zacikpet
-        email: zacikpet@fit.cvut.cz
-
+    - run: ls --all
 
