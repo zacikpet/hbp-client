@@ -31,5 +31,10 @@ jobs:
         repository: zacikpet/hbp
         ref: master
         path: ./hbp
+    - name: Remove old build
+      run: rm -r hbp/client
+    - name: Copy new build
+      run: mv build hbp/client
     - run: ls --all
       working-directory: hbp
+      
