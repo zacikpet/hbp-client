@@ -35,10 +35,12 @@ jobs:
       run: rm -r hbp/client
     - name: Copy new build
       run: mv build hbp/client
-    - run: git add client
-      working-directory: hbp
-    - run: git commit -m '(Automatic) Update client static files'
-      working-directory: hbp
-    - run: git push
+
+    - run: |
+      git add client
+      git config user.email "zacikpet@fit.cvut.cz"
+      git config user.name "Peter Žáčik"
+      git commit -m '(Automatic) Update client static files'
+      git push
       working-directory: hbp
 
