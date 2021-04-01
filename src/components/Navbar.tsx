@@ -4,8 +4,9 @@ import { ReactComponent as MenuSVG } from 'resources/svg/menu.svg'
 import Sidebar from './Sidebar'
 import Wave from 'resources/wave.svg'
 import Navigation from './Navigation'
-import useDarkMode from '../hooks/useDarkMode'
-import useAuth from '../hooks/useAuth'
+import useDarkMode from 'hooks/useDarkMode'
+import useAuth from 'hooks/useAuth'
+import useTextColor from 'hooks/useTextColor'
 
 type NavbarProps = {
   onChangeDarkMode: (dark: boolean) => void
@@ -14,6 +15,7 @@ type NavbarProps = {
 const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const darkMode = useDarkMode()
+  const textColor = useTextColor()
   const auth = useAuth()
   const { pathname } = useLocation()
 
@@ -38,7 +40,7 @@ const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
       </div>
 
       <button className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        <MenuSVG fill={darkMode ? 'white' : 'black'} fillOpacity={0.7} height={32} width={32} />
+        <MenuSVG fill={textColor} fillOpacity={0.7} height={32} width={32} />
       </button>
 
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />

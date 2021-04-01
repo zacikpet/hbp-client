@@ -5,8 +5,8 @@ import FadeIn from 'components/FadeIn'
 import useAuth from 'hooks/useAuth'
 import { AuthContextType } from 'App'
 import Loader from 'react-loader-spinner'
-import useDarkMode from '../hooks/useDarkMode'
 import Alert from '../components/Alert'
+import useTextColor from '../hooks/useTextColor'
 
 type Page = 'login' | 'signup' | 'loading'
 
@@ -16,7 +16,7 @@ type LoginRouteProps = {
 
 const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
   const auth = useAuth()
-  const darkMode = useDarkMode()
+  const textColor = useTextColor()
   const [page, setPage] = useState<Page>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -66,7 +66,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
         {error && <Alert level="error" text={error} />}
         <FadeIn when={page === 'loading'}>
           <div className="w-72 h-72 flex justify-center items-center">
-            <Loader type="TailSpin" color={darkMode ? 'white' : 'black'} height={75} width={75} />
+            <Loader type="TailSpin" color={textColor} height={75} width={75} />
           </div>
         </FadeIn>
         <FadeIn when={page === 'login'}>

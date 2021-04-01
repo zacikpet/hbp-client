@@ -20,6 +20,7 @@ import { useHistory } from 'react-router-dom'
 import Loading from '../components/Loading'
 import useDarkMode from '../hooks/useDarkMode'
 import Gallery from '../components/Gallery'
+import useTextColor from '../hooks/useTextColor'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
@@ -38,6 +39,7 @@ const tevatronLimits = [
 const HistoryRoute: FC = () => {
   const history = useHistory()
   const darkMode = useDarkMode()
+  const textColor = useTextColor()
   const [lowerLimits, setLowerLimits] = useState<LowerLimitPaper[]>([])
   const [precision, setPrecision] = useState<PrecisionPaper[]>([])
 
@@ -73,10 +75,7 @@ const HistoryRoute: FC = () => {
     <div className="min-h-page">
       <Gallery
         title="Lower mass limit of the Standard Model Higgs boson"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur."
+        text="The development of the lower mass limit of the Standard Model Higgs boson. These lower limits were set at 95 % confidence level by the ATLAS, DELPHI, L3 and OPAL collaborations with data from the Large Electron Positron collider (LEP) at CERN."
         contentClassName="w-full h-screen-2/3"
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -112,11 +111,11 @@ const HistoryRoute: FC = () => {
               domain={[new Date(1989, 7).getTime(), new Date(2005, 0).getTime()]}
               tickFormatter={formatDate}
             >
-              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
             </XAxis>
             <YAxis dataKey="lower_limit" type="number" ticks={[0, 25, 50, 75, 100, 125, 150]} domain={[0, 150]}>
               <Label
-                fill={darkMode ? 'white' : 'black'}
+                fill={textColor}
                 value="Mass (GeV)"
                 position="left"
                 offset={-10}
@@ -159,7 +158,7 @@ const HistoryRoute: FC = () => {
                 position: 'top',
                 value: 'Higgs boson mass',
                 fontWeight: 400,
-                fill: darkMode ? 'white' : 'black',
+                fill: textColor,
                 fillOpacity: 0.6,
               }}
               stroke="gray"
@@ -199,7 +198,7 @@ const HistoryRoute: FC = () => {
             <Tooltip />
             <YAxis domain={[120, 180]} ticks={[120, 130, 140, 150, 160, 170, 180]}>
               <Label
-                fill={darkMode ? 'white' : 'black'}
+                fill={textColor}
                 value="Mass (GeV)"
                 position="left"
                 offset={-10}
@@ -215,7 +214,7 @@ const HistoryRoute: FC = () => {
               tickFormatter={formatDate}
               ticks={upperLimitTicks}
             >
-              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
             </XAxis>
             <ReferenceLine
               y={125.35}
@@ -223,7 +222,7 @@ const HistoryRoute: FC = () => {
                 position: 'top',
                 value: 'Higgs boson mass',
                 fontWeight: 400,
-                fill: darkMode ? 'white' : 'black',
+                fill: textColor,
                 fillOpacity: 0.6,
               }}
               stroke="gray"
@@ -249,7 +248,7 @@ const HistoryRoute: FC = () => {
               domain={[new Date(2013, 0).getTime(), new Date(2021, 0).getTime()]}
               tickFormatter={formatDate}
             >
-              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
             </XAxis>
             <YAxis
               dataKey="higgs_mass"
@@ -257,13 +256,7 @@ const HistoryRoute: FC = () => {
               ticks={[124, 124.2, 124.4, 124.6, 124.8, 125, 125.2, 125.4, 125.6, 125.8, 126]}
               domain={[124, 126]}
             >
-              <Label
-                fill={darkMode ? 'white' : 'black'}
-                value="Mass (GeV)"
-                position="left"
-                angle={270}
-                style={{ textAnchor: 'middle' }}
-              />
+              <Label fill={textColor} value="Mass (GeV)" position="left" angle={270} style={{ textAnchor: 'middle' }} />
             </YAxis>
 
             {precision.map(precision => (

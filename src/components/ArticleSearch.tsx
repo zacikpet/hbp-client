@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { ReactComponent as SearchSVG } from 'resources/svg/search.svg'
-import useDarkMode from '../hooks/useDarkMode'
+import useTextColor from '../hooks/useTextColor'
 
 type ArticleSearchProps = {
   value: string
@@ -9,7 +9,7 @@ type ArticleSearchProps = {
 }
 
 const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder }) => {
-  const darkMode = useDarkMode()
+  const textColor = useTextColor()
   const [searchString, setSearchString] = useState(value)
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +21,7 @@ const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder })
   return (
     <div className="flex items-center h-10">
       <div className="mx-1 opacity-90 cursor-pointer" onClick={() => handleSubmit()}>
-        <SearchSVG className="w-4" fill={darkMode ? 'white' : 'black'} />
+        <SearchSVG className="w-4" fill={textColor} />
       </div>
       <form onSubmit={handleSubmit}>
         <input
