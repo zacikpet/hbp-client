@@ -32,8 +32,8 @@ const FeedbackRoute: FC = () => {
     )
 
   return (
-    <div className="min-h-page">
-      <div className="w-full md:w-1/2 p-8 md:p-16">
+    <div className="min-h-page bg-gray-50 dark:bg-gray-900 py-4">
+      <div className="mx-auto w-full md:w-1/2 p-8 md:px-16 bg-white shadow rounded dark:bg-gray-850">
         <h1 className="text-emphasis font-semibold text-3xl">Is there something wrong?</h1>
         <form className="mt-8" onSubmit={sendFeedback}>
           <p className="text-lg">Please describe the problem in detail:</p>
@@ -43,7 +43,8 @@ const FeedbackRoute: FC = () => {
             onChange={e => setDescription(e.target.value)}
           />
           <p className="text-lg mt-4">
-            Is this related to some article(s)? If so, please provide their URLs or titles.
+            Is this related to some article(s)? If so, please provide their URLs, titles, or the IDs at the top of the
+            article page.
           </p>
           <p className="text-disabled">If you include multiple articles, please put them on separate lines.</p>
           <textarea

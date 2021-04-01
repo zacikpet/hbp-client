@@ -224,7 +224,7 @@ const ArticleEdit: FC<ArticleEditProps> = ({ paper, onEdit }) => {
               value={value}
               onChange={e => changeEnergy(index, parseInt(e.target.value))}
             />
-            <div className="font-semibold">keV</div>
+            <div className="font-semibold">MeV</div>
             <CrossSVG
               className="ml-2 w-4 h-4 text-red-600 hover:text-red-700 fill-current cursor-pointer"
               onClick={() => removeEnergy(index)}

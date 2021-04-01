@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Link as ScrollLink } from 'react-scroll'
 import { getPaper, Paper } from '../api/papers'
 import Latex from 'react-latex'
 import StageInfoCard from './StageInfoCard'
 import useAuth from '../hooks/useAuth'
 import ArticleEdit from './ArticleEdit'
+import ModelInfoCard from './ModelInfoCard'
 
 type ArticleDetailProps = {
   selectedPaper?: Paper
@@ -41,30 +41,24 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
           </Link>
         </div>
 
-        <ScrollLink
-          duration={300}
-          smooth
-          className="absolute right-2 text-disabled cursor-pointer hover:underline"
-          to="edit"
-        >
-          Edit
-        </ScrollLink>
-
-        <div className="bg-white dark:bg-gray-850 p-8 rounded shadow-md my-1">
-          <div className="flex py-1">
+        <div className="bg-white dark:bg-gray-850 rounded shadow-md my-1">
+          <div className="flex p-2 bg-gray-100 dark:bg-gray-800 rounded-t">
             <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
             <StageInfoCard stage={paper.stage} />
+            <span className="mx-auto text-disabled">{paper._id}</span>
+            <ModelInfoCard model={paper.model} className="ml-auto mr-0" />
           </div>
-
-          <h1 className="text-xl font-bold text-emphasis">
-            <Latex>{paper?.title}</Latex>
-          </h1>
-          <br />
-          {paper?.abstract && (
-            <p className="font-serif">
-              <Latex>{paper.abstract}</Latex>
-            </p>
-          )}
+          <div className="p-8">
+            <h1 className="text-xl font-bold text-emphasis">
+              <Latex>{paper?.title}</Latex>
+            </h1>
+            <br />
+            {paper?.abstract && (
+              <p className="font-serif">
+                <Latex>{paper.abstract}</Latex>
+              </p>
+            )}
+          </div>
         </div>
 
         {paper.files.filter(file => !file.includes('Figure')).length > 0 && (

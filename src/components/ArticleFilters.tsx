@@ -5,6 +5,7 @@ import Checkbox from './Checkbox'
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import useDarkMode from '../hooks/useDarkMode'
+import ArticleSearch from './ArticleSearch'
 
 export const particles = [
   'boson',
@@ -49,6 +50,7 @@ export type FilterOptions = {
   models: Model[]
   date: [Date, Date]
   anyDate: boolean
+  searchString: string
 }
 
 type ArticleFiltersProps = {
@@ -122,7 +124,15 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   }
 
   return (
-    <div className="h-full flex flex-col p-5 md:pr-0  w-full overflow-y-auto" style={{ direction: 'rtl' }}>
+    <div className="flex flex-col" style={{ direction: 'rtl' }}>
+      <div className="article-filter">
+        <ArticleSearch
+          value={options.searchString}
+          onChange={newValue => onChange({ ...options, searchString: newValue })}
+          placeHolder="Search"
+        />
+      </div>
+
       <div className="article-filter">
         <h2>Date</h2>
         <div className="p-2">
@@ -298,6 +308,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 </option>
               ))}
             </select>
+            <p>{options.decay.products.length === 0 && 'No decay products selected.'}</p>
 
             <div className="flex flex-wrap">
               {options.decay.products.map(product => (

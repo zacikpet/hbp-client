@@ -1,13 +1,15 @@
 import React, { FC, useEffect, useState } from 'react'
 import ArticleFilters, { FilterOptions } from './ArticleFilters'
-import ArticleSearch from './ArticleSearch'
 import Article from './Article'
 import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis } from 'recharts'
+import useDarkMode from '../hooks/useDarkMode'
 
 const initial: FilterOptions = {
+  searchString: '',
   stages: ['submitted', 'preliminary', 'published'],
-  experiments: ['atlas', 'cms'],
+  experiments: ['atlas', 'cms', 'aleph', 'delphi', 'l3', 'opal', 'cdf', 'd0'],
   luminosity: [0, 0],
   energy: [0, 0],
   anyLuminosity: true,
@@ -34,14 +36,39 @@ type ArticlesBrowseProps = {
 }
 
 const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) => {
+  const darkMode = useDarkMode()
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
   const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
 
-  const [searchString, setSearchString] = useState('')
-  const [searchedPapers, setSearchedPapers] = useState<Paper[]>(filteredPapers)
-
   const [page, setPage] = useState(0)
-  const [displayedPapers, setDisplayedPapers] = useState<Paper[]>(searchedPapers.slice(0, 10))
+  const [displayedPapers, setDisplayedPapers] = useState<Paper[]>(filteredPapers.slice(0, 10))
+
+  const [papersPerYear, setPapersPerYear] = useState<{ year: number; count: number }[]>([])
+  const [cumulativePerYear, setCumulativePerYear] = useState<{ year: number; count: number }[]>([])
+
+  useEffect(() => {
+    setPapersPerYear(
+      Array(37)
+        .fill(0)
+        .map((_, i) => i + 1985)
+        .map(year => ({
+          year: year,
+          count: filteredPapers.filter(paper => paper.date.getFullYear() === year).length,
+        }))
+    )
+  }, [filteredPapers])
+
+  useEffect(() => {
+    setCumulativePerYear(
+      Array(37)
+        .fill(0)
+        .map((_, i) => i + 1985)
+        .map(year => ({
+          year: year,
+          count: filteredPapers.filter(paper => paper.date.getFullYear() <= year).length,
+        }))
+    )
+  }, [filteredPapers])
 
   const handlePageChange = ({ selected }: { selected: number }) => setPage(selected)
 
@@ -68,6 +95,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
     setFilteredPapers(
       papers.filter(
         paper =>
+          paper.title.toLowerCase().includes(filterOptions.searchString.toLowerCase()) &&
           filterOptions.experiments.includes(paper.experiment) &&
           filterOptions.stages.includes(paper.stage) &&
           (filterOptions.anyLuminosity ||
@@ -82,17 +110,8 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
   }, [filterOptions, papers])
 
   useEffect(() => {
-    setPage(0)
-    setSearchedPapers(
-      filteredPapers.filter(
-        paper => searchString == '' || paper.title.toLowerCase().includes(searchString.toLowerCase())
-      )
-    )
-  }, [filteredPapers, searchString])
-
-  useEffect(() => {
-    setDisplayedPapers(searchedPapers.slice(page * 10, (page + 1) * 10))
-  }, [searchedPapers, page])
+    setDisplayedPapers(filteredPapers.slice(page * 10, (page + 1) * 10))
+  }, [filteredPapers, page])
 
   /**
    * Scroll automatically to previous position
@@ -103,25 +122,17 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
   }, [state])
 
   return (
-    <div className="flex flex-col md:flex-row min-h-page bg-gray-50 dark:bg-gray-900">
-      <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0">
-        <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
-      </div>
-      <div className="flex flex-col items-center w-full px-5">
-        <ArticleSearch
-          value={searchString}
-          onChange={setSearchString}
-          placeHolder={'Search ' + filteredPapers.length + ' articles'}
-        />
-
+    <div className="flex flex-col md:flex-row min-h-page bg-gray-50 dark:bg-gray-900 p-4">
+      <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
+      <div className="flex flex-col items-center w-full md:px-5">
         {displayedPapers.map((paper, index) => (
           <Article key={paper._id + index.toString()} paper={paper} onSelect={() => onSelect(paper, page)} />
         ))}
 
         <div className="p-8">
-          {searchedPapers.length > 10 && (
+          {filteredPapers.length > 10 && (
             <Paginate
-              pageCount={Math.ceil(searchedPapers.length / 10)}
+              pageCount={Math.ceil(filteredPapers.length / 10)}
               pageRangeDisplayed={2}
               marginPagesDisplayed={3}
               containerClassName="flex items-center"
@@ -133,6 +144,31 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
               forcePage={page}
             />
           )}
+        </div>
+      </div>
+      <div className="pt-1">
+        <div className="bg-white dark:bg-gray-850 rounded shadow ">
+          <div className="py-4 font-semibold w-full px-4 bg-gray-100 dark:bg-gray-800 rounded-t">
+            Displaying {filteredPapers.length} articles.
+          </div>
+
+          <div className="px-4 flex flex-col items-center">
+            <h2 className="text-disabled mt-2">Number of articles published per year</h2>
+            <BarChart width={300} height={200} margin={{}} data={papersPerYear}>
+              <XAxis dataKey="year" domain={[1985, 2021]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
+              <Tooltip labelClassName="text-black" />
+              <Bar dataKey="count" fill="#3B790F" />
+              <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
+            </BarChart>
+
+            <h2 className="text-disabled mt-2">Cumulative article count over the years</h2>
+            <BarChart width={300} height={200} margin={{}} data={cumulativePerYear}>
+              <XAxis dataKey="year" domain={[1985, 2021]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
+              <Tooltip labelClassName="text-black" />
+              <Bar dataKey="count" fill="darkred" />
+              <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
+            </BarChart>
+          </div>
         </div>
       </div>
     </div>

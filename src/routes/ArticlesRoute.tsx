@@ -5,7 +5,6 @@ import Loading from 'components/Loading'
 import ArticleDetail from 'components/ArticleDetail'
 import ArticlesBrowse, { State } from 'components/ArticlesBrowse'
 import { getPapers, Paper } from 'api/papers'
-import { CSSTransition } from 'react-transition-group'
 
 const ArticlesRoute: FC = () => {
   const [loading, setLoading] = useState(true)
@@ -49,22 +48,10 @@ const ArticlesRoute: FC = () => {
   return (
     <>
       <Route exact path="/articles">
-        {({ match }) => (
-          <CSSTransition in={match !== null} timeout={300} classNames="page">
-            <div className={match ? 'visible' : 'hidden'}>
-              <ArticlesBrowse papers={papers} onSelect={handleSelect} state={state} />
-            </div>
-          </CSSTransition>
-        )}
+        <ArticlesBrowse papers={papers} onSelect={handleSelect} state={state} />
       </Route>
-      <Route exact path="/articles/:id">
-        {({ match }) => (
-          <CSSTransition in={match !== null} timeout={300} classNames="page">
-            <div className={match ? 'visible' : 'hidden'}>
-              <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} onEdit={handleEdit} />
-            </div>
-          </CSSTransition>
-        )}
+      <Route path="/articles/:id">
+        <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} onEdit={handleEdit} />
       </Route>
     </>
   )
