@@ -12,13 +12,18 @@ import {
   YAxis,
   Line,
   Area,
+  Label,
+  CartesianGrid,
 } from 'recharts'
 import { getLowerLimits, getPrecision, LowerLimitPaper, PrecisionPaper } from '../api/papers'
 import { useHistory } from 'react-router-dom'
 import Loading from '../components/Loading'
 import useDarkMode from '../hooks/useDarkMode'
+import Gallery from '../components/Gallery'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
+
+const upperLimitTicks = [2010, 2011, 2012].map(year => new Date(year, 0).getTime())
 
 const precisionTicks = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020].map(year => new Date(year, 0).getTime())
 
@@ -36,6 +41,9 @@ const HistoryRoute: FC = () => {
   const [lowerLimits, setLowerLimits] = useState<LowerLimitPaper[]>([])
   const [precision, setPrecision] = useState<PrecisionPaper[]>([])
 
+  const atlas = darkMode ? '#DD0000' : '#880000'
+  const cms = darkMode ? '#00DDDD' : '#008888'
+
   useEffect(() => {
     getLowerLimits().then(setLowerLimits)
   }, [])
@@ -48,9 +56,9 @@ const HistoryRoute: FC = () => {
     return new Date(value).getFullYear().toString()
   }
 
-  function formatTooltip(value: number) {
+  function formatTooltip(value: number, label?: string) {
     // mass
-    if (value < 1000) return [value, 'Lower limit']
+    if (value < 1000) return [value, label]
     // timestamp
     else return [new Date(value).toDateString(), 'Date']
   }
@@ -63,258 +71,300 @@ const HistoryRoute: FC = () => {
 
   return (
     <div className="min-h-page">
-      <div className="w-full flex flex-row flex-wrap-reverse items-center">
-        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-24 2xl:px-48">
-          <h1 className="text-4xl font-bold text-emphasis">Lower mass limit of the Standard Model Higgs boson</h1>
-          <br />
-          <p className="font-serif font-light">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      <Gallery
+        title="Lower mass limit of the Standard Model Higgs boson"
+        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur.
-          </p>
-        </div>
-        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart>
-              <ReferenceArea
-                x1={new Date(1989, 7).getTime()}
-                x2={new Date(1994, 6).getTime()}
-                y1={0}
-                y2={125.35}
-                label={{
-                  position: 'insideBottom',
-                  value: 'LEP I',
-                }}
-                opacity={0.4}
-              />
-              <ReferenceArea
-                x1={new Date(1996, 6).getTime()}
-                x2={new Date(2000, 10).getTime()}
-                y1={0}
-                y2={125.35}
-                label={{
-                  position: 'insideBottom',
-                  value: 'LEP II',
-                }}
-                opacity={0.4}
-              />
-              <XAxis
-                type="number"
-                dataKey="date"
-                scale="time"
-                ticks={ticks}
-                domain={[new Date(1989, 7).getTime(), 'dataMax']}
-                tickFormatter={formatDate}
-              />
-              <YAxis
-                dataKey="lower_limit"
-                type="number"
-                ticks={[0, 25, 50, 75, 100, 125, 150]}
-                domain={[0, 150]}
-                unit="GeV"
-              />
-              <Scatter
-                onClick={handleClick}
-                className="cursor-pointer"
-                name="ALEPH"
-                data={lowerLimits.filter(p => p.experiment === 'aleph')}
-                fill="#3B790F"
-              />
-              <Scatter
-                onClick={handleClick}
-                className="cursor-pointer"
-                name="DELPHI"
-                data={lowerLimits.filter(p => p.experiment === 'delphi')}
+            nulla pariatur."
+        contentClassName="w-full h-screen-2/3"
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ bottom: 15 }}>
+            <CartesianGrid stroke={darkMode ? '#222' : '#DDD'} />
+            <ReferenceArea
+              x1={new Date(1989, 7).getTime()}
+              x2={new Date(1994, 6).getTime()}
+              y1={0}
+              y2={150}
+              label={{
+                position: 'insideBottom',
+                value: 'LEP I',
+              }}
+              opacity={0.4}
+            />
+            <ReferenceArea
+              x1={new Date(1996, 6).getTime()}
+              x2={new Date(2000, 10).getTime()}
+              y1={0}
+              y2={150}
+              label={{
+                position: 'insideBottom',
+                value: 'LEP II',
+              }}
+              opacity={0.4}
+            />
+            <XAxis
+              type="number"
+              dataKey="date"
+              scale="time"
+              ticks={ticks}
+              domain={[new Date(1989, 7).getTime(), new Date(2005, 0).getTime()]}
+              tickFormatter={formatDate}
+            >
+              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+            </XAxis>
+            <YAxis dataKey="lower_limit" type="number" ticks={[0, 25, 50, 75, 100, 125, 150]} domain={[0, 150]}>
+              <Label
                 fill={darkMode ? 'white' : 'black'}
+                value="Mass (GeV)"
+                position="left"
+                offset={-10}
+                angle={270}
+                style={{ textAnchor: 'middle' }}
               />
-              <Scatter
-                onClick={handleClick}
-                className="cursor-pointer"
-                name="L3"
-                data={lowerLimits.filter(p => p.experiment === 'l3')}
-                fill="#2563EB"
-              />
-              <Scatter
-                onClick={handleClick}
-                className="cursor-pointer"
-                name="OPAL"
-                data={lowerLimits.filter(p => p.experiment === 'opal')}
-                fill="#DC2626"
-              />
-              <Tooltip formatter={formatTooltip} />
-              <ReferenceLine
-                y={125.35}
-                label={{
-                  position: 'top',
-                  value: 'Higgs boson mass',
-                  fontWeight: 400,
-                  fill: darkMode ? 'white' : 'black',
-                  fillOpacity: 0.6,
-                }}
-                stroke="gray"
-                strokeDasharray="5 3"
-              />
-              <Legend />
-            </ScatterChart>
-          </ResponsiveContainer>
-          <p className="source">Figure 1. Development of the lower limit of SM Higgs Boson mass at LEP</p>
-        </div>
-      </div>
+            </YAxis>
+            <Scatter
+              onClick={handleClick}
+              className="cursor-pointer"
+              name="ALEPH"
+              data={lowerLimits.filter(p => p.experiment === 'aleph')}
+              fill="#b4ee7c"
+            />
+            <Scatter
+              onClick={handleClick}
+              className="cursor-pointer"
+              name="DELPHI"
+              data={lowerLimits.filter(p => p.experiment === 'delphi')}
+              fill="#82ca9d"
+            />
+            <Scatter
+              onClick={handleClick}
+              className="cursor-pointer"
+              name="L3"
+              data={lowerLimits.filter(p => p.experiment === 'l3')}
+              fill="#83a6ed"
+            />
+            <Scatter
+              onClick={handleClick}
+              className="cursor-pointer"
+              name="OPAL"
+              data={lowerLimits.filter(p => p.experiment === 'opal')}
+              fill="#8884d8"
+            />
+            <Tooltip formatter={(value: number) => formatTooltip(value, 'Lower limit')} />
+            <ReferenceLine
+              y={125.35}
+              label={{
+                position: 'top',
+                value: 'Higgs boson mass',
+                fontWeight: 400,
+                fill: darkMode ? 'white' : 'black',
+                fillOpacity: 0.6,
+              }}
+              stroke="gray"
+              strokeDasharray="5 3"
+            />
+            <Legend verticalAlign="top" />
+          </ScatterChart>
+        </ResponsiveContainer>
+      </Gallery>
 
-      <div className="w-full flex flex-row flex-wrap-reverse items-center">
-        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={tevatronLimits}>
-              <Line dataKey="upper" stroke="#222222" strokeWidth={2} />
-              <Line dataKey="lower" stroke="#222222" strokeWidth={2} />
-              <Area dataKey="excluded" fill="#EF4444" label="Excluded zone" />
-              <YAxis domain={[120, 180]} />
-              <XAxis dataKey="date" type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatDate} />
-              <ReferenceLine
-                y={125.35}
-                label={{
-                  position: 'top',
-                  value: 'Higgs boson mass',
-                  fontWeight: 400,
-                  fill: darkMode ? 'white' : 'black',
-                  fillOpacity: 0.6,
-                }}
-                stroke="gray"
-                strokeDasharray="5 3"
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-          <p className="source">Figure 2. Excluded zone for the Higgs boson mass at 95 % CL</p>
-        </div>
-        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
-          <h1 className="text-4xl font-bold text-emphasis">The upper mass limit of the Standard Model Higgs boson</h1>
-          <br />
+      <Gallery
+        title="The upper mass limit of the Standard Model Higgs boson"
+        text={
           <p className="font-serif font-light">
-            The development of the mass limits has been compiled in reference to&nbsp;
+            Development of the upper mass limit of the Standard Model Higgs boson. The limits were compiled in reference
+            to&nbsp;
             <a
               href="http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf"
               target="_blank"
               className="text-blue-700 hover:underline"
             >
-              this paper
+              this paper&nbsp;
             </a>
-            . This limit was set by the CDF and DØ experiments.
+            and set by the CDF and DØ collaborations. The red area represents the excluded mass range of the Standard
+            Model Higgs boson at 95 % confidence level.
           </p>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row flex-wrap-reverse items-center">
-        <div className="w-full md:w-1/2 p-16 pb-0 md:p-16 md:px-32 2xl:px-64">
-          <h1 className="text-4xl font-bold text-emphasis">The Higgs boson mass measurement</h1>
-          <br />
-          <p className="font-serif font-light">The development of the measurement precision</p>
-        </div>
-        <div className="flex flex-col items-center w-full md:w-1/2 flex flex-col font-light p-16 h-screen-3/4">
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart margin={{ top: 0, left: 50, right: 0, bottom: 0 }}>
-              <XAxis
-                type="number"
-                dataKey="date"
-                scale="time"
-                ticks={precisionTicks}
-                domain={[new Date(2013, 0).getTime(), new Date(2021, 0).getTime()]}
-                tickFormatter={formatDate}
+        }
+        contentClassName="w-full h-screen-2/3"
+        reversed
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={tevatronLimits} margin={{ top: 5, left: 0, right: 5, bottom: 15 }}>
+            <CartesianGrid stroke={darkMode ? '#222' : '#DDD'} />
+            <Line dataKey="upper" stroke="#222222" />
+            <Line dataKey="lower" stroke="#222222" />
+            <Area dataKey="excluded" fill="#EF4444" label="Excluded zone" />
+            <Tooltip />
+            <YAxis domain={[120, 180]} ticks={[120, 130, 140, 150, 160, 170, 180]}>
+              <Label
+                fill={darkMode ? 'white' : 'black'}
+                value="Mass (GeV)"
+                position="left"
+                offset={-10}
+                angle={270}
+                style={{ textAnchor: 'middle' }}
               />
-              <YAxis
-                dataKey="higgs_mass"
-                type="number"
-                ticks={[124, 124.25, 124.5, 124.75, 125, 125.25, 125.5, 125.75, 126]}
-                domain={[124, 126]}
-                unit="GeV"
+            </YAxis>
+            <XAxis
+              dataKey="date"
+              type="number"
+              scale="time"
+              domain={['dataMin', 'dataMax']}
+              tickFormatter={formatDate}
+              ticks={upperLimitTicks}
+            >
+              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+            </XAxis>
+            <ReferenceLine
+              y={125.35}
+              label={{
+                position: 'top',
+                value: 'Higgs boson mass',
+                fontWeight: 400,
+                fill: darkMode ? 'white' : 'black',
+                fillOpacity: 0.6,
+              }}
+              stroke="gray"
+              strokeDasharray="5 3"
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </Gallery>
+
+      <Gallery
+        title="The Higgs boson mass measurement"
+        text="Development of the precision of the Higgs boson mass measurement by the ATLAS and CMS collaborations. The solid dot represents the measured Higgs boson mass. The inner error bar shows the statistical uncertainty, while the outer error bar shows the combined uncertainty (statistical and systematic)."
+        contentClassName="w-full h-screen-3/4"
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ top: 0, left: 15, right: 15, bottom: 15 }}>
+            <CartesianGrid stroke={darkMode ? '#222' : '#DDD'} />
+            <XAxis
+              type="number"
+              dataKey="date"
+              scale="time"
+              ticks={precisionTicks}
+              domain={[new Date(2013, 0).getTime(), new Date(2021, 0).getTime()]}
+              tickFormatter={formatDate}
+            >
+              <Label fill={darkMode ? 'white' : 'black'} value="Time" position="insideBottom" offset={-10} />
+            </XAxis>
+            <YAxis
+              dataKey="higgs_mass"
+              type="number"
+              ticks={[124, 124.2, 124.4, 124.6, 124.8, 125, 125.2, 125.4, 125.6, 125.8, 126]}
+              domain={[124, 126]}
+            >
+              <Label
+                fill={darkMode ? 'white' : 'black'}
+                value="Mass (GeV)"
+                position="left"
+                angle={270}
+                style={{ textAnchor: 'middle' }}
               />
+            </YAxis>
 
-              {precision.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    {
-                      x: precision.date,
-                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                    {
-                      x: precision.date,
-                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                  ]}
-                />
-              ))}
+            {precision.map(precision => (
+              <ReferenceLine
+                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                segment={[
+                  {
+                    x: precision.date,
+                    y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                  {
+                    x: precision.date,
+                    y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                ]}
+              />
+            ))}
 
-              {precision.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    {
-                      x: precision.date - 1000 * 60 * 60 * 24 * 31,
-                      y: precision.higgs_mass - precision.stat_error_down,
-                    },
-                    {
-                      x: precision.date + 1000 * 60 * 60 * 24 * 31,
-                      y: precision.higgs_mass - precision.stat_error_down,
-                    },
-                  ]}
-                />
-              ))}
+            {precision.map(precision => (
+              <ReferenceLine
+                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                segment={[
+                  {
+                    x: precision.date - 1000 * 60 * 60 * 24 * 31,
+                    y: precision.higgs_mass - precision.stat_error_down,
+                  },
+                  {
+                    x: precision.date + 1000 * 60 * 60 * 24 * 31,
+                    y: precision.higgs_mass - precision.stat_error_down,
+                  },
+                ]}
+              />
+            ))}
 
-              {precision.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    {
-                      x: precision.date - 1000 * 60 * 60 * 24 * 31,
-                      y: precision.higgs_mass + precision.stat_error_up,
-                    },
-                    {
-                      x: precision.date + 1000 * 60 * 60 * 24 * 31,
-                      y: precision.higgs_mass + precision.stat_error_up,
-                    },
-                  ]}
-                />
-              ))}
+            {precision.map(precision => (
+              <ReferenceLine
+                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                segment={[
+                  {
+                    x: precision.date - 1000 * 60 * 60 * 24 * 31,
+                    y: precision.higgs_mass + precision.stat_error_up,
+                  },
+                  {
+                    x: precision.date + 1000 * 60 * 60 * 24 * 31,
+                    y: precision.higgs_mass + precision.stat_error_up,
+                  },
+                ]}
+              />
+            ))}
 
-              {precision.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    {
-                      x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                    {
-                      x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                  ]}
-                />
-              ))}
+            {precision.map(precision => (
+              <ReferenceLine
+                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                segment={[
+                  {
+                    x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
+                    y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                  {
+                    x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
+                    y: precision.higgs_mass - Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                ]}
+              />
+            ))}
 
-              {precision.map(precision => (
-                <ReferenceLine
-                  stroke="red"
-                  segment={[
-                    {
-                      x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                    {
-                      x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
-                      y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
-                    },
-                  ]}
-                />
-              ))}
+            {precision.map(precision => (
+              <ReferenceLine
+                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                segment={[
+                  {
+                    x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
+                    y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                  {
+                    x: precision.date + 1000 * 60 * 60 * 24 * 31 * 2,
+                    y: precision.higgs_mass + Math.sqrt(precision.stat_error_up ** 2 + precision.sys_error_up ** 2),
+                  },
+                ]}
+              />
+            ))}
 
-              <Scatter data={precision} />
-            </ScatterChart>
-          </ResponsiveContainer>
-          <p className="source">Figure 3. Development of the mass precision at CERN</p>
-        </div>
-      </div>
+            <Scatter
+              name="ATLAS"
+              className="cursor-pointer"
+              data={precision.filter(item => item.experiment === 'atlas')}
+              fill={atlas}
+              onClick={handleClick}
+            />
+            <Scatter
+              name="CMS"
+              className="cursor-pointer"
+              data={precision.filter(item => item.experiment === 'cms')}
+              fill={cms}
+              onClick={handleClick}
+            />
+            <Tooltip formatter={(value: number) => formatTooltip(value, 'Measured mass')} />
+            <Legend verticalAlign="top" />
+          </ScatterChart>
+        </ResponsiveContainer>
+      </Gallery>
     </div>
   )
 }

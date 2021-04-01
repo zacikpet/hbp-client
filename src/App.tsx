@@ -8,7 +8,6 @@ import AboutRoute from 'routes/AboutRoute'
 import HistoryRoute from 'routes/HistoryRoute'
 import AdminRoute from 'routes/AdminRoute'
 import Footer from './components/Footer'
-import AdminNavbar from './components/AdminNavbar'
 import LoginRoute from './routes/LoginRoute'
 import { logout, User, verifyAuth } from './api/auth'
 import SessionExpiredRoute from './routes/SessionExpiredRoute'
@@ -58,9 +57,8 @@ const App: FC = () => {
       <div className="bg-light dark:bg-dark text-emphasis-none">
         <DarkModeContext.Provider value={darkMode}>
           <AuthContext.Provider value={auth}>
-            {auth.loggedIn && <AdminNavbar auth={auth} />}
             <Navbar onChangeDarkMode={handleChangeDarkMode} />
-            <main style={{ marginTop: auth?.loggedIn ? 96 : 64 }}>
+            <main className="mt-16">
               <Switch>
                 <Route path="/articles">
                   <ArticlesRoute />

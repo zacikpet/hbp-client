@@ -4,7 +4,6 @@ import ArticleSearch from './ArticleSearch'
 import Article from './Article'
 import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
-import useAuth from '../hooks/useAuth'
 
 const initial: FilterOptions = {
   stages: ['submitted', 'preliminary', 'published'],
@@ -35,7 +34,6 @@ type ArticlesBrowseProps = {
 }
 
 const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) => {
-  const auth = useAuth()
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
   const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
 
@@ -106,7 +104,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
 
   return (
     <div className="flex flex-col md:flex-row min-h-page bg-gray-50 dark:bg-gray-900">
-      <div className="md:sticky left-0 md:h-page flex-shrink-0" style={{ top: auth?.loggedIn ? 96 : 64 }}>
+      <div className="md:sticky top-16 left-0 md:h-page flex-shrink-0">
         <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       </div>
       <div className="flex flex-col items-center w-full px-5">

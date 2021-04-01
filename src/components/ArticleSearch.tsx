@@ -19,7 +19,7 @@ const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder })
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center h-10">
       <div className="mx-1 opacity-90 cursor-pointer" onClick={() => handleSubmit()}>
         <SearchSVG className="w-4" fill={darkMode ? 'white' : 'black'} />
       </div>
