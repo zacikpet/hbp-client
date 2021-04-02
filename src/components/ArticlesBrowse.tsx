@@ -3,7 +3,7 @@ import ArticleFilters, { FilterOptions } from './ArticleFilters'
 import Article from './Article'
 import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
-import { Bar, BarChart, CartesianGrid, Tooltip, XAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useDarkMode from '../hooks/useDarkMode'
 
 const initial: FilterOptions = {
@@ -156,17 +156,19 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
           </div>
 
           <div className="px-4 flex flex-col items-center">
-            <h2 className="text-disabled mt-2">Number of articles published per year</h2>
-            <BarChart width={300} height={200} margin={{}} data={papersPerYear}>
-              <XAxis dataKey="year" domain={[1985, 2021]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
+            <h2 className="text-disabled mt-2 font-serif">Number of articles published per year</h2>
+            <BarChart width={300} height={200} margin={{ right: -25 }} data={papersPerYear}>
+              <YAxis dataKey="count" orientation="right" />
+              <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
               <Tooltip labelClassName="text-black" />
               <Bar dataKey="count" fill="#3B790F" />
               <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
             </BarChart>
 
-            <h2 className="text-disabled mt-2">Cumulative article count over the years</h2>
-            <BarChart width={300} height={200} margin={{}} data={cumulativePerYear}>
-              <XAxis dataKey="year" domain={[1985, 2021]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
+            <h2 className="text-disabled mt-2 font-serif">Cumulative article count over the years</h2>
+            <BarChart width={300} height={200} margin={{ right: -25 }} data={cumulativePerYear}>
+              <YAxis dataKey="count" orientation="right" />
+              <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
               <Tooltip labelClassName="text-black" />
               <Bar dataKey="count" fill="darkred" />
               <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />

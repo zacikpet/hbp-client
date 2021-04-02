@@ -130,7 +130,7 @@ const HistoryRoute: FC = () => {
               domain={[new Date(1989, 7).getTime(), new Date(2005, 0).getTime()]}
               tickFormatter={formatDate}
             >
-              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Date" position="insideBottom" offset={-10} />
             </XAxis>
             <YAxis dataKey="lower_limit" type="number" ticks={[0, 25, 50, 75, 100, 125, 150]} domain={[0, 150]}>
               <Label
@@ -222,7 +222,7 @@ const HistoryRoute: FC = () => {
             <CartesianGrid stroke={darkMode ? '#222' : '#DDD'} />
             <Line dataKey="upper" stroke="#222222" />
             <Line dataKey="lower" stroke="#222222" />
-            <Area dataKey="excluded" fill="#EF4444" label="Excluded zone" />
+            <Area dataKey="excluded" fill="#DC2626" label="Excluded zone" />
             <Tooltip content={<UpperLimitTooltip />} />
             <YAxis domain={[120, 180]} ticks={[120, 130, 140, 150, 160, 170, 180]}>
               <Label
@@ -242,7 +242,7 @@ const HistoryRoute: FC = () => {
               tickFormatter={formatDate}
               ticks={upperLimitTicks}
             >
-              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Date" position="insideBottom" offset={-10} />
             </XAxis>
             <ReferenceLine
               y={125.35}
@@ -276,7 +276,7 @@ const HistoryRoute: FC = () => {
               domain={[new Date(2013, 0).getTime(), new Date(2021, 0).getTime()]}
               tickFormatter={formatDate}
             >
-              <Label fill={textColor} value="Time" position="insideBottom" offset={-10} />
+              <Label fill={textColor} value="Date" position="insideBottom" offset={-10} />
             </XAxis>
             <YAxis
               dataKey="higgs_mass"
