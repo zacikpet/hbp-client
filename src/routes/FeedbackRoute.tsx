@@ -32,7 +32,7 @@ const FeedbackRoute: FC = () => {
     )
 
   return (
-    <div className="min-h-page bg-gray-100 dark:bg-gray-900 py-4">
+    <div className="min-h-page py-4">
       <div className="mx-auto w-full md:w-1/2 p-8 md:px-16 bg-white shadow rounded dark:bg-gray-850">
         <h1 className="text-emphasis font-semibold text-3xl">Is there something wrong?</h1>
         <form className="mt-8" onSubmit={sendFeedback}>

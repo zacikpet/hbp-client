@@ -78,7 +78,7 @@ const HistoryRoute: FC = () => {
       <Gallery
         title="Lower mass limit of the Standard Model Higgs boson"
         text="The development of the lower mass limit of the Standard Model Higgs boson. These lower limits were set at 95 % confidence level by the ATLAS, DELPHI, L3 and OPAL collaborations with data from the Large Electron Positron collider (LEP) at CERN."
-        contentClassName="w-full h-screen-2/3"
+        contentClassName="w-full h-screen-2/3 max-h-144"
       >
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ bottom: 15 }}>
@@ -188,7 +188,7 @@ const HistoryRoute: FC = () => {
             Model Higgs boson at 95 % confidence level.
           </p>
         }
-        contentClassName="w-full h-screen-2/3"
+        contentClassName="w-full h-screen-2/3 max-h-144"
         reversed
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -237,7 +237,7 @@ const HistoryRoute: FC = () => {
       <Gallery
         title="The Higgs boson mass measurement"
         text="Development of the precision of the Higgs boson mass measurement by the ATLAS and CMS collaborations. The solid dot represents the measured Higgs boson mass. The inner error bar shows the statistical uncertainty, while the outer error bar shows the combined uncertainty (statistical and systematic)."
-        contentClassName="w-full h-screen-3/4"
+        contentClassName="w-full h-screen-3/4 max-h-144"
       >
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 0, left: 15, right: 15, bottom: 15 }}>

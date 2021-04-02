@@ -3,6 +3,10 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      screens: {
+        '3k': '2500px',
+        '4k': '3500px',
+      },
       colors: {
         primary: '#3B790F',
         light: 'white',
@@ -28,6 +32,9 @@ module.exports = {
       minHeight: {
         page: 'calc(100vh - 4rem)',
       },
+      maxHeight: {
+        '144': '36rem'
+      },
       backgroundImage: () => ({
         atlas: "url('resources/atlas.jpg')",
         cms: "url('resources/cms.jpg')",
@@ -48,6 +55,7 @@ module.exports = {
       textOpacity: ['dark'],
       boxShadow: ['dark'],
       width: ['hover'],
+      backgroundImage: ['dark'],
     },
   },
   plugins: [require('@tailwindcss/forms')],

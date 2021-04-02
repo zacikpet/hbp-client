@@ -54,11 +54,11 @@ const App: FC = () => {
 
   return (
     <div className={`w-full ${darkMode && 'dark'}`}>
-      <div className="bg-light dark:bg-dark text-emphasis-none">
+      <div className="bg-gradient-to-b from-white to-gray-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-900 text-emphasis-none">
         <DarkModeContext.Provider value={darkMode}>
           <AuthContext.Provider value={auth}>
             <Navbar onChangeDarkMode={handleChangeDarkMode} />
-            <main className="mt-16">
+            <main className="mx-auto max-w-screen-2xl">
               <Switch>
                 <Route path="/articles">
                   <ArticlesRoute />

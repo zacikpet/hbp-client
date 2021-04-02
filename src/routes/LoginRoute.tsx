@@ -61,7 +61,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
   if (auth?.loggedIn) return <Redirect to="/admin" />
 
   return (
-    <div className="min-h-page flex justify-center items-center bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-page flex justify-center items-center">
       <div className="bg-white dark:bg-gray-850 shadow-xl p-8 flex flex-col rounded">
         {error && <Alert level="error" text={error} />}
         <FadeIn when={page === 'loading'}>

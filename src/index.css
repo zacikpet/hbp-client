@@ -19,7 +19,7 @@ body {
     }
 
     .source {
-        @apply font-light text-sm italic
+        @apply font-light italic text-sm
     }
 
     .card-experiment {
