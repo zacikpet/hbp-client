@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { Paper } from '../../api/papers'
+import { LowerLimitPaper, Paper } from '../../api/papers'
 
-const LowerLimitTooltip: FC<{ payload?: { value: number; payload: Paper }[] }> = ({ payload }) => {
+const LowerLimitTooltip: FC<{ payload?: { value: number; payload: Paper | LowerLimitPaper }[] }> = ({ payload }) => {
   if (!payload?.length) return <></>
 
   const date = new Date(payload[0].value).toDateString()

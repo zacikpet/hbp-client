@@ -23,12 +23,28 @@ import Gallery from '../components/Gallery'
 import useTextColor from '../hooks/useTextColor'
 import LowerLimitTooltip from '../components/tooltips/LowerLimitTooltip'
 import UpperLimitTooltip from '../components/tooltips/UpperLimitTooltip'
+import PrecisionTooltip from 'components/tooltips/PrecisionTooltip'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
 const upperLimitTicks = [2010, 2011, 2012].map(year => new Date(year, 0).getTime())
 
 const precisionTicks = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020].map(year => new Date(year, 0).getTime())
+
+const lepCombinedData = [
+  {
+    external_link: 'http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf',
+    lower_limit: 65.6,
+    date: new Date(1995, 0).getTime(),
+    experiment: 'LEP I - combined',
+  },
+  {
+    _id: '604d06a1737a1323f2ed7f56',
+    lower_limit: 114.4,
+    date: new Date(2003, 2, 13).getTime(),
+    experiment: 'LEP - combined',
+  },
+]
 
 const tevatronLimits = [
   { date: new Date(2009, 3).getTime(), upper: 170, lower: 160, excluded: [160, 170] },
@@ -49,7 +65,9 @@ const HistoryRoute: FC = () => {
   const cms = darkMode ? '#00DDDD' : '#008888'
 
   useEffect(() => {
-    getLowerLimits().then(setLowerLimits)
+    getLowerLimits().then(limits =>
+      setLowerLimits(limits.filter(limit => limit.lower_limit !== 114.1 && limit.lower_limit !== 114.4))
+    )
   }, [])
 
   useEffect(() => {
@@ -68,7 +86,9 @@ const HistoryRoute: FC = () => {
   }
 
   function handleClick(paper: LowerLimitPaper) {
-    history.push(`/articles/${paper._id}`)
+    if (paper.external_link) window.open(paper.external_link, '_blank')
+
+    if (paper._id) history.push(`/articles/${paper._id}`)
   }
 
   if (lowerLimits.length === 0) return <Loading />
@@ -88,22 +108,26 @@ const HistoryRoute: FC = () => {
               x2={new Date(1994, 6).getTime()}
               y1={0}
               y2={150}
+              fill={darkMode ? 'white' : 'black'}
               label={{
+                fill: textColor,
                 position: 'insideBottom',
                 value: 'LEP I',
               }}
-              opacity={0.4}
+              opacity={0.1}
             />
             <ReferenceArea
               x1={new Date(1996, 6).getTime()}
               x2={new Date(2000, 10).getTime()}
               y1={0}
               y2={150}
+              fill={darkMode ? 'white' : 'black'}
               label={{
+                fill: textColor,
                 position: 'insideBottom',
                 value: 'LEP II',
               }}
-              opacity={0.4}
+              opacity={0.1}
             />
             <XAxis
               type="number"
@@ -152,6 +176,15 @@ const HistoryRoute: FC = () => {
               name="OPAL"
               data={lowerLimits.filter(p => p.experiment === 'opal')}
               fill="#8884d8"
+            />
+            <Scatter
+              onClick={handleClick}
+              data={lepCombinedData}
+              fill="red"
+              className="cursor-pointer"
+              name="LEP combined"
+              shape="diamond"
+              legendType="diamond"
             />
             <Tooltip content={<LowerLimitTooltip />} />
             <ReferenceLine
@@ -360,7 +393,7 @@ const HistoryRoute: FC = () => {
               fill={cms}
               onClick={handleClick}
             />
-            <Tooltip formatter={(value: number) => formatTooltip(value, 'Measured mass')} />
+            <Tooltip content={<PrecisionTooltip />} />
             <Legend verticalAlign="top" />
           </ScatterChart>
         </ResponsiveContainer>

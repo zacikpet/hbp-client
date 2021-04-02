@@ -68,6 +68,7 @@ export type LowerLimitPaper = {
   date: number
   lower_limit: number
   _id: string
+  external_link?: string
 }
 
 export const getLowerLimits = (): Promise<LowerLimitPaper[]> => {
