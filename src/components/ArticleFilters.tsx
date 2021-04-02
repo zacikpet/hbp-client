@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Experiment, Model, Production, Stage } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
@@ -63,6 +63,9 @@ type ArticleFiltersProps = {
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   const darkMode = useDarkMode()
 
+  const [luminosity, setLuminosity] = useState(options.luminosity)
+  const [energy, setEnergy] = useState(options.energy)
+
   const addDecayProduct = (product: string) => {
     if (options.decay.products.includes(product)) return
     onChange({
@@ -114,9 +117,9 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
 
   const setAnyEnergy = () => onChange({ ...options, anyEnergy: !options.anyEnergy })
 
-  const setLuminosity = (range: number[]) => onChange({ ...options, luminosity: range })
+  const commitLuminosity = (range: number[]) => onChange({ ...options, luminosity: range })
 
-  const setEnergy = (range: number[]) => onChange({ ...options, energy: range })
+  const commitEnergy = (range: number[]) => onChange({ ...options, energy: range })
 
   const setAnyDate = () => onChange({ ...options, anyDate: !options.anyDate })
 
@@ -229,21 +232,22 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
         {!options.anyLuminosity && (
           <div className="p-2">
             <Range
+              onChange={setLuminosity}
               step={1000}
               min={0}
-              max={1000000}
-              values={options.luminosity}
-              onChange={setLuminosity}
+              max={200000}
+              values={luminosity}
+              onFinalChange={commitLuminosity}
               renderTrack={({ props, children }) => (
                 <div
                   {...props}
                   style={{
                     ...props.style,
                     background: getTrackBackground({
-                      values: options.luminosity,
+                      values: luminosity,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
-                      max: 1000000,
+                      max: 200000,
                     }),
                   }}
                   className="w-full h-1"
@@ -259,7 +263,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 />
               )}
             />
-            {Math.round(options.luminosity[0] / 1000)} fb - {Math.round(options.luminosity[1] / 1000)} fb
+            {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
           </div>
         )}
       </div>
@@ -274,15 +278,16 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
               step={1000000}
               min={0}
               max={20000000}
-              values={options.energy}
+              values={energy}
               onChange={setEnergy}
+              onFinalChange={commitEnergy}
               renderTrack={({ props, children }) => (
                 <div
                   {...props}
                   style={{
                     ...props.style,
                     background: getTrackBackground({
-                      values: options.energy,
+                      values: energy,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
                       max: 20000000,
@@ -301,7 +306,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 />
               )}
             />
-            {Math.round(options.energy[0] / 1000000)} TeV - {Math.round(options.energy[1] / 1000000)} TeV
+            {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
           </div>
         )}
       </div>

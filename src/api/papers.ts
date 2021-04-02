@@ -43,6 +43,8 @@ export type Paper = {
     sys_error_up: number
     sys_error_down: number
   }
+  superseded_id: string | null
+  supersedes_id: string | null
 }
 
 type DBPaper = Omit<Paper, 'date'> & { date: string }

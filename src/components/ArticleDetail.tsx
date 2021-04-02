@@ -50,7 +50,7 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
           </div>
           <div className="p-8">
             <h1 className="text-xl font-bold text-emphasis">
-              <Latex>{paper?.title}</Latex>
+              <Latex>{paper.title}</Latex>
             </h1>
             <br />
             {paper?.abstract && (
