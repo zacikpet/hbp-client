@@ -78,13 +78,6 @@ const HistoryRoute: FC = () => {
     return new Date(value).getFullYear().toString()
   }
 
-  function formatTooltip(value: number, label?: string) {
-    // mass
-    if (value < 1000) return [value, label]
-    // timestamp
-    else return [new Date(value).toDateString(), 'Date']
-  }
-
   function handleClick(paper: LowerLimitPaper) {
     if (paper.external_link) window.open(paper.external_link, '_blank')
 

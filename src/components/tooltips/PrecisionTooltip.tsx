@@ -1,11 +1,9 @@
 import React, { FC } from 'react'
-import { LowerLimitPaper, Paper, PrecisionPaper } from '../../api/papers'
+import { PrecisionPaper } from '../../api/papers'
 import Latex from 'react-latex'
 
 const PrecisionTooltip: FC<{ payload?: { value: number; payload: PrecisionPaper }[] }> = ({ payload }) => {
   if (!payload?.length) return <></>
-
-  console.log(payload)
 
   const date = new Date(payload[0].value).toDateString()
   const mass = payload[1].value
