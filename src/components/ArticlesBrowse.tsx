@@ -21,6 +21,8 @@ const initial: FilterOptions = {
   models: ['sm', 'bsm'],
   date: [new Date(Date.now() - 1000 * 60 * 60 * 24 * 365), new Date()], // last year
   anyDate: true,
+  anyProduction: true,
+  productions: ['ggf', 'vbf', 'whzh', 'tth'],
 }
 
 export type State = {
@@ -82,7 +84,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
     return result
   }
 
-  function decay_match(options: string[], present: string[]) {
+  function intersects(options: string[], present: string[]) {
     const optionsSet = new Set(options)
     const presentSet = new Set(present)
 
@@ -101,7 +103,8 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
           (filterOptions.anyLuminosity ||
             match(filterOptions.luminosity[0], filterOptions.luminosity[1], paper.luminosity)) &&
           (filterOptions.anyEnergy || match(filterOptions.energy[0], filterOptions.energy[1], paper.energy)) &&
-          (filterOptions.anyDecay || decay_match(paper.particles.product, filterOptions.decay.products)) &&
+          (filterOptions.anyDecay || intersects(paper.particles.product, filterOptions.decay.products)) &&
+          (filterOptions.anyProduction || intersects(paper.production, filterOptions.productions)) &&
           filterOptions.models.includes(paper.model) &&
           ((filterOptions.date[0] <= new Date(paper.date) && filterOptions.date[1] >= new Date(paper.date)) ||
             filterOptions.anyDate)
@@ -122,7 +125,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
   }, [state])
 
   return (
-    <div className="flex flex-col md:flex-row min-h-page bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="flex flex-col md:flex-row min-h-page bg-gray-100 dark:bg-gray-900 p-4">
       <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       <div className="flex flex-col items-center w-full md:px-5">
         {displayedPapers.map((paper, index) => (

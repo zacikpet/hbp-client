@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Experiment, Model, Stage } from 'api/papers'
+import { Experiment, Model, Production, Stage } from 'api/papers'
 import { getTrackBackground, Range } from 'react-range'
 import Checkbox from './Checkbox'
 import ReactDatePicker from 'react-datepicker'
@@ -43,6 +43,8 @@ export type FilterOptions = {
   anyEnergy: boolean
   luminosity: number[]
   energy: number[]
+  anyProduction: boolean
+  productions: Production[]
   anyDecay: boolean
   decay: {
     products: string[]
@@ -60,6 +62,7 @@ type ArticleFiltersProps = {
 
 const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   const darkMode = useDarkMode()
+
   const addDecayProduct = (product: string) => {
     if (options.decay.products.includes(product)) return
     onChange({
@@ -81,6 +84,12 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
     })
   }
 
+  const selectProduction = (mode: Production) => {
+    if (options.productions.includes(mode))
+      onChange({ ...options, productions: options.productions.filter(m => m !== mode) })
+    else onChange({ ...options, productions: [...options.productions, mode] })
+  }
+
   const selectExperiment = (experiment: Experiment) => {
     if (options.experiments.includes(experiment))
       onChange({ ...options, experiments: options.experiments.filter(e => e !== experiment) })
@@ -98,6 +107,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   }
 
   const setAnyDecay = () => onChange({ ...options, anyDecay: !options.anyDecay })
+
+  const setAnyProduction = () => onChange({ ...options, anyProduction: !options.anyProduction })
 
   const setAnyLuminosity = () => onChange({ ...options, anyLuminosity: !options.anyLuminosity })
 
@@ -334,18 +345,42 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
       </div>
       <div className="article-filter">
         <h2>Production mode</h2>
-        <Checkbox checked={true} disabled className="m-2">
-          Gluon-gluon fusion
+        <Checkbox checked={options.anyProduction} onChange={setAnyProduction} className="m-2">
+          Any
         </Checkbox>
-        <Checkbox checked={true} disabled className="m-2">
-          Vector-boson fusion
-        </Checkbox>
-        <Checkbox checked={true} disabled className="m-2">
-          WH/ZH
-        </Checkbox>
-        <Checkbox checked={true} disabled className="m-2">
-          ttH
-        </Checkbox>
+
+        {!options.anyProduction && (
+          <>
+            <Checkbox
+              checked={options.productions.includes('ggf')}
+              className="m-2"
+              onChange={() => selectProduction('ggf')}
+            >
+              Gluon-gluon fusion
+            </Checkbox>
+            <Checkbox
+              checked={options.productions.includes('vbf')}
+              className="m-2"
+              onChange={() => selectProduction('vbf')}
+            >
+              Vector-boson fusion
+            </Checkbox>
+            <Checkbox
+              checked={options.productions.includes('whzh')}
+              className="m-2"
+              onChange={() => selectProduction('whzh')}
+            >
+              WH/ZH
+            </Checkbox>
+            <Checkbox
+              checked={options.productions.includes('tth')}
+              className="m-2"
+              onChange={() => selectProduction('tth')}
+            >
+              ttH
+            </Checkbox>
+          </>
+        )}
       </div>
       <div className="article-filter">
         <h2>Type</h2>

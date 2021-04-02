@@ -15,7 +15,7 @@ export type Category =
 export type Type = 'paper' | 'note'
 export type Model = 'sm' | 'bsm'
 export type Stage = 'preliminary' | 'submitted' | 'published'
-
+export type Production = 'ggf' | 'vbf' | 'whzh' | 'tth'
 export type Paper = {
   _id: string
   category: Category
@@ -34,6 +34,7 @@ export type Paper = {
   }
   model: Model
   stage: Stage
+  production: Production[]
   lower_limit?: number
   precision?: {
     higgs_mass: number
