@@ -26,7 +26,7 @@ const Gallery: FC<GalleryProps> = ({
     <div className="w-full md:w-1/2 p-16 pb-0 md:p-16">
       <h1 className="text-4xl font-bold text-emphasis">{title}</h1>
       <br />
-      <p className="font-serif font-light">{text}</p>
+      <span className="font-serif font-light">{text}</span>
       {source && <p className="source">Source: {source}</p>}
       {more && (
         <div className="mt-10">

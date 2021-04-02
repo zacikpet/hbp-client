@@ -1,19 +1,19 @@
 import React, { FC, useEffect, useState } from 'react'
 import {
+  Area,
+  CartesianGrid,
+  ComposedChart,
+  Label,
   Legend,
+  Line,
   ReferenceArea,
   ReferenceLine,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
-  ComposedChart,
   Tooltip,
   XAxis,
   YAxis,
-  Line,
-  Area,
-  Label,
-  CartesianGrid,
 } from 'recharts'
 import { getLowerLimits, getPrecision, LowerLimitPaper, PrecisionPaper } from '../api/papers'
 import { useHistory } from 'react-router-dom'
@@ -21,6 +21,8 @@ import Loading from '../components/Loading'
 import useDarkMode from '../hooks/useDarkMode'
 import Gallery from '../components/Gallery'
 import useTextColor from '../hooks/useTextColor'
+import LowerLimitTooltip from '../components/tooltips/LowerLimitTooltip'
+import UpperLimitTooltip from '../components/tooltips/UpperLimitTooltip'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
@@ -151,7 +153,7 @@ const HistoryRoute: FC = () => {
               data={lowerLimits.filter(p => p.experiment === 'opal')}
               fill="#8884d8"
             />
-            <Tooltip formatter={(value: number) => formatTooltip(value, 'Lower limit')} />
+            <Tooltip content={<LowerLimitTooltip />} />
             <ReferenceLine
               y={125.35}
               label={{
@@ -195,7 +197,7 @@ const HistoryRoute: FC = () => {
             <Line dataKey="upper" stroke="#222222" />
             <Line dataKey="lower" stroke="#222222" />
             <Area dataKey="excluded" fill="#EF4444" label="Excluded zone" />
-            <Tooltip />
+            <Tooltip content={<UpperLimitTooltip />} />
             <YAxis domain={[120, 180]} ticks={[120, 130, 140, 150, 160, 170, 180]}>
               <Label
                 fill={textColor}
@@ -259,8 +261,9 @@ const HistoryRoute: FC = () => {
               <Label fill={textColor} value="Mass (GeV)" position="left" angle={270} style={{ textAnchor: 'middle' }} />
             </YAxis>
 
-            {precision.map(precision => (
+            {precision.map((precision, i) => (
               <ReferenceLine
+                key={i.toString() + 'a'}
                 stroke={precision.experiment === 'atlas' ? atlas : cms}
                 segment={[
                   {
@@ -275,8 +278,9 @@ const HistoryRoute: FC = () => {
               />
             ))}
 
-            {precision.map(precision => (
+            {precision.map((precision, i) => (
               <ReferenceLine
+                key={i.toString() + 'b'}
                 stroke={precision.experiment === 'atlas' ? atlas : cms}
                 segment={[
                   {
@@ -291,8 +295,9 @@ const HistoryRoute: FC = () => {
               />
             ))}
 
-            {precision.map(precision => (
+            {precision.map((precision, i) => (
               <ReferenceLine
+                key={i.toString() + 'c'}
                 stroke={precision.experiment === 'atlas' ? atlas : cms}
                 segment={[
                   {
@@ -307,8 +312,9 @@ const HistoryRoute: FC = () => {
               />
             ))}
 
-            {precision.map(precision => (
+            {precision.map((precision, i) => (
               <ReferenceLine
+                key={i.toString() + 'd'}
                 stroke={precision.experiment === 'atlas' ? atlas : cms}
                 segment={[
                   {
@@ -323,8 +329,9 @@ const HistoryRoute: FC = () => {
               />
             ))}
 
-            {precision.map(precision => (
+            {precision.map((precision, i) => (
               <ReferenceLine
+                key={i.toString() + 'e'}
                 stroke={precision.experiment === 'atlas' ? atlas : cms}
                 segment={[
                   {
