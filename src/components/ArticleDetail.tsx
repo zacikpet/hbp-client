@@ -127,20 +127,24 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
             <p>
               Published: <b className="font-semibold">{paper.date.toDateString()}</b>
             </p>
-            <p>
-              Luminosity:{' '}
-              <b className="font-semibold">
-                {paper.luminosity[0] > 1000 ? paper.luminosity[0] / 1000 : paper.luminosity[0]}
-                {paper.luminosity[0] > 1000 ? ' fb-1' : ' pb-1'}
-              </b>
-            </p>
-            <p>
-              C. Energy:{' '}
-              <b className="font-semibold">
-                {paper.energy[0] > 1000000 ? paper.energy[0] / 1000000 : paper.energy[0] / 1000}
-                {paper.energy[0] > 1000000 ? ' TeV' : ' GeV'}
-              </b>
-            </p>
+            {paper.luminosity.length > 0 && (
+              <p>
+                Luminosity:{' '}
+                <b className="font-semibold">
+                  {paper.luminosity[0] > 1000 ? paper.luminosity[0] / 1000 : paper.luminosity[0]}
+                  {paper.luminosity[0] > 1000 ? ' fb-1' : ' pb-1'}
+                </b>
+              </p>
+            )}
+            {paper.energy.length > 0 && (
+              <p>
+                C. Energy:{' '}
+                <b className="font-semibold">
+                  {paper.energy[0] > 1000000 ? paper.energy[0] / 1000000 : paper.energy[0] / 1000}
+                  {paper.energy[0] > 1000000 ? ' TeV' : ' GeV'}
+                </b>
+              </p>
+            )}
             <div className="mt-4">
               <InfoCard text={paper.model === 'sm' ? 'Standard Model' : 'Beyond the Standard Model'} />
               {paper.production.map(production => (
