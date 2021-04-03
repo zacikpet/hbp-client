@@ -108,7 +108,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
   }, [state])
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-4">
+    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-4 lg:justify-between">
       <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       <div className="flex flex-col items-center md:px-2">
         {displayedPapers.map((paper, index) => (

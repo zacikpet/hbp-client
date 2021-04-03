@@ -11,8 +11,8 @@ const initial: FilterOptions = {
   searchString: '',
   stages: ['submitted', 'preliminary', 'published'],
   experiments: ['atlas', 'cms', 'aleph', 'delphi', 'l3', 'opal', 'cdf', 'd0'],
-  luminosity: [0, 0],
-  energy: [0, 0],
+  luminosity: [0, 139000],
+  energy: [0, 14000000],
   anyLuminosity: true,
   anyEnergy: true,
   anyDecay: true,
@@ -29,7 +29,6 @@ const initial: FilterOptions = {
 const ArticlesRoute: FC = () => {
   const [loading, setLoading] = useState(true)
   const [papers, setPapers] = useState<Paper[]>([])
-  const [selectedArticle, setSelectedArticle] = useState<Paper>()
   const [state, setState] = useState<State>()
   const [previousState, setPreviousState] = useState<State>()
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
@@ -37,7 +36,6 @@ const ArticlesRoute: FC = () => {
   const { pathname } = useLocation()
 
   const handleSelect = (article: Paper, page: number) => {
-    setSelectedArticle(article)
     setPreviousState({ x: window.pageXOffset, y: window.pageYOffset, page: page })
     scrollTo(0, 0)
   }
@@ -78,7 +76,7 @@ const ArticlesRoute: FC = () => {
         />
       </Route>
       <Route path="/articles/:id">
-        <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} onEdit={handleEdit} />
+        <ArticleDetail onFetch={handleFetch} onEdit={handleEdit} />
       </Route>
     </Switch>
   )

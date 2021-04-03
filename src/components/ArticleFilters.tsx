@@ -235,7 +235,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
               onChange={setLuminosity}
               step={1000}
               min={0}
-              max={200000}
+              max={139000}
               values={luminosity}
               onFinalChange={commitLuminosity}
               renderTrack={({ props, children }) => (
@@ -247,7 +247,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                       values: luminosity,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
-                      max: 200000,
+                      max: 139000,
                     }),
                   }}
                   className="w-full h-1"
@@ -277,7 +277,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             <Range
               step={1000000}
               min={0}
-              max={20000000}
+              max={14000000}
               values={energy}
               onChange={setEnergy}
               onFinalChange={commitEnergy}
@@ -290,7 +290,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                       values: energy,
                       colors: [darkMode ? '#374151' : 'lightgray', '#3B790F', darkMode ? '#374151' : 'lightgray'],
                       min: 0,
-                      max: 20000000,
+                      max: 14000000,
                     }),
                   }}
                   className="w-full h-1"

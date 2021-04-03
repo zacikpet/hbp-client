@@ -10,29 +10,23 @@ import InfoCard from './InfoCard'
 import { getProductionString, copyStringToClipboard } from 'utils'
 
 type ArticleDetailProps = {
-  selectedPaper?: Paper
   onFetch?: (paper: Paper) => void
   onEdit: (paper: Paper) => void
 }
 
-const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit }) => {
+const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
   const { id } = useParams<{ id: string }>()
   const auth = useAuth()
   const [fetchedPaper, setFetchedPaper] = useState<Paper>()
 
   useEffect(() => {
-    if (!selectedPaper && id)
-      getPaper(id).then(paper => {
-        setFetchedPaper(paper)
-        onFetch && onFetch(paper)
-      })
-  }, [id, onFetch, selectedPaper])
+    getPaper(id).then(paper => {
+      setFetchedPaper(paper)
+      onFetch && onFetch(paper)
+    })
+  }, [id, onFetch])
 
-  function handleClickBack() {
-    setFetchedPaper(undefined)
-  }
-
-  const paper = fetchedPaper || selectedPaper
+  const paper = fetchedPaper
 
   return paper ? (
     <div className="min-h-page flex flex-col lg:flex-row p-4 justify-center">
@@ -42,7 +36,7 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
             <h1 className="text-lg">Actions</h1>
           </div>
           <div className="p-4 flex flex-col">
-            <Link to="/articles" onClick={handleClickBack} className="w-full">
+            <Link to="/articles" className="w-full">
               <button className="btn w-full px-4">Back to all articles</button>
             </Link>
             <div className="w-full mt-2">
@@ -127,6 +121,16 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
             <p>
               Published: <b className="font-semibold">{paper.date.toDateString()}</b>
             </p>
+            {paper.superseded_id && (
+              <Link className="hover:underline text-blue-900" to={`/articles/${paper.superseded_id}`}>
+                This article has been superseded.
+              </Link>
+            )}
+            {paper.supersedes_id && (
+              <Link className="hover:underline text-blue-900" to={`/articles/${paper.supersedes_id}`}>
+                Go to preliminary results.
+              </Link>
+            )}
             {paper.luminosity.length > 0 && (
               <p>
                 Luminosity:{' '}
