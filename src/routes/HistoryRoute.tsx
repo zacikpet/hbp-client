@@ -33,7 +33,7 @@ const precisionTicks = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020].map(year
 
 const lepCombinedData = [
   {
-    external_link: 'http://sopczak.web.cern.ch/sopczak/tevatron/JPhysG_39_2012_113001.pdf',
+    external_link: 'http://sopczak.web.cern.ch/sopczak/lep/phys_rep_sopczak_lep1.pdf',
     lower_limit: 65.6,
     date: new Date(1995, 0).getTime(),
     experiment: 'LEP I - combined',

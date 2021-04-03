@@ -1,10 +1,30 @@
 import './styles.css'
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { Route, useLocation } from 'react-router-dom'
+import { Route, Switch, useLocation } from 'react-router-dom'
 import Loading from 'components/Loading'
 import ArticleDetail from 'components/ArticleDetail'
 import ArticlesBrowse, { State } from 'components/ArticlesBrowse'
 import { getPapers, Paper } from 'api/papers'
+import { FilterOptions } from 'components/ArticleFilters'
+
+const initial: FilterOptions = {
+  searchString: '',
+  stages: ['submitted', 'preliminary', 'published'],
+  experiments: ['atlas', 'cms', 'aleph', 'delphi', 'l3', 'opal', 'cdf', 'd0'],
+  luminosity: [0, 0],
+  energy: [0, 0],
+  anyLuminosity: true,
+  anyEnergy: true,
+  anyDecay: true,
+  decay: {
+    products: [],
+  },
+  models: ['sm', 'bsm'],
+  date: [new Date(Date.now() - 1000 * 60 * 60 * 24 * 365), new Date()], // last year
+  anyDate: true,
+  anyProduction: true,
+  productions: ['ggf', 'vbf', 'whzh', 'tth'],
+}
 
 const ArticlesRoute: FC = () => {
   const [loading, setLoading] = useState(true)
@@ -12,6 +32,7 @@ const ArticlesRoute: FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<Paper>()
   const [state, setState] = useState<State>()
   const [previousState, setPreviousState] = useState<State>()
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
 
   const { pathname } = useLocation()
 
@@ -46,14 +67,20 @@ const ArticlesRoute: FC = () => {
   if (loading) return <Loading />
 
   return (
-    <>
+    <Switch>
       <Route exact path="/articles">
-        <ArticlesBrowse papers={papers} onSelect={handleSelect} state={state} />
+        <ArticlesBrowse
+          papers={papers}
+          onSelect={handleSelect}
+          state={state}
+          filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
+        />
       </Route>
       <Route path="/articles/:id">
         <ArticleDetail selectedPaper={selectedArticle} onFetch={handleFetch} onEdit={handleEdit} />
       </Route>
-    </>
+    </Switch>
   )
 }
 

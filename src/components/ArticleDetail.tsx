@@ -6,6 +6,8 @@ import StageInfoCard from './StageInfoCard'
 import useAuth from '../hooks/useAuth'
 import ArticleEdit from './ArticleEdit'
 import ModelInfoCard from './ModelInfoCard'
+import InfoCard from './InfoCard'
+import { getProductionString, copyStringToClipboard } from 'utils'
 
 type ArticleDetailProps = {
   selectedPaper?: Paper
@@ -33,15 +35,26 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
   const paper = fetchedPaper || selectedPaper
 
   return paper ? (
-    <div className="min-h-page w-full p-8 md:px-32 bg-gray-50 dark:bg-gray-900">
-      <div className="relative max-w-3xl mx-auto">
-        <div className="absolute -left-48 w-48 top-0">
-          <Link to="/articles" onClick={handleClickBack}>
-            <button className="btn">Back to all articles</button>
-          </Link>
+    <div className="min-h-page flex flex-col lg:flex-row p-4 justify-center">
+      <div className="flex-shrink-0">
+        <div className="bg-light dark:bg-gray-850 rounded shadow mb-2">
+          <div className="px-4 py-2 rounded-t bg-gray-100 dark:bg-gray-800">
+            <h1 className="text-lg">Actions</h1>
+          </div>
+          <div className="p-4 flex flex-col">
+            <Link to="/articles" onClick={handleClickBack} className="w-full">
+              <button className="btn w-full px-4">Back to all articles</button>
+            </Link>
+            <div className="w-full mt-2">
+              <button className="btn w-full px-4" onClick={() => copyStringToClipboard(window.location.href)}>
+                Copy article URL
+              </button>
+            </div>
+          </div>
         </div>
-
-        <div className="bg-white dark:bg-gray-850 rounded shadow-md my-1">
+      </div>
+      <div className="lg:px-2">
+        <div className="bg-white dark:bg-gray-850 rounded shadow-md">
           <div className="flex p-2 bg-gray-100 dark:bg-gray-800 rounded-t">
             <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
             <StageInfoCard stage={paper.stage} />
@@ -103,6 +116,48 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ selectedPaper, onFetch, onEdit 
               to your administrator account to edit.
             </div>
           )}
+        </div>
+      </div>
+      <div className="flex-shrink-0">
+        <div className="bg-light dark:bg-gray-850 rounded shadow">
+          <div className="px-4 py-2 rounded-t bg-gray-100 dark:bg-gray-800">
+            <h1 className="text-lg">Info</h1>
+          </div>
+          <div className="p-4">
+            <p>
+              Published: <b className="font-semibold">{paper.date.toDateString()}</b>
+            </p>
+            <p>
+              Luminosity:{' '}
+              <b className="font-semibold">
+                {paper.luminosity[0] > 1000 ? paper.luminosity[0] / 1000 : paper.luminosity[0]}
+                {paper.luminosity[0] > 1000 ? ' fb-1' : ' pb-1'}
+              </b>
+            </p>
+            <p>
+              C. Energy:{' '}
+              <b className="font-semibold">
+                {paper.energy[0] > 1000000 ? paper.energy[0] / 1000000 : paper.energy[0] / 1000}
+                {paper.energy[0] > 1000000 ? ' TeV' : ' GeV'}
+              </b>
+            </p>
+            <div className="mt-4">
+              <InfoCard text={paper.model === 'sm' ? 'Standard Model' : 'Beyond the Standard Model'} />
+              {paper.production.map(production => (
+                <InfoCard key={production} text={getProductionString(production)} />
+              ))}
+            </div>
+            {paper.particles.product.length > 0 && (
+              <div className="mt-4">
+                <h1>Decay products</h1>
+                <div className="flex flex-wrap">
+                  {paper.particles.product.map(product => (
+                    <div className="px-2 m-1 bg-primary rounded text-onprimary">{product}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

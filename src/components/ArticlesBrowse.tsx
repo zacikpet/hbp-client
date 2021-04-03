@@ -6,25 +6,6 @@ import { Paper } from '../api/papers'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useDarkMode from '../hooks/useDarkMode'
 
-const initial: FilterOptions = {
-  searchString: '',
-  stages: ['submitted', 'preliminary', 'published'],
-  experiments: ['atlas', 'cms', 'aleph', 'delphi', 'l3', 'opal', 'cdf', 'd0'],
-  luminosity: [0, 0],
-  energy: [0, 0],
-  anyLuminosity: true,
-  anyEnergy: true,
-  anyDecay: true,
-  decay: {
-    products: [],
-  },
-  models: ['sm', 'bsm'],
-  date: [new Date(Date.now() - 1000 * 60 * 60 * 24 * 365), new Date()], // last year
-  anyDate: true,
-  anyProduction: true,
-  productions: ['ggf', 'vbf', 'whzh', 'tth'],
-}
-
 export type State = {
   x: number
   y: number
@@ -35,11 +16,13 @@ type ArticlesBrowseProps = {
   papers: Paper[]
   onSelect: (selected: Paper, page: number) => void
   state?: State
+  filterOptions: FilterOptions
+  setFilterOptions: (newOptions: FilterOptions) => void
 }
 
-const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) => {
+const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filterOptions, setFilterOptions }) => {
   const darkMode = useDarkMode()
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
+
   const [filteredPapers, setFilteredPapers] = useState<Paper[]>(papers)
 
   const [page, setPage] = useState(0)
@@ -125,9 +108,9 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
   }, [state])
 
   return (
-    <div className="flex flex-col md:flex-row min-h-page dark:bg-gray-900 p-4">
+    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-4">
       <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
-      <div className="flex flex-col items-center w-full md:px-5">
+      <div className="flex flex-col items-center md:px-2">
         {displayedPapers.map((paper, index) => (
           <Article key={paper._id + index.toString()} paper={paper} onSelect={() => onSelect(paper, page)} />
         ))}
@@ -157,7 +140,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
 
           <div className="px-4 flex flex-col items-center">
             <h2 className="text-disabled mt-2 font-serif">Number of articles published per year</h2>
-            <BarChart width={300} height={200} margin={{ right: -25 }} data={papersPerYear}>
+            <BarChart width={300} height={200} margin={{ right: -15 }} data={papersPerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
               <Tooltip labelClassName="text-black" />
@@ -166,7 +149,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state }) =>
             </BarChart>
 
             <h2 className="text-disabled mt-2 font-serif">Cumulative article count over the years</h2>
-            <BarChart width={300} height={200} margin={{ right: -25 }} data={cumulativePerYear}>
+            <BarChart width={300} height={200} margin={{ right: -15 }} data={cumulativePerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
               <Tooltip labelClassName="text-black" />
