@@ -22,12 +22,8 @@ const Gallery: FC<GalleryProps> = ({
   reversed = false,
   contentClassName,
 }) => (
-  <div
-    className={`w-full flex ${
-      reversed ? 'flex-row-reverse' : 'flex-row'
-    } flex-wrap items-center px-16`}
-  >
-    <div className="w-full md:w-1/2 p-16 pb-0 md:p-16">
+  <div className={`w-full flex ${reversed ? 'flex-row-reverse' : 'flex-row'} flex-wrap items-center px-8 md:px-16`}>
+    <div className="w-full md:w-1/2 py-8 pb-0 md:p-16">
       <h1 className="text-title font-bold text-emphasis text-4xl">{title}</h1>
       <br />
       <span className="font-serif">{text}</span>
@@ -40,7 +36,7 @@ const Gallery: FC<GalleryProps> = ({
         </div>
       )}
     </div>
-    <div className="w-full md:w-1/2 flex flex-col items-center font-light p-4">
+    <div className="w-full md:w-1/2 flex flex-col items-center font-light py-4 md:px-4">
       <div className={contentClassName}>{children}</div>
       <p className="font-serif">{contentLabel}</p>
       <p className="source">{contentSource}</p>
