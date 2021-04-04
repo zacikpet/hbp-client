@@ -25,7 +25,7 @@ const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
         <div className="cursor-pointer flex items-center">
           <img src={Wave} className="w-12 h-12" alt="Logo" onClick={() => onChangeDarkMode(!darkMode)} />
           <Link to="/" className="text-subtitle italic ">
-            The Higgs Boson portal
+            Higgs Boson Portal
           </Link>
         </div>
         {auth?.loggedIn && (
