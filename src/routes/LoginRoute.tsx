@@ -63,7 +63,7 @@ const LoginRoute: FC<LoginRouteProps> = ({ setAuth }) => {
   return (
     <div className="min-h-page flex justify-center items-center">
       <div className="bg-white dark:bg-gray-850 shadow-xl p-8 flex flex-col rounded">
-        {error && <Alert level="error" text={error} />}
+        {error && <Alert level="error" text={error} onClose={() => setError(null)} />}
         <FadeIn when={page === 'loading'}>
           <div className="w-72 h-72 flex justify-center items-center">
             <Loader type="TailSpin" color={textColor} height={75} width={75} />

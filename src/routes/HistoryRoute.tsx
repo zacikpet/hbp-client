@@ -1,4 +1,6 @@
+import PrecisionTooltip from 'components/tooltips/PrecisionTooltip'
 import React, { FC, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Area,
   CartesianGrid,
@@ -16,14 +18,12 @@ import {
   YAxis,
 } from 'recharts'
 import { getLowerLimits, getPrecision, LowerLimitPaper, PrecisionPaper } from '../api/papers'
-import { useHistory } from 'react-router-dom'
-import Loading from '../components/Loading'
-import useDarkMode from '../hooks/useDarkMode'
 import Gallery from '../components/Gallery'
-import useTextColor from '../hooks/useTextColor'
+import Loading from '../components/Loading'
 import LowerLimitTooltip from '../components/tooltips/LowerLimitTooltip'
 import UpperLimitTooltip from '../components/tooltips/UpperLimitTooltip'
-import PrecisionTooltip from 'components/tooltips/PrecisionTooltip'
+import useDarkMode from '../hooks/useDarkMode'
+import useTextColor from '../hooks/useTextColor'
 
 const ticks = [1990, 1992, 1994, 1996, 1998, 2000, 2002, 2004].map(year => new Date(year, 0).getTime())
 
@@ -63,6 +63,13 @@ const HistoryRoute: FC = () => {
 
   const atlas = darkMode ? '#DD0000' : '#880000'
   const cms = darkMode ? '#00DDDD' : '#008888'
+  const combined = '#FF8C00'
+
+  function precisionColor(paper: PrecisionPaper) {
+    if (paper.combined) return combined
+    else if (paper.experiment === 'atlas') return atlas
+    else return cms
+  }
 
   useEffect(() => {
     getLowerLimits().then(limits =>
@@ -290,7 +297,7 @@ const HistoryRoute: FC = () => {
             {precision.map((precision, i) => (
               <ReferenceLine
                 key={i.toString() + 'a'}
-                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                stroke={precisionColor(precision)}
                 segment={[
                   {
                     x: precision.date,
@@ -307,7 +314,7 @@ const HistoryRoute: FC = () => {
             {precision.map((precision, i) => (
               <ReferenceLine
                 key={i.toString() + 'b'}
-                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                stroke={precisionColor(precision)}
                 segment={[
                   {
                     x: precision.date - 1000 * 60 * 60 * 24 * 31,
@@ -324,7 +331,7 @@ const HistoryRoute: FC = () => {
             {precision.map((precision, i) => (
               <ReferenceLine
                 key={i.toString() + 'c'}
-                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                stroke={precisionColor(precision)}
                 segment={[
                   {
                     x: precision.date - 1000 * 60 * 60 * 24 * 31,
@@ -341,7 +348,7 @@ const HistoryRoute: FC = () => {
             {precision.map((precision, i) => (
               <ReferenceLine
                 key={i.toString() + 'd'}
-                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                stroke={precisionColor(precision)}
                 segment={[
                   {
                     x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
@@ -358,7 +365,7 @@ const HistoryRoute: FC = () => {
             {precision.map((precision, i) => (
               <ReferenceLine
                 key={i.toString() + 'e'}
-                stroke={precision.experiment === 'atlas' ? atlas : cms}
+                stroke={precisionColor(precision)}
                 segment={[
                   {
                     x: precision.date - 1000 * 60 * 60 * 24 * 31 * 2,
@@ -375,15 +382,22 @@ const HistoryRoute: FC = () => {
             <Scatter
               name="ATLAS"
               className="cursor-pointer"
-              data={precision.filter(item => item.experiment === 'atlas')}
+              data={precision.filter(item => !item.combined && item.experiment === 'atlas')}
               fill={atlas}
               onClick={handleClick}
             />
             <Scatter
               name="CMS"
               className="cursor-pointer"
-              data={precision.filter(item => item.experiment === 'cms')}
+              data={precision.filter(item => !item.combined && item.experiment === 'cms')}
               fill={cms}
+              onClick={handleClick}
+            />
+            <Scatter
+              name="Combined"
+              className="cursor-pointer"
+              data={precision.filter(item => item.combined)}
+              fill={combined}
               onClick={handleClick}
             />
             <Tooltip content={<PrecisionTooltip />} />

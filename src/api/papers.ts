@@ -42,6 +42,7 @@ export type Paper = {
     stat_error_down: number
     sys_error_up: number
     sys_error_down: number
+    combined?: boolean
   }
   superseded_id: string | null
   supersedes_id: string | null
@@ -96,6 +97,7 @@ export type PrecisionPaper = {
   stat_error_down: number
   sys_error_up: number
   sys_error_down: number
+  combined: boolean
 }
 
 export const getPrecision = (): Promise<PrecisionPaper[]> => {
@@ -107,6 +109,7 @@ export const getPrecision = (): Promise<PrecisionPaper[]> => {
         experiment: paper.experiment,
         date: paper.date.getTime(),
         _id: paper._id,
+        combined: Boolean(paper.precision?.combined),
         higgs_mass: paper.precision?.higgs_mass || 0,
         stat_error_up: paper.precision?.stat_error_up || 0,
         stat_error_down: paper.precision?.stat_error_down || 0,

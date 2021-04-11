@@ -10,11 +10,13 @@ const PrecisionTooltip: FC<{ payload?: { value: number; payload: PrecisionPaper 
 
   const paper = payload[0].payload
 
+  const title = paper.combined ? 'ATLAS + CMS' : paper.experiment.toUpperCase()
+
   return (
     <>
       {payload?.length && (
         <div className="bg-white dark:bg-gray-900 opacity-90 p-1 border dark:border-gray-700 rounded">
-          <p className="font-semibold">{payload[0].payload.experiment.toUpperCase()}</p>
+          <p className="font-semibold">{title}</p>
           <p className="mb-2">{date}</p>
           <Latex>{`$${mass}_{-${paper.stat_error_down}}^{+${paper.stat_error_up}}(stat.)_{-${paper.sys_error_down}}^{+${paper.sys_error_up}}(sys.)\\,GeV $`}</Latex>
         </div>
