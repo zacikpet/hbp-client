@@ -1,6 +1,6 @@
 import './styles.css'
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { Route, Switch, useLocation } from 'react-router-dom'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import Loading from 'components/Loading'
 import ArticleDetail from 'components/ArticleDetail'
 import ArticlesBrowse, { State } from 'components/ArticlesBrowse'
@@ -33,6 +33,7 @@ const ArticlesRoute: FC = () => {
   const [previousState, setPreviousState] = useState<State>()
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(initial)
 
+  const history = useHistory()
   const { pathname } = useLocation()
 
   const handleSelect = (article: Paper, page: number) => {
@@ -62,6 +63,33 @@ const ArticlesRoute: FC = () => {
     setPapers(papers.map(paper => (paper._id === edited._id ? edited : paper)))
   }
 
+  function handleNext(currentId: string) {
+    const currentIndex = papers.findIndex(p => p._id === currentId)
+
+    if (currentIndex === -1) return
+
+    const nextIndex = currentIndex + 1
+
+    if (nextIndex >= papers.length) return
+
+    const nextId = papers[nextIndex]._id
+
+    history.push(`/articles/${nextId}`)
+  }
+
+  function handlePrev(currentId: string) {
+    const currentIndex = papers.findIndex(p => p._id === currentId)
+    if (currentIndex === -1) return
+
+    const prevIndex = currentIndex - 1
+
+    if (prevIndex < 0) return
+
+    const prevId = papers[prevIndex]._id
+
+    history.push(`/articles/${prevId}`)
+  }
+
   if (loading) return <Loading />
 
   return (
@@ -76,7 +104,7 @@ const ArticlesRoute: FC = () => {
         />
       </Route>
       <Route path="/articles/:id">
-        <ArticleDetail onFetch={handleFetch} onEdit={handleEdit} />
+        <ArticleDetail onFetch={handleFetch} onEdit={handleEdit} onNext={handleNext} onPrev={handlePrev} />
       </Route>
     </Switch>
   )

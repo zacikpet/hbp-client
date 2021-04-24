@@ -5,7 +5,7 @@ import Gallery from 'components/Gallery'
 
 const HomeRoute: FC = () => {
   return (
-    <div className="bg-gradient-to-b from-white to-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-850">
+    <div className="shadow bg-gradient-to-b from-white to-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-850">
       <Gallery
         title="HBP – the portal for categorised information about the Higgs boson"
         text="The Higgs boson, named after the the physicist Peter Higgs is a subatomic particle. It is the manifestation of the Higgs field, a quantum field that is present everywhere throughout the Universe.

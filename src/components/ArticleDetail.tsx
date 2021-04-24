@@ -12,9 +12,11 @@ import { getProductionString, copyStringToClipboard } from 'utils'
 type ArticleDetailProps = {
   onFetch?: (paper: Paper) => void
   onEdit: (paper: Paper) => void
+  onNext: (currentId: string) => void
+  onPrev: (currentId: string) => void
 }
 
-const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
+const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit, onNext, onPrev }) => {
   const { id } = useParams<{ id: string }>()
   const auth = useAuth()
   const [fetchedPaper, setFetchedPaper] = useState<Paper>()
@@ -22,7 +24,7 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
   useEffect(() => {
     getPaper(id).then(paper => {
       setFetchedPaper(paper)
-      onFetch && onFetch(paper)
+      // onFetch && onFetch(paper)
     })
   }, [id, onFetch])
 
@@ -42,6 +44,16 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
             <div className="w-full mt-2">
               <button className="btn w-full px-4" onClick={() => copyStringToClipboard(window.location.href)}>
                 Copy article URL
+              </button>
+            </div>
+            <div className="w-full mt-2">
+              <button className="btn w-full px-4" onClick={() => onNext(paper._id)}>
+                Next article
+              </button>
+            </div>
+            <div className="w-full mt-2">
+              <button className="btn w-full px-4" onClick={() => onPrev(paper._id)}>
+                Previous article
               </button>
             </div>
           </div>
@@ -134,10 +146,12 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
             {paper.luminosity.length > 0 && (
               <p>
                 Luminosity:{' '}
-                <b className="font-semibold">
-                  {paper.luminosity[0] > 1000 ? paper.luminosity[0] / 1000 : paper.luminosity[0]}
-                  {paper.luminosity[0] > 1000 ? ' fb-1' : ' pb-1'}
-                </b>
+                {paper.luminosity.map((l, i) => (
+                  <div key={i} className="font-semibold">
+                    {l > 1000 ? l / 1000 : l}
+                    {l > 1000 ? ' fb-1' : ' pb-1'}
+                  </div>
+                ))}
               </p>
             )}
             {paper.energy.length > 0 && (
@@ -160,7 +174,9 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit }) => {
                 <h1>Decay products</h1>
                 <div className="flex flex-wrap">
                   {paper.particles.product.map(product => (
-                    <div className="px-2 m-1 bg-primary rounded text-onprimary">{product}</div>
+                    <div key={product} className="px-2 m-1 bg-primary rounded text-onprimary">
+                      {product}
+                    </div>
                   ))}
                 </div>
               </div>

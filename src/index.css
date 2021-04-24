@@ -5,90 +5,87 @@
 @tailwind utilities;
 
 body {
-    -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @layer components {
+  .btn {
+    @apply p-2 cursor-pointer transition-colors font-bold rounded border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-onprimary shadow-md;
+  }
 
-    .btn {
-        @apply p-2 cursor-pointer transition-colors font-bold rounded border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-onprimary shadow-md
-    }
+  .input {
+    @apply text-sm rounded text-black shadow outline-none border-gray-300 dark:text-white dark:bg-gray-900 dark:border-gray-850;
+  }
 
-    .input {
-        @apply text-sm rounded text-black shadow outline-none border-gray-300 dark:text-white dark:bg-gray-900 dark:border-gray-850
-    }
+  .source {
+    @apply font-light italic text-sm;
+  }
 
-    .source {
-        @apply font-light italic text-sm
-    }
+  .card-experiment {
+    @apply transition-all duration-150;
+    @apply w-full bg-cover bg-center;
+    @apply hover:filter-none filter-bw;
+    @apply border border-white dark:border-gray-900;
+    @apply text-white text-opacity-70 hover:text-opacity-90 text-lg italic;
+  }
 
-    .card-experiment {
-        @apply transition-all duration-150;
-        @apply w-full bg-cover bg-center;
-        @apply hover:filter-none filter-bw;
-        @apply border border-white dark:border-gray-900;
-        @apply text-white text-opacity-70 hover:text-opacity-90 text-lg italic;
-    }
+  .card-experiment-title {
+    @apply bg-gradient-to-b from-black to-transparent p-4 pb-40;
+  }
 
-    .card-experiment-title {
-        @apply bg-gradient-to-b from-black to-transparent p-4 pb-40
-    }
+  .navlink {
+    @apply cursor-pointer duration-300 border-b-2 border-transparent;
+  }
 
-    .navlink {
-        @apply cursor-pointer duration-300 border-b-2 border-transparent
-    }
+  .navlink-active {
+    @apply border-primary;
+  }
 
-    .navlink-active {
-        @apply border-primary
-    }
+  .navlink:hover {
+    @apply border-gray-100 dark:border-gray-700;
+  }
 
-    .navlink:hover {
-        @apply border-gray-100 dark:border-gray-700
-    }
+  .navlink-active:hover {
+    @apply border-primary dark:border-primary;
+  }
 
-    .navlink-active:hover {
-        @apply border-primary dark:border-primary
-    }
+  .checkbox:checked {
+    @apply bg-primary;
+  }
 
-    .checkbox:checked {
-        @apply bg-primary
-    }
+  .article-filter {
+    direction: ltr;
+    @apply p-2 my-1 bg-white shadow-md rounded dark:bg-gray-850;
+  }
 
-    .article-filter {
-        direction: ltr;
-        @apply p-2 my-1 bg-white shadow-md rounded dark:bg-gray-850
-    }
-
-    .article-info-card {
-        @apply rounded w-16 text-center bg-black text-sm mx-1 text-white
-    }
+  .article-info-card {
+    @apply rounded w-16 text-center bg-black text-sm mx-1 text-white;
+  }
 }
 
 @layer utilities {
-    .filter-bw {
-        filter: grayscale(75%);
+  .filter-bw {
+    filter: grayscale(75%);
+  }
+
+  .bg-filter-dark {
+    backdrop-filter: brightness(50%);
+  }
+
+  @variants hover {
+    .filter-none {
+      filter: none;
+    }
+    .text-emphasis {
+      @apply text-onlight dark:text-ondark text-opacity-90 dark:text-opacity-90;
     }
 
-    .bg-filter-dark {
-        backdrop-filter: brightness(50%);
+    .text-emphasis-none {
+      @apply text-onlight dark:text-ondark text-opacity-70 dark:text-opacity-70;
     }
 
-
-    @variants hover {
-        .filter-none {
-            filter: none;
-        }
-        .text-emphasis {
-            @apply text-onlight dark:text-ondark text-opacity-90 dark:text-opacity-90
-        }
-
-        .text-emphasis-none {
-            @apply text-onlight dark:text-ondark text-opacity-70 dark:text-opacity-70
-        }
-
-        .text-disabled {
-            @apply text-onlight dark:text-ondark text-opacity-40 dark:text-opacity-40
-        }
+    .text-disabled {
+      @apply text-onlight dark:text-ondark text-opacity-40 dark:text-opacity-40;
     }
+  }
 }
-

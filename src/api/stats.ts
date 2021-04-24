@@ -1,7 +1,12 @@
 import axios from 'axios'
 
+export type Update = {
+  date: string
+  trigger?: string
+}
+
 export type Stats = {
-  updates: { date: string }[]
+  updates: Update[]
   total_papers: number
 }
 

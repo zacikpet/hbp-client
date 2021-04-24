@@ -7,6 +7,10 @@ export type Feedback = {
   email: string
 }
 
-export const postFeedback = (feedback: Feedback): Promise<void> => {
+export const postFeedback = async (feedback: Feedback): Promise<void> => {
   return axios.post('/api/feedback', feedback).then(response => response.data)
+}
+
+export const getFeedback = async (): Promise<Feedback[]> => {
+  return axios.get('/api/feedback').then(response => response.data)
 }

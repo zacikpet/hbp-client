@@ -54,7 +54,7 @@ const App: FC = () => {
 
   return (
     <div className={`w-full ${darkMode && 'dark'}`}>
-      <div className="bg-gradient-to-b from-white to-gray-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-900 text-emphasis-none">
+      <div className="bg-gradient-to-b from-gray-50 to-gray-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-900 text-emphasis-none">
         <DarkModeContext.Provider value={darkMode}>
           <AuthContext.Provider value={auth}>
             <Navbar onChangeDarkMode={handleChangeDarkMode} />
