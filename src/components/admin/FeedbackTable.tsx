@@ -6,7 +6,7 @@ type UpdatesTableProps = {
   loading: boolean
 }
 
-const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks, loading = false }) => {
+const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
   return (
     <div className="bg-white shadow dark:bg-gray-800 p-4 rounded">
       <h1 className="text-center text-emphasis font-semibold">Feedback</h1>

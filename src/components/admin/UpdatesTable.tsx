@@ -6,7 +6,7 @@ type UpdatesTableProps = {
   loading: boolean
 }
 
-const UpdatesTable: FC<UpdatesTableProps> = ({ updates, loading = false }) => {
+const UpdatesTable: FC<UpdatesTableProps> = ({ updates }) => {
   return (
     <div className="bg-white shadow dark:bg-gray-800 p-4 rounded">
       <h1 className="text-center text-emphasis font-semibold">Updates</h1>
