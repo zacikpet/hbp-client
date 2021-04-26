@@ -4,7 +4,7 @@ import CernLogo from 'resources/cern.jpg'
 import { Link } from 'react-router-dom'
 
 const Footer: FC = () => (
-  <div className="bg-dark dark:bg-black text-ondark px-2 py-4 flex items-center h-32 max-w-full w-full flex-wrap justify-between">
+  <div className="mb-0 mt-auto bg-gray-200 text-ondark px-2 py-4 flex items-center h-32 max-w-full w-full flex-wrap justify-between">
     <div className="flex">
       <img src={CtuLogo} alt="CTU logo" className="max-h-16 mx-2" />
       <img src={CernLogo} alt="CERN logo" className="max-h-16 mx-2" />

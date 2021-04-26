@@ -20,18 +20,18 @@ const Navbar: FC<NavbarProps> = ({ onChangeDarkMode }) => {
   const { pathname } = useLocation()
 
   return (
-    <div className="sticky top-0 h-16 bg-light dark:bg-gray-850 px-4 shadow z-40">
-      <div className="max-w-screen-2xl flex flex justify-between items-center h-16 mx-auto">
+    <div className="sticky top-0 h-16 bg-light dark:bg-gray-850 px-2 shadow z-40">
+      <div className="max-w-screen-2xl flex justify-between items-center h-16 mx-auto">
         <div className="cursor-pointer flex items-center">
           <img src={Wave} className="w-12 h-12" alt="Logo" onClick={() => onChangeDarkMode(!darkMode)} />
-          <Link to="/" className="text-subtitle italic ">
+          <Link to="/" className="text-xs font-semibold uppercase tracking-wider ml-1">
             Higgs Boson Portal
           </Link>
         </div>
         {auth?.loggedIn && (
           <Link
             to="/admin"
-            className={`duration-300 text-red-500 border-b-2 border-transparent hover:border-gray-100 dark:hover:border-gray-700 font-semibold ${
+            className={`duration-300 text-red-500 border-b-2 border-transparent hover:border-gray-100 dark:hover:border-gray-700 font-semibold uppercase text-xs ${
               pathname === '/admin' && 'border-red-500 hover:border-red-500'
             }`}
           >

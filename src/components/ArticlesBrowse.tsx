@@ -5,6 +5,8 @@ import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useDarkMode from '../hooks/useDarkMode'
+import Loader from 'react-loader-spinner'
+import Loading from './Loading'
 
 export type State = {
   x: number
@@ -77,8 +79,8 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
 
   useEffect(() => {
     setPage(0)
-    setFilteredPapers(
-      papers.filter(
+    setFilteredPapers(() => {
+      const newPapers = papers.filter(
         paper =>
           paper.title.toLowerCase().includes(filterOptions.searchString.toLowerCase()) &&
           filterOptions.experiments.includes(paper.experiment) &&
@@ -92,7 +94,8 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
           ((filterOptions.date[0] <= new Date(paper.date) && filterOptions.date[1] >= new Date(paper.date)) ||
             filterOptions.anyDate)
       )
-    )
+      return newPapers
+    })
   }, [filterOptions, papers])
 
   useEffect(() => {
@@ -108,7 +111,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
   }, [state])
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-4 lg:justify-between">
+    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-2 lg:justify-between">
       <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
       <div className="flex flex-col items-center md:px-2">
         {displayedPapers.map((paper, index) => (
@@ -134,12 +137,12 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
       </div>
       <div className="pt-1">
         <div className="bg-white dark:bg-gray-850 rounded shadow ">
-          <div className="py-4 font-semibold w-full px-4 bg-gray-100 dark:bg-gray-800 rounded-t">
+          <div className="py-4 font-semibold text-sm w-full px-4 bg-gray-100 dark:bg-gray-800 rounded-t">
             Displaying {filteredPapers.length} articles.
           </div>
 
           <div className="px-4 flex flex-col items-center">
-            <h2 className="text-disabled mt-2 font-serif">Number of articles published per year</h2>
+            <h2 className="text-disabled m-2 text-sm">Number of articles published per year</h2>
             <BarChart width={300} height={200} margin={{ right: -15 }} data={papersPerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
@@ -148,7 +151,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
               <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
             </BarChart>
 
-            <h2 className="text-disabled mt-2 font-serif">Cumulative article count over the years</h2>
+            <h2 className="text-disabled m-2 text-sm">Cumulative article count over the years</h2>
             <BarChart width={300} height={200} margin={{ right: -15 }} data={cumulativePerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />

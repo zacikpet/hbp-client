@@ -20,17 +20,17 @@ const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder })
 
   return (
     <div className="flex items-center h-10">
-      <div className="mx-1 opacity-90 cursor-pointer" onClick={() => handleSubmit()}>
-        <SearchSVG className="w-4" fill={textColor} />
-      </div>
       <form onSubmit={handleSubmit}>
         <input
-          className="input p-2"
+          className="input p-2 text-sm"
           value={searchString}
           placeholder={placeHolder}
           onChange={e => setSearchString(e.target.value)}
         />
       </form>
+      <div className="ml-2 mr-1 opacity-90 cursor-pointer" onClick={() => handleSubmit()}>
+        <SearchSVG className="w-4" fill={textColor} />
+      </div>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import useDarkMode from '../hooks/useDarkMode'
 import ArticleSearch from './ArticleSearch'
+import Card from './Card'
 
 export const particles = [
   'boson',
@@ -138,7 +139,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   }
 
   return (
-    <div className="flex flex-col" style={{ direction: 'rtl' }}>
+    <div className="flex flex-col">
       <div className="article-filter">
         <ArticleSearch
           value={options.searchString}
@@ -146,86 +147,78 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           placeHolder="Search"
         />
       </div>
-
-      <div className="article-filter">
-        <h2>Date</h2>
-        <div className="p-2">
-          <Checkbox checked={options.anyDate} onChange={setAnyDate}>
-            All of time
+      <Card title="Date">
+        <Checkbox checked={options.anyDate} onChange={setAnyDate}>
+          All of time
+        </Checkbox>
+        {!options.anyDate && (
+          <>
+            <div className="flex items-center my-1">
+              <p>From</p>
+              <div className="mr-0 ml-auto">
+                <ReactDatePicker
+                  showYearDropdown
+                  dateFormat="dd. MM. yyyy"
+                  closeOnScroll
+                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                  selected={options.date[0]}
+                  onChange={handleStartDate}
+                  popperModifiers={{
+                    offset: { enabled: true, offset: -50 },
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between my-1">
+              <p>To</p>
+              <div className="mr-0 ml-auto">
+                <ReactDatePicker
+                  showYearDropdown
+                  dateFormat="dd. MM. yyyy"
+                  closeOnScroll
+                  className="h-8 rounded dark:bg-gray-850 cursor-pointer"
+                  selected={options.date[1]}
+                  onChange={handleEndDate}
+                  popperModifiers={{
+                    offset: { enabled: true, offset: -50 },
+                  }}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </Card>
+      <Card title="Experiments" className="flex">
+        <div className="mr-4">
+          <Checkbox checked={options.experiments.includes('atlas')} onChange={() => selectExperiment('atlas')}>
+            ATLAS
           </Checkbox>
-          {!options.anyDate && (
-            <>
-              <div className="flex items-center my-1">
-                <p>From</p>
-                <div className="mr-0 ml-auto">
-                  <ReactDatePicker
-                    showYearDropdown
-                    dateFormat="dd. MM. yyyy"
-                    closeOnScroll
-                    className="h-8 rounded dark:bg-gray-850 cursor-pointer"
-                    selected={options.date[0]}
-                    onChange={handleStartDate}
-                    popperModifiers={{
-                      offset: { enabled: true, offset: -50 },
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center justify-between my-1">
-                <p>To</p>
-                <div className="mr-0 ml-auto">
-                  <ReactDatePicker
-                    showYearDropdown
-                    dateFormat="dd. MM. yyyy"
-                    closeOnScroll
-                    className="h-8 rounded dark:bg-gray-850 cursor-pointer"
-                    selected={options.date[1]}
-                    onChange={handleEndDate}
-                    popperModifiers={{
-                      offset: { enabled: true, offset: -50 },
-                    }}
-                  />
-                </div>
-              </div>
-            </>
-          )}
+          <Checkbox checked={options.experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
+            CMS
+          </Checkbox>
+          <Checkbox checked={options.experiments.includes('cdf')} onChange={() => selectExperiment('cdf')}>
+            CDF
+          </Checkbox>
+          <Checkbox checked={options.experiments.includes('d0')} onChange={() => selectExperiment('d0')}>
+            DØ
+          </Checkbox>
         </div>
-      </div>
-      <div className="article-filter">
-        <h2>Experiments</h2>
-        <div className="flex p-2">
-          <div className="mr-4">
-            <Checkbox checked={options.experiments.includes('atlas')} onChange={() => selectExperiment('atlas')}>
-              ATLAS
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('cms')} onChange={() => selectExperiment('cms')}>
-              CMS
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('cdf')} onChange={() => selectExperiment('cdf')}>
-              CDF
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('d0')} onChange={() => selectExperiment('d0')}>
-              DØ
-            </Checkbox>
-          </div>
-          <div>
-            <Checkbox checked={options.experiments.includes('aleph')} onChange={() => selectExperiment('aleph')}>
-              ALEPH
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('delphi')} onChange={() => selectExperiment('delphi')}>
-              DELPHI
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('l3')} onChange={() => selectExperiment('l3')}>
-              L3
-            </Checkbox>
-            <Checkbox checked={options.experiments.includes('opal')} onChange={() => selectExperiment('opal')}>
-              OPAL
-            </Checkbox>
-          </div>
+        <div>
+          <Checkbox checked={options.experiments.includes('aleph')} onChange={() => selectExperiment('aleph')}>
+            ALEPH
+          </Checkbox>
+          <Checkbox checked={options.experiments.includes('delphi')} onChange={() => selectExperiment('delphi')}>
+            DELPHI
+          </Checkbox>
+          <Checkbox checked={options.experiments.includes('l3')} onChange={() => selectExperiment('l3')}>
+            L3
+          </Checkbox>
+          <Checkbox checked={options.experiments.includes('opal')} onChange={() => selectExperiment('opal')}>
+            OPAL
+          </Checkbox>
         </div>
-      </div>
-      <div className="article-filter">
-        <h2>Luminosity</h2>
+      </Card>
+      <Card title="Luminosity">
         <Checkbox checked={options.anyLuminosity} onChange={setAnyLuminosity} className="m-2">
           Any
         </Checkbox>
@@ -266,9 +259,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
           </div>
         )}
-      </div>
-      <div className="article-filter">
-        <h2>Energy</h2>
+      </Card>
+      <Card title="Centre-of-mass Energy">
         <Checkbox checked={options.anyEnergy} onChange={setAnyEnergy} className="m-2">
           Any
         </Checkbox>
@@ -309,9 +301,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
           </div>
         )}
-      </div>
-      <div className="article-filter">
-        <h2>Decay products</h2>
+      </Card>
+      <Card title="Decay products">
         <Checkbox checked={options.anyDecay} onChange={setAnyDecay} className="m-2">
           Any
         </Checkbox>
@@ -338,18 +329,16 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             </div>
           </div>
         )}
-      </div>
-      <div className="article-filter">
-        <h2>Higgs model</h2>
+      </Card>
+      <Card title="Higgs model">
         <Checkbox checked={options.models.includes('sm')} onChange={() => selectModel('sm')} className="m-2">
           Standard model
         </Checkbox>
         <Checkbox checked={options.models.includes('bsm')} onChange={() => selectModel('bsm')} className="m-2">
           Beyond the Standard model
         </Checkbox>
-      </div>
-      <div className="article-filter">
-        <h2>Production mode</h2>
+      </Card>
+      <Card title="Production mode">
         <Checkbox checked={options.anyProduction} onChange={setAnyProduction} className="m-2">
           Any
         </Checkbox>
@@ -386,21 +375,18 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
             </Checkbox>
           </>
         )}
-      </div>
-      <div className="article-filter">
-        <h2>Type</h2>
-        <div className="p-2">
-          <Checkbox checked={options.stages.includes('preliminary')} onChange={() => selectStage('preliminary')}>
-            Preliminary results
-          </Checkbox>
-          <Checkbox checked={options.stages.includes('submitted')} onChange={() => selectStage('submitted')}>
-            Submitted papers
-          </Checkbox>
-          <Checkbox checked={options.stages.includes('published')} onChange={() => selectStage('published')}>
-            Published papers
-          </Checkbox>
-        </div>
-      </div>
+      </Card>
+      <Card title="Stage">
+        <Checkbox checked={options.stages.includes('preliminary')} onChange={() => selectStage('preliminary')}>
+          Preliminary results
+        </Checkbox>
+        <Checkbox checked={options.stages.includes('submitted')} onChange={() => selectStage('submitted')}>
+          Submitted papers
+        </Checkbox>
+        <Checkbox checked={options.stages.includes('published')} onChange={() => selectStage('published')}>
+          Published papers
+        </Checkbox>
+      </Card>
     </div>
   )
 }

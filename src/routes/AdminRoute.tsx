@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import useAuth from '../hooks/useAuth'
 import { Redirect } from 'react-router-dom'
-import AdminDashboard from '../components/AdminDashboard'
+import AdminDashboard from '../components/admin/AdminDashboard'
 
 type AdminRouteProps = {
   onLogout: () => void

@@ -16,7 +16,7 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
   const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
 
   return (
-    <div className="w-full pb-5 my-1 bg-white hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 shadow rounded">
+    <div className="w-full pb-5 my-1 bg-white dark:bg-gray-850  shadow rounded">
       <div className="flex p-2 bg-gray-100 dark:bg-gray-800 rounded-t">
         <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
         <StageInfoCard stage={paper.stage} />
@@ -24,25 +24,25 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
       </div>
       <div className="w-full py-4 px-8">
         <Link to={`/articles/${paper._id}`} onClick={onSelect}>
-          <h1 className="font-bold text-emphasis">
+          <h1 className="text-emphasis font-semibold font-serif hover:text-blue-800 duration-150 tracking-tight">
             <Latex>{paper.title}</Latex>
           </h1>
         </Link>
         {abstract && (
-          <p className="font-serif">
+          <p className="font-serif mt-2">
             <Latex>{abstract}</Latex>
             {collapsed && <span>&#8230;</span>}
             &nbsp;&nbsp;
             <a
               onClick={() => setCollapsed(!collapsed)}
-              className="font-sans cursor-pointer text-primary hover:underline"
+              className="font-sans cursor-pointer text-primary hover:underline text-xs tracking-wider"
             >
               {collapsed ? 'See more' : 'Hide'}
             </a>
           </p>
         )}
         <div className="flex items-end justify-between mt-4">
-          <p className="text-disabled italic font-light">{new Date(paper.date).toDateString()}</p>
+          <p className="text-disabled uppercase text-xs tracking-wider">{new Date(paper.date).toDateString()}</p>
           <div className="flex">
             {paper.files.length > 0 && (
               <a href={paper.files[0]} target="_blank" className="mr-2">

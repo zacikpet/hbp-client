@@ -10,7 +10,7 @@ type CheckboxProps = {
 
 const Checkbox: FC<CheckboxProps> = ({ children, className, checked, onChange, disabled = false }) => {
   return (
-    <div className={'flex ' + (disabled && 'text-disabled') + ' ' + className}>
+    <div className={'flex items-center ' + (disabled && 'text-disabled') + ' ' + className}>
       <button
         className={
           'h-4 w-4 border border-black duration-150 focus:outline-none m-1 flex justify-center items-center rounded ' +
@@ -22,7 +22,7 @@ const Checkbox: FC<CheckboxProps> = ({ children, className, checked, onChange, d
       >
         {checked && <TickSVG width="70%" height="70%" fill="white" />}
       </button>
-      {children}
+      <p className="text-xs tracking-wider">{children}</p>
     </div>
   )
 }

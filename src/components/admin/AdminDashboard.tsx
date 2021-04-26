@@ -1,11 +1,11 @@
 import { Feedback, getFeedback } from 'api/feedback'
 import React, { FC, useEffect, useState } from 'react'
-import { getStats, Stats } from '../api/stats'
-import useAuth from '../hooks/useAuth'
-import FeedbackTable from './admin/FeedbackTable'
-import UpdatesTable from './admin/UpdatesTable'
+import { getStats, Stats } from '../../api/stats'
+import useAuth from '../../hooks/useAuth'
+import FeedbackTable from './FeedbackTable'
+import UpdatesTable from './UpdatesTable'
 import DefaultUserPhoto from 'resources/defaultuser.png'
-import VerificationTable from './admin/VerificationTable'
+import VerificationTable from './VerificationTable'
 
 type AdminDashboardProps = {
   onLogout: () => void
@@ -23,7 +23,7 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
 
   return (
     <div className="min-h-page">
-      <div className="p-1 grid gap-1">
+      <div className="p-2 grid gap-2">
         <div className="bg-white dark:bg-gray-850 shadow rounded p-4">
           <div className="grid grid-cols-3">
             <div>
@@ -47,10 +47,10 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
             <div className="flex justify-center items-center"></div>
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-1">
-          <div className="grid grid-rows-2 gap-1">
+        <div className="grid md:grid-cols-2 gap-2">
+          <div className="grid grid-rows-2 gap-2">
             <UpdatesTable updates={stats?.updates || []} loading={Boolean(stats)} />
-            <VerificationTable feedbacks={feedback} loading={feedback.length > 0} />
+            <VerificationTable loading={feedback.length > 0} />
           </div>
           <FeedbackTable feedbacks={feedback} loading={feedback.length > 0} />
         </div>
