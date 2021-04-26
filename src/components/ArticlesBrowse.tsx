@@ -5,8 +5,6 @@ import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useDarkMode from '../hooks/useDarkMode'
-import Loader from 'react-loader-spinner'
-import Loading from './Loading'
 
 export type State = {
   x: number
