@@ -30,7 +30,7 @@ module.exports = {
         page: 'calc(100vh - 4rem)',
       },
       minHeight: {
-        page: 'calc(100vh - 4rem)',
+        page: 'calc(100vh - 12rem)',
       },
       maxHeight: {
         '144': '36rem'

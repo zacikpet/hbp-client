@@ -6,17 +6,15 @@ type UpdatesTableProps = {
   loading: boolean
 }
 
-const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
+const VerificationTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
   return (
-    <div className="bg-white shadow dark:bg-gray-850 p-4 rounded">
-      <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Feedback</h1>
+    <div className="bg-white shadow dark:bg-gray-800 p-4 rounded">
+      <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Administrator account requests</h1>
       <div className="table-wrapper">
-        <table className="w-full">
+        <table>
           <thead>
-            <tr>
-              <th>E-mail</th>
-              <th>Description</th>
-            </tr>
+            <th>E-mail</th>
+            <th>Name</th>
           </thead>
           <tbody>
             {feedbacks.map(feedback => (
@@ -32,4 +30,4 @@ const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
   )
 }
 
-export default FeedbackTable
+export default VerificationTable

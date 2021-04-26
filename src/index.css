@@ -61,6 +61,18 @@ body {
   .article-info-card {
     @apply rounded w-16 text-center bg-black text-sm mx-1 text-white;
   }
+
+  .table-wrapper {
+    @apply shadow rounded overflow-hidden;
+  }
+
+  .table-wrapper th {
+    @apply px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider;
+  }
+
+  .table-wrapper td {
+    @apply p-5 border-b border-gray-200 bg-white text-sm;
+  }
 }
 
 @layer utilities {
