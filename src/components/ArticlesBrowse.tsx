@@ -5,6 +5,7 @@ import Paginate from 'react-paginate'
 import { Paper } from '../api/papers'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useDarkMode from '../hooks/useDarkMode'
+import Card from './Card'
 
 export type State = {
   x: number
@@ -109,9 +110,9 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
   }, [state])
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-2 lg:justify-between">
+    <div className="flex flex-col lg:flex-row min-h-page dark:bg-gray-900 p-2 lg:justify-between gap-2">
       <ArticleFilters options={filterOptions} onChange={setFilterOptions} />
-      <div className="flex flex-col items-center md:px-2">
+      <div className="flex flex-col items-center gap-2">
         {displayedPapers.map((paper, index) => (
           <Article key={paper._id + index.toString()} paper={paper} onSelect={() => onSelect(paper, page)} />
         ))}
@@ -133,13 +134,10 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
           )}
         </div>
       </div>
-      <div className="pt-1">
-        <div className="bg-white dark:bg-gray-850 rounded shadow ">
-          <div className="py-4 font-semibold text-sm w-full px-4 bg-gray-100 dark:bg-gray-800 rounded-t">
-            Displaying {filteredPapers.length} articles.
-          </div>
-
+      <div>
+        <Card title="Statistics">
           <div className="px-4 flex flex-col items-center">
+            <h1>Displaying {filteredPapers.length} articles.</h1>
             <h2 className="text-disabled m-2 text-sm">Number of articles published per year</h2>
             <BarChart width={300} height={200} margin={{ right: -15 }} data={papersPerYear}>
               <YAxis dataKey="count" orientation="right" />
@@ -158,7 +156,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
               <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
             </BarChart>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )

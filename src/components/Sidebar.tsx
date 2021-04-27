@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import Navigation from 'components/Navigation'
-import useAuth from '../hooks/useAuth'
 
 type SidebarProps = {
   open: boolean
@@ -8,8 +7,6 @@ type SidebarProps = {
 }
 
 const Sidebar: FC<SidebarProps> = ({ open, onClose }) => {
-  const auth = useAuth()
-
   const handleAction = () => {
     onClose && onClose()
     scroll(0, 0)
@@ -17,10 +14,11 @@ const Sidebar: FC<SidebarProps> = ({ open, onClose }) => {
 
   return (
     <div
-      className={`md:hidden transition-all duration-300 fixed w-screen h-page ${open ? 'left-0' : 'left-wscreen'}`}
-      style={{ top: auth?.loggedIn ? 96 : 64 }}
+      className={`top-16 md:hidden transition-all duration-300 fixed w-screen h-page left-wscreen ${
+        open ? 'transform -translate-x-wscreen' : ''
+      }`}
     >
-      <div className="flex flex-col bg-white dark:bg-gray-900 h-full w-full md:hidden justify-between">
+      <div className="flex flex-col bg-gray-50 dark:bg-gray-900 h-full w-full md:hidden justify-between shadow-inner">
         <div />
         <div className="flex flex-col justify-around h-1/2 text-xl items-center">
           <Navigation onAction={handleAction} />

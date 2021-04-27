@@ -6,6 +6,7 @@ import FeedbackTable from './FeedbackTable'
 import UpdatesTable from './UpdatesTable'
 import DefaultUserPhoto from 'resources/defaultuser.png'
 import VerificationTable from './VerificationTable'
+import Card from 'components/Card'
 
 type AdminDashboardProps = {
   onLogout: () => void
@@ -23,14 +24,14 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
 
   return (
     <div className="min-h-page">
-      <div className="p-2 grid gap-2">
-        <div className="bg-white dark:bg-gray-850 shadow rounded p-4">
+      <div className="grid p-2 gap-2">
+        <Card title="Administration">
           <div className="grid grid-cols-3">
             <div>
               <div className="flex">
                 <img src={DefaultUserPhoto} className="w-20 m-2" />
                 <div>
-                  <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Administration</h1>
+                  <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Account details</h1>
                   <p className="mx-4">
                     {auth?.user?.firstname} {auth?.user?.lastname}
                   </p>
@@ -46,13 +47,19 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
             </div>
             <div className="flex justify-center items-center"></div>
           </div>
-        </div>
+        </Card>
         <div className="grid md:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2">
-            <UpdatesTable updates={stats?.updates || []} loading={Boolean(stats)} />
-            <VerificationTable loading={feedback.length > 0} />
+            <Card title="Database updates">
+              <UpdatesTable updates={stats?.updates || []} loading={Boolean(stats)} />
+            </Card>
+            <Card title="Administrator account requests">
+              <VerificationTable loading={feedback.length > 0} />
+            </Card>
           </div>
-          <FeedbackTable feedbacks={feedback} loading={feedback.length > 0} />
+          <Card title="Feedback">
+            <FeedbackTable feedbacks={feedback} loading={feedback.length > 0} />
+          </Card>
         </div>
       </div>
     </div>

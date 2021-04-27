@@ -8,26 +8,23 @@ type UpdatesTableProps = {
 
 const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
   return (
-    <div className="bg-white shadow dark:bg-gray-850 p-4 rounded">
-      <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Feedback</h1>
-      <div className="table-wrapper">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th>E-mail</th>
-              <th>Description</th>
+    <div className="table-wrapper">
+      <table className="w-full">
+        <thead>
+          <tr>
+            <th>E-mail</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {feedbacks.map(feedback => (
+            <tr key={feedback.description}>
+              <td>{feedback.email}</td>
+              <td>{feedback.description}</td>
             </tr>
-          </thead>
-          <tbody>
-            {feedbacks.map(feedback => (
-              <tr key={feedback.description}>
-                <td>{feedback.email}</td>
-                <td>{feedback.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

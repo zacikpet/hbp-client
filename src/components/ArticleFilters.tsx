@@ -139,8 +139,8 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="article-filter">
+    <div className="flex flex-col gap-2">
+      <div className="bg-white dark:bg-gray-850 shadow rounded p-2">
         <ArticleSearch
           value={options.searchString}
           onChange={newValue => onChange({ ...options, searchString: newValue })}

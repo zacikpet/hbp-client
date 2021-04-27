@@ -30,8 +30,7 @@ const UpdatesTable: FC<UpdatesTableProps> = ({ updates }) => {
   }
 
   return (
-    <div className="bg-white shadow dark:bg-gray-850 p-4 rounded">
-      <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Database updates</h1>
+    <>
       <div className="table-wrapper">
         <table className="w-full">
           <thead>
@@ -55,7 +54,7 @@ const UpdatesTable: FC<UpdatesTableProps> = ({ updates }) => {
         {page + 1} / {pages}
         <button onClick={handleNextPage}>Next</button>
       </div>
-    </div>
+    </>
   )
 }
 

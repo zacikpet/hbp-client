@@ -16,7 +16,7 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
   const abstract = collapsed ? paper.abstract?.slice(0, 200) : paper.abstract
 
   return (
-    <div className="w-full pb-5 my-1 bg-white dark:bg-gray-850  shadow rounded">
+    <div className="w-full pb-5 bg-white dark:bg-gray-850  shadow rounded">
       <div className="flex p-2 bg-gray-100 dark:bg-gray-800 rounded-t">
         <div className="article-info-card bg-blue-900">{paper.experiment.toUpperCase()}</div>
         <StageInfoCard stage={paper.stage} />
@@ -35,7 +35,7 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
             &nbsp;&nbsp;
             <a
               onClick={() => setCollapsed(!collapsed)}
-              className="font-sans cursor-pointer text-primary hover:underline text-xs tracking-wider"
+              className="font-serif cursor-pointer text-primary hover:underline text-sm tracking-wider"
             >
               {collapsed ? 'See more' : 'Hide'}
             </a>

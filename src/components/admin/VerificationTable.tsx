@@ -6,9 +6,7 @@ type UpdatesTableProps = {
 
 const VerificationTable: FC<UpdatesTableProps> = ({}) => {
   return (
-    <div className="bg-white shadow dark:bg-gray-800 p-4 rounded">
-      <h1 className="mx-4 mb-4 text-xl text-emphasis font-semibold">Administrator account requests</h1>
-
+    <>
       {true ? (
         <div className="flex justify-center text-disabled">No requests yet.</div>
       ) : (
@@ -24,7 +22,7 @@ const VerificationTable: FC<UpdatesTableProps> = ({}) => {
           </div>
         </>
       )}
-    </div>
+    </>
   )
 }
 
