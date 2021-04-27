@@ -136,9 +136,9 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
       </div>
       <div>
         <Card title="Statistics">
-          <div className="px-4 flex flex-col items-center">
-            <h1>Displaying {filteredPapers.length} articles.</h1>
-            <h2 className="text-disabled m-2 text-sm">Number of articles published per year</h2>
+          <div className="px-4 flex flex-col">
+            <h1 className="text-sm tracking-wide">Displaying {filteredPapers.length} articles.</h1>
+            <h2 className="text-disabled my-2 text-xs tracking-wider">Number of articles published per year</h2>
             <BarChart width={300} height={200} margin={{ right: -15 }} data={papersPerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />
@@ -147,7 +147,7 @@ const ArticlesBrowse: FC<ArticlesBrowseProps> = ({ papers, onSelect, state, filt
               <CartesianGrid stroke={darkMode ? '#333' : '#DDD'} />
             </BarChart>
 
-            <h2 className="text-disabled m-2 text-sm">Cumulative article count over the years</h2>
+            <h2 className="text-disabled my-2 text-xs tracking-wider">Cumulative article count over the years</h2>
             <BarChart width={300} height={200} margin={{ right: -15 }} data={cumulativePerYear}>
               <YAxis dataKey="count" orientation="right" />
               <XAxis dataKey="year" domain={[1985, 2022]} type="number" scale="time" ticks={[1990, 2000, 2010, 2020]} />

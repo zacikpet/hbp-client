@@ -223,7 +223,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           Any
         </Checkbox>
         {!options.anyLuminosity && (
-          <div className="p-2">
+          <div className="p-2 text-center">
             <Range
               onChange={setLuminosity}
               step={1000}
@@ -256,7 +256,9 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 />
               )}
             />
-            {Math.round(luminosity[0] / 1000)} fb - {Math.round(luminosity[1] / 1000)} fb
+            <p className="text-sm tracking-wide mt-1">
+              {Math.round(luminosity[0] / 1000)} fb<sup>-1</sup> - {Math.round(luminosity[1] / 1000)} fb<sup>-1</sup>
+            </p>
           </div>
         )}
       </Card>
@@ -265,7 +267,7 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           Any
         </Checkbox>
         {!options.anyEnergy && (
-          <div className="p-2">
+          <div className="p-2 text-center">
             <Range
               step={1000000}
               min={0}
@@ -298,7 +300,9 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
                 />
               )}
             />
-            {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
+            <p className="text-sm tracking-wide mt-1">
+              {Math.round(energy[0] / 1000000)} TeV - {Math.round(energy[1] / 1000000)} TeV
+            </p>
           </div>
         )}
       </Card>
@@ -307,26 +311,32 @@ const ArticleFilters: FC<ArticleFiltersProps> = ({ onChange, options }) => {
           Any
         </Checkbox>
         {!options.anyDecay && (
-          <div className="">
-            <select className="input mb-2" onChange={event => addDecayProduct(event.target.value)}>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs tracking-wider">Options: </p>
+            <select className="input" onChange={event => addDecayProduct(event.target.value)}>
               {particles.map(particle => (
                 <option key={particle} value={particle} onClick={() => addDecayProduct(particle)}>
                   {particle}
                 </option>
               ))}
             </select>
-            <p>{options.decay.products.length === 0 && 'No decay products selected.'}</p>
-
-            <div className="flex flex-wrap">
+            <p className="text-xs tracking-wider">
+              {options.decay.products.length === 0 ? 'No decay products selected.' : 'Selected:'}
+            </p>
+            <div className="flex flex-wrap gap-1">
               {options.decay.products.map(product => (
                 <div
-                  className="px-1 m-1 bg-primary rounded text-onprimary cursor-pointer"
+                  key={product}
                   onClick={() => removeDecayProduct(product)}
+                  className="p-2 cursor-pointer tracking-wider uppercase text-xs font-semibold bg-primary rounded text-onprimary"
                 >
                   {product}
                 </div>
               ))}
             </div>
+            {options.decay.products.length > 0 && (
+              <p className="text-disabled text-xs tracking-wider">Click on decay product to remove.</p>
+            )}
           </div>
         )}
       </Card>

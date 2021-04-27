@@ -22,7 +22,7 @@ const ArticleSearch: FC<ArticleSearchProps> = ({ value, onChange, placeHolder })
     <div className="flex items-center h-10">
       <form onSubmit={handleSubmit}>
         <input
-          className="input p-2 text-sm"
+          className="input p-2 text-md tracking-wide"
           value={searchString}
           placeholder={placeHolder}
           onChange={e => setSearchString(e.target.value)}
