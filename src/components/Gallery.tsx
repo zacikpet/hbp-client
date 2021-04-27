@@ -38,7 +38,7 @@ const Gallery: FC<GalleryProps> = ({
     </div>
     <div className="w-full md:w-1/2 flex flex-col items-center font-light py-4 md:px-4">
       <div className={contentClassName}>{children}</div>
-      <p className="font-s">{contentLabel}</p>
+      <p className="text-sm">{contentLabel}</p>
       <p className="source">{contentSource}</p>
     </div>
   </div>

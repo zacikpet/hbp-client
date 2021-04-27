@@ -18,7 +18,7 @@ const ExperimentMenu: FC = () => {
     <>
       {/* Menu */}
       <Link to="experiment" smooth offset={-64} duration={500}>
-        <div id="experiments" className="h-fit md:h-screen-3/4 cursor-pointer flex flex-col md:flex-row">
+        <div id="experiments" className="h-fit md:h-screen-3/4 cursor-pointer flex flex-col md:flex-row gap-px">
           <div className="h-full card-experiment bg-atlas" onClick={() => setIndex(0)}>
             <div className="card-experiment-title">ATLAS</div>
           </div>
@@ -31,7 +31,7 @@ const ExperimentMenu: FC = () => {
           <div className="h-full card-experiment bg-d0" onClick={() => setIndex(3)}>
             <div className="card-experiment-title">DØ</div>
           </div>
-          <div className="w-full h-full">
+          <div className="w-full h-full flex flex-col gap-px">
             <div className="h-1/2 card-experiment bg-delphi" onClick={() => setIndex(4)}>
               <div className="card-experiment-title">DELPHI</div>
             </div>
@@ -39,7 +39,7 @@ const ExperimentMenu: FC = () => {
               <div className="card-experiment-title">OPAL</div>
             </div>
           </div>
-          <div className="w-full h-full">
+          <div className="w-full h-full flex flex-col gap-px">
             <div className="h-1/2 card-experiment bg-l3" onClick={() => setIndex(6)}>
               <div className="card-experiment-title">L3</div>
             </div>

@@ -26,8 +26,7 @@ body {
     @apply transition-all duration-150;
     @apply w-full bg-cover bg-center;
     @apply hover:filter-none filter-bw;
-    @apply border border-white dark:border-gray-900;
-    @apply text-white text-opacity-70 hover:text-opacity-90 text-lg italic;
+    @apply text-white text-opacity-70 hover:text-opacity-90 uppercase text-sm tracking-wider;
   }
 
   .card-experiment-title {
