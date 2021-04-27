@@ -49,6 +49,7 @@ module.exports = {
       }),
       fontFamily: {
         sans: ['Lato', 'Sans-serif'],
+        serif: ['Source Serif Pro']
       },
     },
   },

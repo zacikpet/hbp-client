@@ -68,11 +68,11 @@ const ArticleDetail: FC<ArticleDetailProps> = ({ onFetch, onEdit, onNext, onPrev
             <ModelInfoCard model={paper.model} className="ml-auto mr-0" />
           </div>
           <div className="px-8 py-6">
-            <h1 className="text-xl font-bold text-emphasis font-serif tracking-tight">
+            <h1 className="text-xl font-semibold text-emphasis font-serif tracking-tight">
               <Latex>{paper.title}</Latex>
             </h1>
             {paper?.abstract && (
-              <p className="font-serif mt-2">
+              <p className="font-serif mt-2 tracking-tight">
                 <Latex>{paper.abstract}</Latex>
               </p>
             )}

@@ -24,9 +24,9 @@ const Gallery: FC<GalleryProps> = ({
 }) => (
   <div className={`w-full flex ${reversed ? 'flex-row-reverse' : 'flex-row'} flex-wrap items-center px-8 md:px-16`}>
     <div className="w-full md:w-1/2 py-8 pb-0 md:p-16">
-      <h1 className="text-title font-bold text-emphasis text-4xl font-serif tracking-tight">{title}</h1>
+      <h1 className="text-title font-semibold text-emphasis text-4xl font-serif tracking-tight">{title}</h1>
       <br />
-      <span className="font-serif">{text}</span>
+      <span className="font-serif tracking-tight">{text}</span>
       {source && <p className="source">Source: {source}</p>}
       {more && (
         <div className="mt-10">

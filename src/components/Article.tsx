@@ -24,12 +24,12 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
       </div>
       <div className="w-full py-4 px-8">
         <Link to={`/articles/${paper._id}`} onClick={onSelect}>
-          <h1 className="text-emphasis font-semibold font-serif hover:text-blue-700 dark:hover:text-blue-700 duration-150 tracking-tight">
+          <h1 className="text-emphasis tracking-tight font-semibold font-serif hover:text-blue-700 dark:hover:text-blue-700 duration-150">
             <Latex>{paper.title}</Latex>
           </h1>
         </Link>
         {abstract && (
-          <p className="font-serif mt-2">
+          <p className="font-serif mt-2 tracking-tight">
             <Latex>{abstract}</Latex>
             {collapsed && <span>&#8230;</span>}
             &nbsp;&nbsp;
