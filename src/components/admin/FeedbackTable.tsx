@@ -1,12 +1,19 @@
-import React, { FC } from 'react'
-import { Feedback } from 'api/feedback'
+import React, { FC, useEffect, useState } from 'react'
+import { Feedback, getFeedback } from 'api/feedback'
+import TableLoading from 'components/TableLoading'
 
-type UpdatesTableProps = {
-  feedbacks: Feedback[]
-  loading: boolean
-}
+const FeedbackTable: FC = () => {
+  const [loading, setLoading] = useState(true)
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([])
 
-const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
+  useEffect(() => {
+    setLoading(true)
+    getFeedback().then(f => {
+      setFeedbacks(f)
+      setLoading(false)
+    })
+  }, [])
+
   return (
     <div className="table-wrapper">
       <table className="w-full">
@@ -17,12 +24,16 @@ const FeedbackTable: FC<UpdatesTableProps> = ({ feedbacks }) => {
           </tr>
         </thead>
         <tbody>
-          {feedbacks.map(feedback => (
-            <tr key={feedback.description}>
-              <td>{feedback.email}</td>
-              <td>{feedback.description}</td>
-            </tr>
-          ))}
+          {loading ? (
+            <TableLoading />
+          ) : (
+            feedbacks.map(feedback => (
+              <tr key={feedback.description}>
+                <td>{feedback.email}</td>
+                <td>{feedback.description}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

@@ -5,6 +5,7 @@ export type User = {
   firstname: string
   lastname: string
   verified: string
+  _id: string
 }
 
 type AuthResult = {

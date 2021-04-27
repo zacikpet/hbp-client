@@ -1,6 +1,4 @@
-import { Feedback, getFeedback } from 'api/feedback'
-import React, { FC, useEffect, useState } from 'react'
-import { getStats, Stats } from '../../api/stats'
+import React, { FC } from 'react'
 import useAuth from '../../hooks/useAuth'
 import FeedbackTable from './FeedbackTable'
 import UpdatesTable from './UpdatesTable'
@@ -13,14 +11,7 @@ type AdminDashboardProps = {
 }
 
 const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
-  const [stats, setStats] = useState<Stats>()
-  const [feedback, setFeedback] = useState<Feedback[]>([])
   const auth = useAuth()
-
-  useEffect(() => {
-    getStats().then(setStats)
-    getFeedback().then(setFeedback)
-  }, [])
 
   return (
     <div className="min-h-page">
@@ -42,23 +33,21 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ onLogout }) => {
                 Sign out
               </button>
             </div>
-            <div>
-              <h2 className="text-lg">Total articles: {stats?.total_papers}</h2>
-            </div>
+            <div>{/*<h2 className="text-lg">Total articles: {stats?.total_papers}</h2>*/}</div>
             <div className="flex justify-center items-center"></div>
           </div>
         </Card>
         <div className="grid md:grid-cols-2 gap-2">
           <div className="grid grid-rows-2 gap-2">
             <Card title="Database updates">
-              <UpdatesTable updates={stats?.updates || []} loading={Boolean(stats)} />
+              <UpdatesTable />
             </Card>
             <Card title="Administrator account requests">
-              <VerificationTable loading={feedback.length > 0} />
+              <VerificationTable />
             </Card>
           </div>
           <Card title="Feedback">
-            <FeedbackTable feedbacks={feedback} loading={feedback.length > 0} />
+            <FeedbackTable />
           </Card>
         </div>
       </div>

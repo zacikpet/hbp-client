@@ -24,7 +24,7 @@ const Article: FC<ArticleProps> = ({ paper, onSelect }) => {
       </div>
       <div className="w-full py-4 px-8">
         <Link to={`/articles/${paper._id}`} onClick={onSelect}>
-          <h1 className="text-emphasis font-semibold font-serif hover:text-blue-800 duration-150 tracking-tight">
+          <h1 className="text-emphasis font-semibold font-serif hover:text-blue-700 dark:hover:text-blue-700 duration-150 tracking-tight">
             <Latex>{paper.title}</Latex>
           </h1>
         </Link>
