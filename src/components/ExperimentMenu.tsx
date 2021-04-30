@@ -32,10 +32,10 @@ const ExperimentMenu: FC = () => {
             <div className="card-experiment-title">DØ</div>
           </div>
           <div className="w-full h-full flex flex-col gap-px">
-            <div className="h-1/2 card-experiment bg-aleph" onClick={() => setIndex(7)}>
+            <div className="h-1/2 card-experiment bg-aleph" onClick={() => setIndex(4)}>
               <div className="card-experiment-title">ALEPH</div>
             </div>
-            <div className="h-1/2 card-experiment bg-delphi" onClick={() => setIndex(4)}>
+            <div className="h-1/2 card-experiment bg-delphi" onClick={() => setIndex(5)}>
               <div className="card-experiment-title">DELPHI</div>
             </div>
           </div>
@@ -43,7 +43,7 @@ const ExperimentMenu: FC = () => {
             <div className="h-1/2 card-experiment bg-l3" onClick={() => setIndex(6)}>
               <div className="card-experiment-title">L3</div>
             </div>
-            <div className="h-1/2 card-experiment bg-opal" onClick={() => setIndex(5)}>
+            <div className="h-1/2 card-experiment bg-opal" onClick={() => setIndex(7)}>
               <div className="card-experiment-title">OPAL</div>
             </div>
           </div>
