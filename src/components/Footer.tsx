@@ -9,9 +9,14 @@ const Footer: FC = () => (
       <img src={CtuLogo} alt="CTU logo" className="max-h-16 mx-2" />
       <img src={CernLogo} alt="CERN logo" className="max-h-16 mx-2" />
       <div className="mx-2 text-disabled">
+        <br />
         <p>Peter Žáčik</p>
         <p>zacikpet@fit.cvut.cz</p>
-        <p>FIT CTU 2021</p>
+      </div>
+      <div className="mx-2 text-disabled">
+        <p>supervised by:</p>
+        <p>André Sopczak</p>
+        <p>andre.sopczak@cern.ch</p>
       </div>
     </div>
     <div className="h-16 flex items-center w-32 justify-center">
