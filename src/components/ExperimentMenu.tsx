@@ -32,19 +32,19 @@ const ExperimentMenu: FC = () => {
             <div className="card-experiment-title">DØ</div>
           </div>
           <div className="w-full h-full flex flex-col gap-px">
+            <div className="h-1/2 card-experiment bg-aleph" onClick={() => setIndex(7)}>
+              <div className="card-experiment-title">ALEPH</div>
+            </div>
             <div className="h-1/2 card-experiment bg-delphi" onClick={() => setIndex(4)}>
               <div className="card-experiment-title">DELPHI</div>
-            </div>
-            <div className="h-1/2 card-experiment bg-opal" onClick={() => setIndex(5)}>
-              <div className="card-experiment-title">OPAL</div>
             </div>
           </div>
           <div className="w-full h-full flex flex-col gap-px">
             <div className="h-1/2 card-experiment bg-l3" onClick={() => setIndex(6)}>
               <div className="card-experiment-title">L3</div>
             </div>
-            <div className="h-1/2 card-experiment bg-aleph" onClick={() => setIndex(7)}>
-              <div className="card-experiment-title">ALEPH</div>
+            <div className="h-1/2 card-experiment bg-opal" onClick={() => setIndex(5)}>
+              <div className="card-experiment-title">OPAL</div>
             </div>
           </div>
         </div>
@@ -105,6 +105,18 @@ const ExperimentMenu: FC = () => {
           <img src={D0Detector} alt="DØ detector" className="shadow-lg w-full h-full" />
         </Gallery>
         <Gallery
+          title="ALEPH Experiment"
+          text="ALEPH was a particle detector on the Large Electron-Positron collider (LEP). It was designed to explore the
+          physics predicted by the Standard Model and to search for physics beyond it."
+          source="https://home.cern/science/experiments/aleph"
+          reversed
+          contentSource="https://cds.cern.ch/record/42204"
+          more="https://home.cern/science/experiments/aleph"
+          contentClassName="w-full"
+        >
+          <img src={AlephDetector} alt="ALEPH detector" className="shadow-lg w-full h-full" />
+        </Gallery>
+        <Gallery
           title="DELPHI Experiment"
           text="DELPHI was one of four large detectors on the Large Electron-Positron collider (LEP). It took 7 years to
           design and build, and it started up in 1989. In December 2000, DELPHI stopped taking data and was dismantled
@@ -115,19 +127,6 @@ const ExperimentMenu: FC = () => {
           more="https://home.cern/science/experiments/delphi"
         >
           <img src={DelphiDetector} alt="DELPHI detector" className="shadow-lg w-full h-full" />
-        </Gallery>
-        <Gallery
-          title="OPAL Experiment"
-          text="OPAL was one of four large detectors on the Large Electron-Positron collider (LEP). It started operation
-          along with the collider in August 1989. Data taking for OPAL ended on 2 November 2000 and the detector was
-          dismantled the following year to make way for construction of the Large Hadron Collider (LHC)."
-          source="https://home.cern/science/experiments/opal"
-          reversed
-          contentSource="https://en.wikipedia.org/wiki/OPAL_experiment"
-          more="https://home.cern/science/experiments/opal"
-          contentClassName="w-full"
-        >
-          <img src={OpalDetector} alt="OPAL detector" className="shadow-lg w-full h-full" />
         </Gallery>
         <Gallery
           title="L3 Experiment"
@@ -144,16 +143,17 @@ const ExperimentMenu: FC = () => {
           <img src={L3Detector} alt="L3 detector" className="shadow-lg w-full h-full" />
         </Gallery>
         <Gallery
-          title="ALEPH Experiment"
-          text="ALEPH was a particle detector on the Large Electron-Positron collider (LEP). It was designed to explore the
-          physics predicted by the Standard Model and to search for physics beyond it."
-          source="https://home.cern/science/experiments/aleph"
+          title="OPAL Experiment"
+          text="OPAL was one of four large detectors on the Large Electron-Positron collider (LEP). It started operation
+          along with the collider in August 1989. Data taking for OPAL ended on 2 November 2000 and the detector was
+          dismantled the following year to make way for construction of the Large Hadron Collider (LHC)."
+          source="https://home.cern/science/experiments/opal"
           reversed
-          contentSource="https://cds.cern.ch/record/42204"
-          more="https://home.cern/science/experiments/aleph"
+          contentSource="https://en.wikipedia.org/wiki/OPAL_experiment"
+          more="https://home.cern/science/experiments/opal"
           contentClassName="w-full"
         >
-          <img src={AlephDetector} alt="ALEPH detector" className="shadow-lg w-full h-full" />
+          <img src={OpalDetector} alt="OPAL detector" className="shadow-lg w-full h-full" />
         </Gallery>
       </SwipeableViews>
     </>
