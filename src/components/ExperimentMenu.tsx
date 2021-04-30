@@ -18,7 +18,7 @@ const ExperimentMenu: FC = () => {
     <>
       {/* Menu */}
       <Link to="experiment" smooth offset={-64} duration={500}>
-        <div id="experiments" className="h-fit md:h-screen-3/4 cursor-pointer flex flex-col md:flex-row gap-px">
+        <div id="experiments" className="h-fit md:h-96 cursor-pointer flex flex-col md:flex-row gap-px">
           <div className="h-full card-experiment bg-atlas" onClick={() => setIndex(0)}>
             <div className="card-experiment-title">ATLAS</div>
           </div>
