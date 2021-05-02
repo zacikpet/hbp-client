@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react'
 
 type GalleryProps = {
   reversed?: boolean
-  title: string
+  title: string | React.ReactNode
   text: string | ReactNode
   source?: string
   more?: string
